@@ -1,6 +1,6 @@
 <div [ngClass]="getClasses()" role="alert">
-  <strong class="font-bold">{{ type | titlecase }}!</strong>
-  <span class="block sm:inline"> {{ message | titlecase }}.</span>
+  <strong class="font-bold">{{ type | uppercase }}!</strong>
+  <span class="block sm:inline"> {{ message }}.</span>
   <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
     <div role="button" (click)="removeAlert($event)">
       <svg class="fill-current h-6 w-6 text-gray-700"

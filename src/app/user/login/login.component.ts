@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
-import {FormGroup} from "@angular/forms";
+import AlertType from "../../shared/alert/alert.component";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-login',
@@ -7,19 +8,35 @@ import {FormGroup} from "@angular/forms";
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  public showAlert: boolean = true;
-  public form: FormGroup = new FormGroup({});
-  public email!: Event;
-  public password!: Event;
+  public showAlert: boolean = false;
+
+  public form: FormGroup = this.formBuilder.group({
+    email: ['', [
+      Validators.required,
+      Validators.email,
+    ]],
+    password: ['', [
+      Validators.required,
+      Validators.minLength(6)
+    ]]
+  })
+
+  constructor(private formBuilder: FormBuilder) {
+  }
 
   public login(event: MouseEvent | SubmitEvent): void {
     event.preventDefault();
 
-    console.log(event)
+    this.showAlert = this.form.invalid;
+  }
+
+  public removeAlert(event: KeyboardEvent): void {
+    this.showAlert = false;
   }
 
   public modalClosed(isClosed: boolean): void {
     this.showAlert = !isClosed;
   }
 
+  protected readonly AlertType = AlertType;
 }

@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {
   }
 
-  canActivate(
+  public canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
       return true;
     } else {
       this.router.navigateByUrl('/user/login').then();
-      console.log('Not authorized')
+      console.log('Not authorized');
       return false;
     }
   }

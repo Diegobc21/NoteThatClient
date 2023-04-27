@@ -1,30 +1,30 @@
 <div class="mt-6 flex flex-col">
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-    <form class="bg-white px-6 py-8 rounded shadow-xl text-black w-full" (ngSubmit)="login($event)">
+    <form autocomplete="off" [formGroup]="form"
+          class="bg-white px-6 py-8 rounded shadow-xl text-black w-full" (ngSubmit)="login($event)">
       <h1 class="mb-8 text-3xl text-center">Inicia sesión</h1>
 
-      <input required email="true"
-        type="text"
-        class="block border border-grey-light w-full p-3 rounded mb-4"
-        name="email"
-        placeholder="Email"
-        [(ngModel)]="email"
+      <input formControlName="email"
+             (keyup)="removeAlert($event)"
+             type="text"
+             class="block border border-grey-light w-full p-3 rounded mb-4"
+             placeholder="Email"
       />
-      <div *ngIf="showAlert" class="mb-4">
-        <app-alert (onClose)="modalClosed($event)" message="Email requerido" type="success"></app-alert>
 
+      <input formControlName="password"
+             (keyup)="removeAlert($event)"
+             type="password"
+             class="block border border-grey-light w-full p-3 rounded mb-4"
+             placeholder="Contraseña"
+      />
+
+      <div *ngIf="showAlert" class="mb-4">
+        <app-alert (onClose)="modalClosed($event)" message="Revisa los campos" [type]="AlertType.ERROR"></app-alert>
       </div>
 
-      <input required minlength="6"
-        type="password"
-        class="block border border-grey-light w-full p-3 rounded mb-4"
-        name="password"
-        placeholder="Contraseña"
-        [(ngModel)]="password"/>
-
       <button (click)="login($event)"
-        type="submit"
-        class="w-full text-center py-3 rounded bg-green text-black bg-blue-200 hover:bg-blue-400 focus:outline-none my-1"
+              type="submit"
+              class="w-full text-center py-3 rounded bg-green text-black bg-blue-200 hover:bg-blue-400 focus:outline-none my-1"
       >Iniciar sesión
       </button>
 
