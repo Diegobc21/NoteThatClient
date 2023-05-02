@@ -5,14 +5,14 @@
       <h1 class="mb-8 text-3xl text-center">Inicia sesión</h1>
 
       <input formControlName="email"
-             (keyup)="removeAlert($event)"
+             (keyup)="removeAlert()"
              type="text"
              class="block border border-grey-light w-full p-3 rounded mb-4"
              placeholder="Email"
       />
 
       <input formControlName="password"
-             (keyup)="removeAlert($event)"
+             (keyup)="removeAlert()"
              type="password"
              class="block border border-grey-light w-full p-3 rounded mb-4"
              placeholder="Contraseña"
@@ -22,10 +22,11 @@
         <app-alert (onClose)="modalClosed($event)" message="Revisa los campos" [type]="AlertType.ERROR"></app-alert>
       </div>
 
-      <button (click)="login($event)"
+      <button (submit)="login($event)"
               type="submit"
               class="w-full text-center py-3 rounded bg-green text-black bg-blue-200 hover:bg-blue-400 focus:outline-none my-1"
-      >Iniciar sesión
+      >
+        Iniciar sesión
       </button>
 
     </form>

@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import AlertType from "./alert-type";
 
 @Component({
   selector: 'app-alert',
@@ -30,11 +31,3 @@ export class AlertComponent {
   }
 
 }
-
-export enum AlertType {
-  ERROR = 'error',
-  WARNING = 'warning',
-  SUCCESS = 'success'
-}
-
-export default AlertType;

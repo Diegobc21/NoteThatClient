@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import AlertType from "../../shared/alert/alert.component";
 import {AuthService} from "../../core/auth.service";
+import {SubscriptionService} from "../../core/subscription.service";
+import AlertType from "../../shared/alert/alert-type";
 
 @Component({
   selector: 'app-register',
@@ -10,42 +11,57 @@ import {AuthService} from "../../core/auth.service";
 })
 export class RegisterComponent {
 
+  public form: FormGroup;
   public showAlert: boolean = false;
+  public errorMessage: string = '';
 
-  public form: FormGroup = this.formBuilder.group({
-    name: ['', [
-      Validators.required
-    ]],
-    email: ['', [
-      Validators.required,
-      Validators.email
-    ]],
-    password: ['', [
-      Validators.required,
-      Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/),
-      Validators.minLength(6)
-    ]],
-    repeatPassword: ['', [
-      Validators.required,
-      Validators.minLength(6)
-    ]]
-  })
+  protected readonly AlertType = AlertType;
 
-  constructor(private formBuilder: FormBuilder,
-              private authService: AuthService
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private subscriptionService: SubscriptionService
   ) {
+    this.form = this.formBuilder.group({
+      fullname: ['', [
+        Validators.required
+      ]],
+      email: ['', [
+        Validators.required,
+        Validators.email
+      ]],
+      password: ['', [
+        Validators.required,
+        // Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/),
+        Validators.minLength(6)
+      ]],
+      repeatPassword: ['', [
+        Validators.required,
+        Validators.minLength(6)
+      ]]
+    })
   }
 
-  public register(event: MouseEvent | SubmitEvent): void {
+  public register(event: SubmitEvent): void {
     event.preventDefault();
 
-    this.showAlert = this.form.invalid;
-    if (!this.showAlert) {
-      this.authService.register('body');
+    if (this.form.value.password !== this.form.value.repeatPassword) {
+      this.showAlert = true;
+      this.errorMessage = 'Las contraseñas no coinciden';
+    } else {
+      this.showAlert = this.form.invalid;
+      this.errorMessage = 'Revisa los campos';
+      if (!this.form.invalid) {
+        this.subscriptionService.add(
+          this.authService.register(this.form.value).subscribe(() => {
+              console.log('Done')
+            }
+          ));
+      }
     }
   }
 
-  public removeAlert(event: KeyboardEvent): void {
+  public removeAlert(): void {
     this.showAlert = false;
   }
 
@@ -53,40 +69,4 @@ export class RegisterComponent {
     this.showAlert = !isClosed;
   }
 
-  // resetPasswordForm = this.formBuilder.group(
-  //   {
-  //     password: this.form.value('password'),
-  //     confirmPassword: this.form.value('repeatPassword')
-  //   },
-  //   {
-  //     validator: this.confirmedValidator('password', 'confirmPassword')
-  //   }
-  // );
-
-  onSubmit(): void {
-    // console.log(this.resetPasswordForm);
-    // if (!this.resetPasswordForm?.valid) {
-    //   return;
-    // }
-  }
-
-  confirmedValidator(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
-      if (
-        matchingControl.errors
-        // && !matchingControl.errors.confirmedValidator
-      ) {
-        return;
-      }
-      if (control.value !== matchingControl.value) {
-        matchingControl.setErrors({confirmedValidator: true});
-      } else {
-        matchingControl.setErrors(null);
-      }
-    };
-  }
-
-  protected readonly AlertType = AlertType;
 }
