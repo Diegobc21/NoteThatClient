@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../core/auth.service";
 import {SubscriptionService} from "../../core/subscription.service";
 import AlertType from "../../shared/alert/alert-type";
+import {User} from "../../shared/interfaces/user.interface";
+import {NavigationService} from "../../core/navigation.service";
 
 @Component({
   selector: 'app-register',
@@ -20,7 +22,8 @@ export class RegisterComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private subscriptionService: SubscriptionService
+    private subscriptionService: SubscriptionService,
+    private navigationService: NavigationService
   ) {
     this.form = this.formBuilder.group({
       fullname: ['', [
@@ -42,7 +45,7 @@ export class RegisterComponent {
     })
   }
 
-  public register(event: SubmitEvent): void {
+  public register(event: SubmitEvent | MouseEvent): void {
     event.preventDefault();
 
     if (this.form.value.password !== this.form.value.repeatPassword) {
@@ -53,16 +56,19 @@ export class RegisterComponent {
       this.errorMessage = 'Revisa los campos';
       if (!this.form.invalid) {
         this.subscriptionService.add(
-          this.authService.register(this.form.value).subscribe(() => {
-              console.log('Done')
+          this.authService.register(this.form.value).subscribe((user: User) => {
+              this.navigationService.navigateToLogin().then();
             }
           ));
       }
     }
   }
 
-  public removeAlert(): void {
-    this.showAlert = false;
+  public removeAlert(event: KeyboardEvent): void {
+    if (event.key !== 'Enter') {
+      event.preventDefault();
+      this.showAlert = false;
+    }
   }
 
   public modalClosed(isClosed: boolean): void {

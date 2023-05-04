@@ -8,6 +8,7 @@ import {PagesModule} from "./pages/pages.module";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {UserModule} from "./user/user.module";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -17,10 +18,11 @@ import {UserModule} from "./user/user.module";
     HttpClientModule,
     BrowserAnimationsModule,
     BrowserModule,
+    RouterModule,
     AppRoutingModule,
     SharedModule,
     PagesModule,
-    UserModule
+    UserModule,
   ],
   providers: [],
   exports: [

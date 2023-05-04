@@ -1,18 +1,21 @@
 <div class="mt-6 flex flex-col">
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-    <form autocomplete="off" [formGroup]="form"
-          class="bg-white px-6 py-8 rounded shadow-xl text-black w-full" (ngSubmit)="login($event)">
-      <h1 class="mb-8 text-3xl text-center">Inicia sesión</h1>
+    <img ngSrc="assets/NoteThatFull.png" alt="NoteThat" width="400" height="200">
+    <form [formGroup]="form"
+          class="bg-purple-600 px-6 py-8 rounded shadow-xl text-black w-full mt-8"
+          (ngSubmit)="login($event)">
+
+      <h1 class="mb-8 text-cyan-50 text-4xl text-center">Inicia sesión</h1>
 
       <input formControlName="email"
-             (keyup)="removeAlert()"
+             (keyup)="removeAlert($event)"
              type="text"
              class="block border border-grey-light w-full p-3 rounded mb-4"
              placeholder="Email"
       />
 
       <input formControlName="password"
-             (keyup)="removeAlert()"
+             (keyup)="removeAlert($event)"
              type="password"
              class="block border border-grey-light w-full p-3 rounded mb-4"
              placeholder="Contraseña"
@@ -22,9 +25,9 @@
         <app-alert (onClose)="modalClosed($event)" message="Revisa los campos" [type]="AlertType.ERROR"></app-alert>
       </div>
 
-      <button (submit)="login($event)"
+      <button (click)="login($event)"
               type="submit"
-              class="w-full text-center py-3 rounded bg-green text-black bg-blue-200 hover:bg-blue-400 focus:outline-none my-1"
+              class="w-full text-center py-3 rounded text-black bg-cyan-300 hover:bg-cyan-200 focus:outline-none my-1"
       >
         Iniciar sesión
       </button>
@@ -34,9 +37,9 @@
     <div class="text-grey-dark mt-6">
       No tienes cuenta?
       <a
-        class="text-emerald-700 hover:text-emerald-900" routerLink="/user/register">
+        class="text-cyan-800 hover:text-cyan-500" routerLink="/user/register">
         Regístrate
-      </a>.
+      </a>
     </div>
   </div>
 </div>

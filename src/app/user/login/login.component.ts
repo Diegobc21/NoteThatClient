@@ -27,14 +27,17 @@ export class LoginComponent {
     })
   }
 
-  public login(event: SubmitEvent): void {
+  public login(event: SubmitEvent | MouseEvent): void {
     event.preventDefault();
 
     this.showAlert = this.form.invalid;
   }
 
-  public removeAlert(): void {
-    this.showAlert = false;
+  public removeAlert(event: KeyboardEvent): void {
+    if (event.key !== 'Enter') {
+      event.preventDefault();
+      this.showAlert = false;
+    }
   }
 
   public modalClosed(isClosed: boolean): void {

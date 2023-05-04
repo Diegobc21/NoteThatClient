@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   appName: 'NoteThat',
-  apiUrl: 'http://localhost:3000/'
+  apiUrl: 'https://notethatserver.onrender.com/'
 };

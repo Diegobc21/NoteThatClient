@@ -1,36 +1,36 @@
 <div class="mt-8 flex flex-col">
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+  <img ngSrc="assets/NoteThatFull.png" alt="NoteThat" width="400" height="200">
     <form [formGroup]="form"
-          class="bg-gray-100 px-6 py-8 rounded shadow-xl text-black w-full" (ngSubmit)="register($event)">
-      <h1 class="mb-8 text-3xl text-center">Crea tu cuenta</h1>
+          class="bg-purple-600 px-6 py-8 rounded shadow-xl text-black w-full mt-8"
+          (ngSubmit)="register($event)">
+
+      <h1 class="mb-8 text-cyan-50 text-4xl text-center">Crea tu cuenta</h1>
+
       <input
         type="text"
         formControlName="fullname"
-        required
-        (keyup)="removeAlert()"
+        (keyup)="removeAlert($event)"
         class="block border border-grey-light w-full p-3 rounded mb-4"
         placeholder="Nombre completo"/>
 
       <input
         type="text"
         formControlName="email"
-        required
-        (keyup)="removeAlert()"
+        (keyup)="removeAlert($event)"
         class="block border border-grey-light w-full p-3 rounded mb-4"
         placeholder="Email"/>
 
       <input
         type="password"
         formControlName="password"
-        required
-        (keyup)="removeAlert()"
+        (keyup)="removeAlert($event)"
         class="block border border-grey-light w-full p-3 rounded mb-4"
         placeholder="Contraseña"/>
       <input
         type="password"
         formControlName="repeatPassword"
-        required
-        (keyup)="removeAlert()"
+        (keyup)="removeAlert($event)"
         class="block border border-grey-light w-full p-3 rounded mb-4"
         placeholder="Confirmar contraseña"/>
 
@@ -38,9 +38,9 @@
         <app-alert (onClose)="modalClosed($event)" [message]="errorMessage" [type]="AlertType.ERROR"></app-alert>
       </div>
 
-      <button (submit)="register($event)"
+      <button (click)="register($event)"
               type="submit"
-              class="w-full text-center py-3 rounded text-black bg-emerald-200 hover:bg-emerald-400 focus:outline-none my-1"
+              class="w-full text-center py-3 rounded text-black bg-cyan-300 hover:bg-cyan-200 focus:outline-none my-1"
       >
         Crear cuenta
       </button>
@@ -49,9 +49,9 @@
 
     <div class="text-grey-dark mt-6">
       Ya tienes cuenta?
-      <a class="text-cyan-500 hover:text-cyan-800" routerLink="/user/login">
+      <a class="text-cyan-800 hover:text-cyan-500" routerLink="/user/login">
         Inicia sesión
-      </a>.
+      </a>
     </div>
   </div>
 </div>

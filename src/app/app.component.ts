@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
 import {filter} from "rxjs";
+import {SubscriptionService} from "./core/subscription.service";
 
 @Component({
   selector: 'app-root',
@@ -8,13 +9,15 @@ import {filter} from "rxjs";
   styleUrls: ['./app.component.scss'],
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   public title: string = 'Proyecto';
   public show: boolean = false;
-  currentUrl: string = '';
+
+  private currentUrlPath: string = '';
 
   constructor(
-    private router: Router
+    private router: Router,
+    private subscriptionService: SubscriptionService
   ) {
   }
 
@@ -22,9 +25,13 @@ export class AppComponent implements OnInit {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
-        this.currentUrl = this.router.routerState.snapshot.url;
-        this.show = this.currentUrl !== '/user/register' && this.currentUrl !== '/user/login'
+        this.currentUrlPath = this.router.routerState.snapshot.url;
+        this.show = this.currentUrlPath !== '/user/register' && this.currentUrlPath !== '/user/login'
       });
+  }
+
+  public ngOnDestroy(): void {
+    this.subscriptionService.unsubscribeAll();
   }
 
 }
