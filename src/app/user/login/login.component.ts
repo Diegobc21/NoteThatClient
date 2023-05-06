@@ -1,6 +1,10 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import AlertType from "../../shared/alert/alert-type";
+import {AlertType} from "../../shared/alert/alert-type";
+import {SubscriptionService} from "../../core/subscription.service";
+import {AuthService} from "../../core/auth.service";
+import {NavigationService} from "../../core/navigation.service";
+import {User} from "../../shared/interfaces/user.interface";
 
 @Component({
   selector: 'app-login',
@@ -9,12 +13,21 @@ import AlertType from "../../shared/alert/alert-type";
 })
 export class LoginComponent {
 
-  protected readonly AlertType = AlertType;
   public showAlert: boolean = false;
-
   public form: FormGroup;
+  public errorMessage: string = '';
 
-  constructor(private formBuilder: FormBuilder) {
+  protected readonly AlertType = AlertType;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private subscriptionService: SubscriptionService,
+    private navigationService: NavigationService
+  ) {
+    if (this.authService.isLoggedIn()) {
+      this.navigationService.navigateToHome().then();
+    }
     this.form = this.formBuilder.group({
       email: ['', [
         Validators.required,
@@ -31,6 +44,16 @@ export class LoginComponent {
     event.preventDefault();
 
     this.showAlert = this.form.invalid;
+
+    if (!this.form.invalid) {
+      this.subscriptionService.add(
+        this.authService.login(this.form.value).subscribe((data: User) => {
+            this.navigationService.navigateToHome().then();
+          }
+        ));
+    } else {
+      this.errorMessage = 'Datos incorrectos';
+    }
   }
 
   public removeAlert(event: KeyboardEvent): void {

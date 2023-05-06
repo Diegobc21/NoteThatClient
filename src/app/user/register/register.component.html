@@ -1,7 +1,8 @@
-<div class="mt-8 flex flex-col">
+<div class="mt-6 flex flex-col">
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-  <img ngSrc="assets/NoteThatFull.png" alt="NoteThat" width="400" height="200">
-    <form [formGroup]="form"
+  <img ngSrc="assets/NoteThatFull.png" style="max-width: 180px"
+       alt="NoteThat" width="400" height="200">
+    <form [formGroup]="form" autocomplete="on"
           class="bg-purple-600 px-6 py-8 rounded shadow-xl text-black w-full mt-8"
           (ngSubmit)="register($event)">
 

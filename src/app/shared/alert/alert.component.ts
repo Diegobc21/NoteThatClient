@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import AlertType from "./alert-type";
+import {AlertType} from "./alert-type";
 
 @Component({
   selector: 'app-alert',

@@ -1,6 +1,8 @@
 import {Component, ElementRef, OnDestroy, Renderer2, ViewChild} from '@angular/core';
 import {ScreenSizeService} from "../../core/screen-size.service";
 import {SubscriptionService} from "../../core/subscription.service";
+import {AuthService} from "../../core/auth.service";
+import {NavigationService} from "../../core/navigation.service";
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +20,9 @@ export class NavbarComponent implements OnDestroy {
 
   constructor(private renderer: Renderer2,
               private screenSizeService: ScreenSizeService,
-              private subscriptionService: SubscriptionService) {
+              private subscriptionService: SubscriptionService,
+              private authService: AuthService,
+              private navigationService: NavigationService) {
     this._isOpenUserMenu = false;
     this._isOpenMenu = false;
     this.startSubscriptions();
@@ -31,6 +35,11 @@ export class NavbarComponent implements OnDestroy {
 
   get showMobileMenu(): boolean {
     return this._isOpenMenu;
+  }
+
+  public logout(): void {
+    this.authService.logout();
+    this.navigationService.navigateToLogin().then();
   }
 
   private enableClickListener(): void {

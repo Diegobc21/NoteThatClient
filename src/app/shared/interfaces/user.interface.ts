@@ -3,5 +3,6 @@ export interface User {
   email: string,
   password: string,
   admin?: boolean,
-  token?: string[]
+  token?: string[],
+  actualToken?: string
 }
