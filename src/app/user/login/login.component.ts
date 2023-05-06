@@ -49,10 +49,14 @@ export class LoginComponent {
       this.subscriptionService.add(
         this.authService.login(this.form.value).subscribe((data: User) => {
             this.navigationService.navigateToHome().then();
+          }, (error) => {
+            this.form.reset();
+            this.enableAlert();
           }
         ));
     } else {
-      this.errorMessage = 'Datos incorrectos';
+      this.form.reset();
+      this.enableAlert();
     }
   }
 
@@ -67,4 +71,8 @@ export class LoginComponent {
     this.showAlert = !isClosed;
   }
 
+  private enableAlert(): void {
+    this.errorMessage = 'Datos incorrectos';
+    this.showAlert = true;
+  }
 }

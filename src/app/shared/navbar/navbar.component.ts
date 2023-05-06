@@ -38,8 +38,13 @@ export class NavbarComponent implements OnDestroy {
   }
 
   public logout(): void {
-    this.authService.logout();
-    this.navigationService.navigateToLogin().then();
+    if (this.authService.currentUser) {
+      this.authService.logout(this.authService.currentUser)
+        .subscribe(value => {
+          console.log(value)
+          this.navigationService.navigateToLogin().then();
+        });
+    }
   }
 
   private enableClickListener(): void {

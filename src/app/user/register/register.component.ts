@@ -56,12 +56,12 @@ export class RegisterComponent {
       this.errorMessage = 'Las contraseñas no coinciden';
     } else {
       this.showAlert = this.form.invalid;
-      this.errorMessage = 'Revisa los campos';
       if (!this.form.invalid) {
         this.subscriptionService.add(
           this.authService.register(this.form.value).subscribe((user: User) => {
-              console.log(user);
               this.navigationService.navigateToLogin().then();
+            }, (error) => {
+              this.enableAlert();
             }
           ));
       }
@@ -77,5 +77,10 @@ export class RegisterComponent {
 
   public modalClosed(isClosed: boolean): void {
     this.showAlert = !isClosed;
+  }
+
+  private enableAlert(): void {
+    this.errorMessage = 'Revisa los campos';
+    this.showAlert = true;
   }
 }

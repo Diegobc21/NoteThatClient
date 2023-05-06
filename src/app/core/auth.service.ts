@@ -36,7 +36,6 @@ export class AuthService {
   public login(user: User): Observable<User> {
     user.password = this.encrypt(user.password);
     user.actualToken = this.getLoginToken() ?? '';
-    console.log(user)
     return this.http.post<User>(this.endpoint + '/login', user)
       .pipe(tap((response: User) => {
         if (response.actualToken) {
@@ -46,9 +45,12 @@ export class AuthService {
       }));
   }
 
-  public logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+  public logout(user: User): Observable<User> {
+    return this.http.post<User>(this.endpoint + '/logout', user)
+      .pipe(tap((response: User) => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }));
   }
 
   public isAdmin(): boolean {
