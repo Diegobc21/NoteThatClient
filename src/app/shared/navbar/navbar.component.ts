@@ -39,6 +39,10 @@ export class NavbarComponent implements OnDestroy {
     return this._isOpenMenu;
   }
 
+  public navigateToHome(): void {
+    this.navigationService.navigateToHome().then(() => this.toggleMenu());
+  }
+
   public logout(): void {
     if (this.authService.currentUser) {
       this.authService.logout(this.authService.currentUser)

@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {NavbarComponent} from "./navbar/navbar.component";
 import {FooterComponent} from "./footer/footer.component";
 import {AlertComponent} from './alert/alert.component';
@@ -16,12 +16,13 @@ import {PopupComponent} from './popup/popup.component';
     CardComponent,
     PopupComponent
   ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterLink,
-    RouterLinkActive
-  ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        RouterLink,
+        RouterLinkActive,
+        NgOptimizedImage
+    ],
   exports: [
     NavbarComponent,
     FooterComponent,

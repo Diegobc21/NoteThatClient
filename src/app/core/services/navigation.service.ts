@@ -23,6 +23,10 @@ export class NavigationService {
     return this.router.navigateByUrl('/user/register');
   }
 
+  public navigateToProfile(): Promise<any> {
+    return this.router.navigateByUrl('/user/profile');
+  }
+
   public navigateByUrl(path: string): Promise<any> {
     return this.router.navigateByUrl(path);
   }
