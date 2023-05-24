@@ -3,10 +3,10 @@
   <img ngSrc="assets/NoteThatFull.png" style="max-width: 180px"
        alt="NoteThat" width="400" height="200">
     <form [formGroup]="form" autocomplete="on"
-          class="bg-purple-600 px-6 py-8 rounded shadow-xl text-black w-full mt-8"
+          class="bg-sky-900 px-6 py-8 rounded shadow-xl text-black w-full mt-8"
           (ngSubmit)="register($event)">
 
-      <h1 class="mb-8 text-cyan-50 text-4xl text-center">Crea tu cuenta</h1>
+      <h1 class="mb-8 text-cyan-50 text-2xl text-center">Crea tu cuenta</h1>
 
       <input
         type="text"
@@ -48,9 +48,9 @@
 
     </form>
 
-    <div class="text-grey-dark mt-6">
+    <div class="text-gray-300 mt-6">
       Ya tienes cuenta?
-      <a class="text-cyan-800 hover:text-cyan-500" routerLink="/user/login">
+      <a class="text-cyan-500 hover:text-cyan-200" (click)="navigateToLogin()">
         Inicia sesión
       </a>
     </div>

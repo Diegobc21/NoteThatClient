@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Router} from "@angular/router";
-import {AuthService} from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +7,7 @@ import {AuthService} from "./auth.service";
 export class NavigationService {
 
   constructor(
-    private router: Router,
-    private authService: AuthService
+    private router: Router
   ) {
   }
 
@@ -25,7 +23,7 @@ export class NavigationService {
     return this.router.navigateByUrl('/user/register');
   }
 
-  public navigateTo(path: string): Promise<any> {
+  public navigateByUrl(path: string): Promise<any> {
     return this.router.navigateByUrl(path);
   }
 }

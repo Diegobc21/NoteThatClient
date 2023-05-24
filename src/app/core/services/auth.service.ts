@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {environment} from "../../environments/environment";
+import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable, tap} from "rxjs";
-import {User} from "../shared/interfaces/user.interface";
+import {User} from "../../interfaces/user.interface";
 import * as CryptoJS from 'crypto-js';
 
 @Injectable({
@@ -38,8 +38,9 @@ export class AuthService {
     user.actualToken = this.getLoginToken() ?? '';
     return this.http.post<User>(this.endpoint + '/login', user)
       .pipe(tap((response: User) => {
-        if (response.actualToken) {
-          localStorage.setItem('token', response.actualToken);
+        const actualToken: string | undefined = response.actualToken;
+        if (actualToken) {
+          localStorage.setItem('token', actualToken);
           localStorage.setItem('user', JSON.stringify(response));
         }
       }));
@@ -47,15 +48,14 @@ export class AuthService {
 
   public logout(user: User): Observable<User> {
     return this.http.post<User>(this.endpoint + '/logout', user)
-      .pipe(tap((response: User) => {
+      .pipe(tap(() => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
       }));
   }
 
   public isAdmin(): boolean {
-    const user: User | undefined = this.currentUser;
-    return !!user?.admin;
+    return !!this.currentUser?.admin;
   }
 
   private encrypt(input: string): string {

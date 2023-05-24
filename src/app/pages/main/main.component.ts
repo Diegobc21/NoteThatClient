@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from "../../core/auth.service";
+import {UserService} from "../../core/services/user.service";
 
 @Component({
   selector: 'app-main',
@@ -7,16 +7,12 @@ import {AuthService} from "../../core/auth.service";
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-  private _fullName: string = '';
+  public fullName: string = '';
 
-  get fullName(): string {
-    return this._fullName;
-  }
-
-  constructor(private authService: AuthService) {
+  constructor(private userService: UserService) {
   }
 
   public ngOnInit(): void {
-    this._fullName = this.authService.currentUser?.fullname ?? 'User';
+    this.fullName = this.userService.fullName;
   }
 }

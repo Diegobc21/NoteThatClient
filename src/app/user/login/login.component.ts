@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertType} from "../../shared/alert/alert-type";
-import {SubscriptionService} from "../../core/subscription.service";
-import {AuthService} from "../../core/auth.service";
-import {NavigationService} from "../../core/navigation.service";
-import {User} from "../../shared/interfaces/user.interface";
+import {SubscriptionService} from "../../core/services/subscription.service";
+import {AuthService} from "../../core/services/auth.service";
+import {NavigationService} from "../../core/services/navigation.service";
+import {User} from "../../interfaces/user.interface";
 
 @Component({
   selector: 'app-login',
@@ -69,6 +69,10 @@ export class LoginComponent {
 
   public modalClosed(isClosed: boolean): void {
     this.showAlert = !isClosed;
+  }
+
+  public navigateToRegister(): void {
+    this.navigationService.navigateToRegister().then();
   }
 
   private enableAlert(): void {

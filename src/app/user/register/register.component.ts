@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AuthService} from "../../core/auth.service";
-import {SubscriptionService} from "../../core/subscription.service";
-import {User} from "../../shared/interfaces/user.interface";
-import {NavigationService} from "../../core/navigation.service";
+import {AuthService} from "../../core/services/auth.service";
+import {SubscriptionService} from "../../core/services/subscription.service";
+import {NavigationService} from "../../core/services/navigation.service";
 import {AlertType} from "../../shared/alert/alert-type";
 
 @Component({
@@ -58,7 +57,7 @@ export class RegisterComponent {
       this.showAlert = this.form.invalid;
       if (!this.form.invalid) {
         this.subscriptionService.add(
-          this.authService.register(this.form.value).subscribe((user: User) => {
+          this.authService.register(this.form.value).subscribe(() => {
               this.navigationService.navigateToLogin().then();
             }, (error) => {
               this.enableAlert();
@@ -77,6 +76,10 @@ export class RegisterComponent {
 
   public modalClosed(isClosed: boolean): void {
     this.showAlert = !isClosed;
+  }
+
+  public navigateToLogin(): void {
+    this.navigationService.navigateToLogin().then();
   }
 
   private enableAlert(): void {

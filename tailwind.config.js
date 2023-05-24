@@ -4,7 +4,12 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        'body-lg': '1rem',
+        'body': '.875rem',
+      }
+    },
   },
-  plugins: [],
+  plugins: []
 }
