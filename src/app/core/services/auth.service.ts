@@ -12,12 +12,10 @@ export class AuthService {
 
   private endpoint: string = environment.apiUrl + `/user`;
 
-  get currentUser(): User | undefined {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
-  }
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient
+  ) {
   }
 
   public getLoginToken(): string | null {
@@ -25,7 +23,7 @@ export class AuthService {
   }
 
   public isLoggedIn(): boolean {
-    return this.getLoginToken() !== null && this.currentUser?.actualToken === this.getLoginToken();
+    return this.getLoginToken() !== '' && this.getLoginToken() !== null;
   }
 
   public register(user: User): Observable<User> {
@@ -35,27 +33,19 @@ export class AuthService {
 
   public login(user: User): Observable<User> {
     user.password = this.encrypt(user.password);
-    user.actualToken = this.getLoginToken() ?? '';
     return this.http.post<User>(this.endpoint + '/login', user)
-      .pipe(tap((response: User) => {
-        const actualToken: string | undefined = response.actualToken;
-        if (actualToken) {
-          localStorage.setItem('token', actualToken);
-          localStorage.setItem('user', JSON.stringify(response));
+      .pipe(tap((response: User): void => {
+        const sessionToken: string | undefined = response.actualToken;
+        if (sessionToken) {
+          localStorage.setItem('token', sessionToken);
+          localStorage.setItem('email', response.email);
         }
       }));
   }
 
-  public logout(user: User): Observable<User> {
-    return this.http.post<User>(this.endpoint + '/logout', user)
-      .pipe(tap(() => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-      }));
-  }
-
-  public isAdmin(): boolean {
-    return !!this.currentUser?.admin;
+  public logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
   }
 
   private encrypt(input: string): string {

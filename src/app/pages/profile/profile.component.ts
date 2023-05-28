@@ -1,14 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from "../../core/services/user.service";
+import {User} from "../../interfaces/user.interface";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   public fullName: string = '';
   public email: string = '';
+
+  private subs: Subscription[] = [];
 
   constructor(
     private userService: UserService
@@ -16,7 +20,15 @@ export class ProfileComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.fullName = this.userService.fullName;
-    this.email = this.userService.email;
+    this.subs.push(
+      this.userService.getUserByEmail().subscribe((user: User) => {
+        this.fullName = user.fullname;
+        this.email = user.email;
+      })
+    )
+  }
+
+  public ngOnDestroy(): void {
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 }

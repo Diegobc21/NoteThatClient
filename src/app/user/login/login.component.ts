@@ -4,7 +4,7 @@ import {AlertType} from "../../shared/alert/alert-type";
 import {SubscriptionService} from "../../core/services/subscription.service";
 import {AuthService} from "../../core/services/auth.service";
 import {NavigationService} from "../../core/services/navigation.service";
-import {User} from "../../interfaces/user.interface";
+import {UserService} from "../../core/services/user.service";
 
 @Component({
   selector: 'app-login',
@@ -22,6 +22,7 @@ export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private userService: UserService,
     private subscriptionService: SubscriptionService,
     private navigationService: NavigationService
   ) {
@@ -47,9 +48,9 @@ export class LoginComponent {
 
     if (!this.form.invalid) {
       this.subscriptionService.add(
-        this.authService.login(this.form.value).subscribe((data: User) => {
+        this.authService.login(this.form.value).subscribe((user) => {
             this.navigationService.navigateToHome().then();
-          }, (error) => {
+          }, () => {
             this.form.reset();
             this.enableAlert();
           }

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
 import {filter} from "rxjs";
 import {SubscriptionService} from "./core/services/subscription.service";
-import {AuthService} from "./core/services/auth.service";
+import {SpinnerService} from "./core/services/spinner.service";
 
 @Component({
   selector: 'app-root',
@@ -18,8 +18,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private subscriptionService: SubscriptionService
+    private subscriptionService: SubscriptionService,
+    private spinnerService: SpinnerService
   ) {
+  }
+
+  get showSpinner(): boolean {
+    return this.spinnerService.showSpinner;
   }
 
   public ngOnInit(): void {

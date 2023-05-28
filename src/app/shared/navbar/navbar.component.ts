@@ -3,6 +3,7 @@ import {ScreenSizeService} from "../../core/services/screen-size.service";
 import {SubscriptionService} from "../../core/services/subscription.service";
 import {AuthService} from "../../core/services/auth.service";
 import {NavigationService} from "../../core/services/navigation.service";
+import {UserService} from "../../core/services/user.service";
 
 @Component({
   selector: 'app-navbar',
@@ -23,6 +24,7 @@ export class NavbarComponent implements OnDestroy {
     private screenSizeService: ScreenSizeService,
     private subscriptionService: SubscriptionService,
     private authService: AuthService,
+    private userService: UserService,
     private navigationService: NavigationService
   ) {
     this._isOpenUserMenu = false;
@@ -44,13 +46,8 @@ export class NavbarComponent implements OnDestroy {
   }
 
   public logout(): void {
-    if (this.authService.currentUser) {
-      this.authService.logout(this.authService.currentUser)
-        .subscribe(value => {
-          console.log(value)
-          this.navigationService.navigateToLogin().then();
-        });
-    }
+    this.authService.logout();
+    this.navigationService.navigateToLogin().then();
   }
 
   private enableClickListener(): void {

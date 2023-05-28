@@ -7,6 +7,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {CardComponent} from './card/card.component';
 import {PopupComponent} from './popup/popup.component';
+import {SpinnerComponent} from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -14,21 +15,23 @@ import {PopupComponent} from './popup/popup.component';
     FooterComponent,
     AlertComponent,
     CardComponent,
-    PopupComponent
+    PopupComponent,
+    SpinnerComponent
   ],
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        RouterLink,
-        RouterLinkActive,
-        NgOptimizedImage
-    ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    RouterLinkActive,
+    NgOptimizedImage
+  ],
   exports: [
     NavbarComponent,
     FooterComponent,
     AlertComponent,
     CardComponent,
-    PopupComponent
+    PopupComponent,
+    SpinnerComponent
   ],
 })
 export class SharedModule {

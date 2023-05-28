@@ -5,10 +5,11 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {SharedModule} from "./shared/shared.module";
 import {PagesModule} from "./pages/pages.module";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {UserModule} from "./user/user.module";
 import {RouterModule} from "@angular/router";
+import {SpinnerInterceptor} from "./interceptor/spinner.interceptor";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,11 @@ import {RouterModule} from "@angular/router";
     PagesModule,
     UserModule,
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: SpinnerInterceptor,
+    multi: true
+  }],
   exports: [
     AppComponent
   ],
