@@ -9,6 +9,8 @@ export class PopupComponent implements OnInit {
 
   @Input('message') input: string = '';
 
+  public style: {} = {};
+
   private _message: string;
 
   get message(): string {
@@ -20,9 +22,14 @@ export class PopupComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.style = {};
     if (this.input !== '') {
       this._message = this.input;
     }
+  }
+
+  public close(): void {
+    this.style = {display: 'none'};
   }
 
 }

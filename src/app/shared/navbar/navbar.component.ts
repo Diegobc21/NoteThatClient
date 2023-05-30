@@ -46,8 +46,10 @@ export class NavbarComponent implements OnDestroy {
   }
 
   public logout(): void {
-    this.authService.logout();
-    this.navigationService.navigateToLogin().then();
+    this.authService.logout().subscribe((): void => {
+      this.navigationService.navigateToLogin().then();
+      // Toggle popup
+    });
   }
 
   private enableClickListener(): void {

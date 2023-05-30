@@ -1,4 +1,5 @@
 <app-spinner *ngIf="showSpinner"></app-spinner>
+<app-popup *ngIf="sessionExpired" [message]="sessionExpiredMessage"></app-popup>
 <app-navbar *ngIf="show"></app-navbar>
 <div class="content">
   <router-outlet></router-outlet>
