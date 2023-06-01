@@ -56,13 +56,12 @@ export class RegisterComponent {
     } else {
       this.showAlert = this.form.invalid;
       if (!this.form.invalid) {
-        this.subscriptionService.add(
-          this.authService.register(this.form.value).subscribe(() => {
-              this.navigationService.navigateToLogin().then();
-            }, (error) => {
-              this.enableAlert();
-            }
-          ));
+        this.subscriptionService.push(
+          this.authService.register(this.form.value).subscribe({
+            next: () => this.navigationService.navigateToLogin().then(),
+            error: () => this.enableAlert()
+          })
+        )
       }
     }
   }

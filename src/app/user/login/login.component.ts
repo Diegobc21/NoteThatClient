@@ -1,21 +1,23 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertType} from "../../shared/alert/alert-type";
 import {SubscriptionService} from "../../core/services/subscription.service";
 import {AuthService} from "../../core/services/auth.service";
 import {NavigationService} from "../../core/services/navigation.service";
 import {UserService} from "../../core/services/user.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
 
-  public showAlert: boolean = false;
   public form: FormGroup;
+  public showAlert: boolean = false;
   public errorMessage: string = '';
+  private _subscriptions: Subscription[] = [];
 
   protected readonly AlertType = AlertType;
 
@@ -47,14 +49,14 @@ export class LoginComponent {
     this.showAlert = this.form.invalid;
 
     if (!this.form.invalid) {
-      this.subscriptionService.add(
-        this.authService.login(this.form.value).subscribe((user) => {
-            this.navigationService.navigateToHome().then();
-          }, () => {
+      this._subscriptions.push(
+        this.authService.login(this.form.value).subscribe({
+          next: () => this.navigationService.navigateToHome().then(),
+          error: (): void => {
             this.form.reset();
             this.enableAlert();
           }
-        ));
+        }))
     } else {
       this.form.reset();
       this.enableAlert();
@@ -74,6 +76,10 @@ export class LoginComponent {
 
   public navigateToRegister(): void {
     this.navigationService.navigateToRegister().then();
+  }
+
+  public ngOnDestroy(): void {
+    this._subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 
   private enableAlert(): void {

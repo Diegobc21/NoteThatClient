@@ -4,6 +4,7 @@ import {SubscriptionService} from "../../core/services/subscription.service";
 import {AuthService} from "../../core/services/auth.service";
 import {NavigationService} from "../../core/services/navigation.service";
 import {UserService} from "../../core/services/user.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-navbar',
@@ -15,8 +16,9 @@ export class NavbarComponent implements OnDestroy {
   @ViewChild('userButton') private userButton!: ElementRef;
   @ViewChild('menu') private menu: ElementRef | undefined;
 
-  private _isOpenUserMenu: boolean;
-  private _isOpenMenu: boolean;
+  private _subscriptions: Subscription[] = [];
+  private _isOpenUserMenu: boolean = false;
+  private _isOpenMenu: boolean = false;
   private _mobileScreen!: boolean;
 
   constructor(
@@ -27,8 +29,6 @@ export class NavbarComponent implements OnDestroy {
     private userService: UserService,
     private navigationService: NavigationService
   ) {
-    this._isOpenUserMenu = false;
-    this._isOpenMenu = false;
     this.startSubscriptions();
     this.enableClickListener();
   }
@@ -46,10 +46,12 @@ export class NavbarComponent implements OnDestroy {
   }
 
   public logout(): void {
-    this.authService.logout().subscribe((): void => {
-      this.navigationService.navigateToLogin().then();
-      // Toggle popup
-    });
+    this._subscriptions.push(this.authService.logout().subscribe({
+      next: (): void => {
+        this.navigationService.navigateToLogin().then();
+        // Toggle popup
+      }
+    }));
   }
 
   private enableClickListener(): void {
@@ -72,14 +74,17 @@ export class NavbarComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.subscriptionService.unsubscribeAll()
+    this.unsubscribeAll();
   }
 
-  private startSubscriptions() {
-    this.subscriptionService.add(
-      this.screenSizeService.screenWidth$.asObservable().subscribe(value => {
-        this._mobileScreen = value < 640;
+  private unsubscribeAll(): void {
+    this._subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+  }
+
+  private startSubscriptions(): void {
+    this._subscriptions.push(this.screenSizeService.screenWidth$.asObservable().subscribe({
+        next: (value) => this._mobileScreen = value < 640
       })
-    );
+    )
   }
 }

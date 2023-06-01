@@ -12,11 +12,11 @@ export class SubscriptionService {
     this._subscriptions = [];
   }
 
-  public add(subscription: Subscription): void {
+  public push(subscription: Subscription): void {
     this._subscriptions.push(subscription);
   }
 
   public unsubscribeAll(): void {
-    this._subscriptions.forEach(subscription => subscription.unsubscribe());
+    this._subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 }

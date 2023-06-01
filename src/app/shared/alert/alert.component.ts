@@ -20,7 +20,7 @@ export class AlertComponent {
   }
 
   public getClasses(): string {
-    let classes = 'border px-4 py-3 rounded relative';
+    let classes: string = 'border px-4 py-3 rounded relative';
     if (this.type === AlertType.SUCCESS) {
       return classes + ' bg-green-100 border-green-400 text-green-700';
     }

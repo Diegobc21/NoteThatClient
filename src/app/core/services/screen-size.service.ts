@@ -20,9 +20,10 @@ export class ScreenSizeService implements OnDestroy {
       .pipe(
         debounceTime(1000),
         takeUntil(this._unsubscriber$)
-      ).subscribe((event: any) => {
-      this._setScreenWidth(event.target.innerWidth);
-    });
+      )
+      .subscribe({
+        next: (event: any) => this._setScreenWidth(event.target.innerWidth)
+      });
   }
 
   public ngOnDestroy() {

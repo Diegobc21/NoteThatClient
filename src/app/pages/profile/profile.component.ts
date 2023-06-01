@@ -21,16 +21,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.subs.push(
-      this.userService.getUserByEmail().subscribe((user: User) => {
+      this.userService.getUserByEmail().subscribe({
+        next: (user: User): void => {
           this.fullName = user.fullname;
           this.email = user.email;
-        }, (err): void => {
-          console.log(err)
-        }
-      ))
+        },
+        error: (err) => console.log(err)
+      }))
   }
 
   public ngOnDestroy(): void {
-    this.subs.forEach((sub: Subscription): void => sub.unsubscribe());
+    this.subs.forEach((subscription: Subscription): void => subscription.unsubscribe());
   }
 }

@@ -43,9 +43,9 @@ export class UserService {
         catchError((err: any) => {
           if (err.statusText === 'Unauthorized') {
             this.authService.sessionExpired = true;
-            this.authService.logout().subscribe((): void => {
-              this.navigatorService.navigateToLogin().then();
-            });
+            this.authService.logout().subscribe({
+              next: () => this.navigatorService.navigateToLogin().then()
+            })
           }
           return EMPTY;
         })

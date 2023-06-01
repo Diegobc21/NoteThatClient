@@ -39,10 +39,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((): void => {
-        this.currentUrlPath = this.router.routerState.snapshot.url;
-        this.show = this.currentUrlPath !== '/user/register' && this.currentUrlPath !== '/user/login'
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe({
+        next: (): void => {
+          this.currentUrlPath = this.router.routerState.snapshot.url;
+          this.show = this.currentUrlPath !== '/user/register' && this.currentUrlPath !== '/user/login';
+        }
       });
   }
 
