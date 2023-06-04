@@ -10,10 +10,12 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {UserModule} from "./user/user.module";
 import {RouterModule} from "@angular/router";
 import {SpinnerInterceptor} from "./interceptor/spinner.interceptor";
+import { NoteComponent } from './options/note/note.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NoteComponent
   ],
   imports: [
     HttpClientModule,

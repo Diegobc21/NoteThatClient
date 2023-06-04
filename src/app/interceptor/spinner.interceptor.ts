@@ -17,9 +17,11 @@ export class SpinnerInterceptor implements HttpInterceptor {
     }
     this._activeRequest++;
 
-    return next.handle(request).pipe(finalize(() => this._stopLoader()));
+    return next.handle(request)
+      .pipe(
+        finalize(() => this._stopLoader())
+      );
   }
-
 
   private _stopLoader() {
     this._activeRequest--;

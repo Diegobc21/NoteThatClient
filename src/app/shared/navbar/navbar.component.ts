@@ -1,6 +1,5 @@
 import {Component, ElementRef, OnDestroy, Renderer2, ViewChild} from '@angular/core';
 import {ScreenSizeService} from "../../core/services/screen-size.service";
-import {SubscriptionService} from "../../core/services/subscription.service";
 import {AuthService} from "../../core/services/auth.service";
 import {NavigationService} from "../../core/services/navigation.service";
 import {UserService} from "../../core/services/user.service";
@@ -24,7 +23,6 @@ export class NavbarComponent implements OnDestroy {
   constructor(
     private renderer: Renderer2,
     private screenSizeService: ScreenSizeService,
-    private subscriptionService: SubscriptionService,
     private authService: AuthService,
     private userService: UserService,
     private navigationService: NavigationService
@@ -46,12 +44,13 @@ export class NavbarComponent implements OnDestroy {
   }
 
   public logout(): void {
-    this._subscriptions.push(this.authService.logout().subscribe({
-      next: (): void => {
-        this.navigationService.navigateToLogin().then();
-        // Toggle popup
-      }
-    }));
+    this._subscriptions.push(
+      this.authService.logout().subscribe({
+        next: (): void => {
+          this.navigationService.navigateToLogin().then();
+        }
+      })
+    );
   }
 
   private enableClickListener(): void {
@@ -77,14 +76,14 @@ export class NavbarComponent implements OnDestroy {
     this.unsubscribeAll();
   }
 
-  private unsubscribeAll(): void {
-    this._subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
-  }
-
   private startSubscriptions(): void {
     this._subscriptions.push(this.screenSizeService.screenWidth$.asObservable().subscribe({
         next: (value) => this._mobileScreen = value < 640
       })
     )
+  }
+
+  private unsubscribeAll(): void {
+    this._subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
 }

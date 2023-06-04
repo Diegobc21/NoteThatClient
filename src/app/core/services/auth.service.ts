@@ -31,23 +31,25 @@ export class AuthService {
   public login(user: User): Observable<any> {
     user.password = this.encrypt(user.password);
     return this.http.post<User>(this.endpoint + '/login', user)
-      .pipe(tap((response: any): void => {
-        const sessionToken: string | undefined = response.token;
-        if (sessionToken) {
+      .pipe(
+        tap((response: any): void => {
+          const sessionToken: string | undefined = response.token;
           this.sessionExpired = false;
-          localStorage.setItem('token', sessionToken);
-          localStorage.setItem('email', response.email);
-        }
-      }));
+          localStorage.setItem('token', sessionToken ?? '');
+          localStorage.setItem('email', response.email ?? '');
+        })
+      );
   }
 
   public logout(): Observable<void> {
     const email: string = localStorage.getItem('email') ?? '';
-    return this.http.post<void>(this.endpoint + '/logout', {email: email})
-      .pipe(tap((): void => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('email');
-      }));
+    return this.http.post<void>(this.endpoint + '/logout', {email})
+      .pipe(
+        tap((): void => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('email');
+        })
+      );
   }
 
   private getLoginToken(): string | null {

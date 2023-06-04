@@ -1,7 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
 import {filter} from "rxjs";
-import {SubscriptionService} from "./core/services/subscription.service";
 import {SpinnerService} from "./core/services/spinner.service";
 import {AuthService} from "./core/services/auth.service";
 
@@ -11,15 +10,14 @@ import {AuthService} from "./core/services/auth.service";
   styleUrls: ['./app.component.scss'],
 })
 
-export class AppComponent implements OnInit, OnDestroy {
-  public title: string = 'Proyecto';
+export class AppComponent implements OnInit {
+  public title: string = 'NoteThat';
   public show: boolean = false;
 
   private currentUrlPath: string = '';
 
   constructor(
     private router: Router,
-    private subscriptionService: SubscriptionService,
     private spinnerService: SpinnerService,
     private authService: AuthService
   ) {
@@ -46,10 +44,6 @@ export class AppComponent implements OnInit, OnDestroy {
           this.show = this.currentUrlPath !== '/user/register' && this.currentUrlPath !== '/user/login';
         }
       });
-  }
-
-  public ngOnDestroy(): void {
-    this.subscriptionService.unsubscribeAll();
   }
 
 }

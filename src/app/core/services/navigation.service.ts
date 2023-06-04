@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router} from "@angular/router";
+import {OptionType} from "../../options/optionType.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -12,19 +13,23 @@ export class NavigationService {
   }
 
   public navigateToHome(): Promise<any> {
-    return this.router.navigateByUrl('/home');
+    return this.navigateByUrl('/home');
   }
 
   public navigateToLogin(): Promise<any> {
-    return this.router.navigateByUrl('/user/login');
+    return this.navigateByUrl('/user/login');
   }
 
   public navigateToRegister(): Promise<any> {
-    return this.router.navigateByUrl('/user/register');
+    return this.navigateByUrl('/user/register');
   }
 
   public navigateToProfile(): Promise<any> {
-    return this.router.navigateByUrl('/user/profile');
+    return this.navigateByUrl('/user/profile');
+  }
+
+  public navigateToOption(option: OptionType): Promise<any> {
+    return this.navigateByUrl(`/option/${option.toString()}`);
   }
 
   public navigateByUrl(path: string): Promise<any> {

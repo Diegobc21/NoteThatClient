@@ -1,7 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AlertType} from "../../shared/alert/alert-type";
-import {SubscriptionService} from "../../core/services/subscription.service";
 import {AuthService} from "../../core/services/auth.service";
 import {NavigationService} from "../../core/services/navigation.service";
 import {UserService} from "../../core/services/user.service";
@@ -25,7 +24,6 @@ export class LoginComponent implements OnDestroy {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private userService: UserService,
-    private subscriptionService: SubscriptionService,
     private navigationService: NavigationService
   ) {
     if (this.authService.isLoggedIn()) {

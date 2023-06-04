@@ -5,12 +5,23 @@ import {RegisterComponent} from "./user/register/register.component";
 import {LoginComponent} from "./user/login/login.component";
 import {AuthGuard} from "./guard/auth.guard";
 import {ProfileComponent} from "./pages/profile/profile.component";
+import {NoteComponent} from "./options/note/note.component";
 
 const routes: Routes = [
   {
     path: 'home',
     canActivate: [AuthGuard],
     component: MainComponent
+  },
+  {
+    path: 'option',
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'note',
+        component: NoteComponent
+      }
+    ]
   },
   {
     path: 'user',

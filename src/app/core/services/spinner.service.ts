@@ -7,15 +7,12 @@ export class SpinnerService {
 
   public showSpinner: boolean = false;
 
-  constructor() {
-    // empty
+
+  public hide(): void {
+    this.showSpinner = false
   }
 
-  public hide() {
-    this.showSpinner = false;
-  }
-
-  public show() {
+  public show(): void {
     this.showSpinner = true;
   }
 }
