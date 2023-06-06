@@ -4,6 +4,7 @@ import {AuthService} from "../../core/services/auth.service";
 import {NavigationService} from "../../core/services/navigation.service";
 import {UserService} from "../../core/services/user.service";
 import {Subscription} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-navbar',
@@ -15,6 +16,11 @@ export class NavbarComponent implements OnDestroy {
   @ViewChild('userButton') private userButton!: ElementRef;
   @ViewChild('menu') private menu: ElementRef | undefined;
 
+  public activeRouteClasses: string = 'pointer bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium';
+  public inactiveRouteClasses: string = 'pointer text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium';
+  public activeRouteClassesSm: string = 'bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium';
+  public inactiveRouteClassesSm: string = 'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium';
+
   private _subscriptions: Subscription[] = [];
   private _isOpenUserMenu: boolean = false;
   private _isOpenMenu: boolean = false;
@@ -22,6 +28,7 @@ export class NavbarComponent implements OnDestroy {
 
   constructor(
     private renderer: Renderer2,
+    private router: Router,
     private screenSizeService: ScreenSizeService,
     private authService: AuthService,
     private userService: UserService,
@@ -39,8 +46,15 @@ export class NavbarComponent implements OnDestroy {
     return this._isOpenMenu;
   }
 
-  public navigateToHome(): void {
-    this.navigationService.navigateToHome().then(() => this.toggleMenu());
+  public buttonClasses(route: string): string {
+    if (this._mobileScreen) {
+      return this.isActiveRoute(route) ? this.activeRouteClassesSm : this.inactiveRouteClassesSm;
+    }
+    return this.isActiveRoute(route) ? this.activeRouteClasses : this.inactiveRouteClasses;
+  }
+
+  public navigateTo(route: string): void {
+    this.navigationService.navigateByUrl(route).then(() => this.toggleMenu());
   }
 
   public logout(): void {
@@ -51,6 +65,12 @@ export class NavbarComponent implements OnDestroy {
         }
       })
     );
+  }
+
+  public toggleMenu(): void {
+    if (this._mobileScreen) {
+      this._isOpenMenu = !this._isOpenMenu;
+    }
   }
 
   private enableClickListener(): void {
@@ -64,12 +84,12 @@ export class NavbarComponent implements OnDestroy {
     });
   }
 
-  private toggleUserMenu(): void {
-    this._isOpenUserMenu = !this._isOpenUserMenu;
+  public isActiveRoute(route: string): boolean {
+    return this.router.url === route;
   }
 
-  private toggleMenu(): void {
-    this._isOpenMenu = !this._isOpenMenu;
+  private toggleUserMenu(): void {
+    this._isOpenUserMenu = !this._isOpenUserMenu;
   }
 
   public ngOnDestroy(): void {

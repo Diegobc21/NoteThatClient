@@ -7,9 +7,8 @@ export class SpinnerService {
 
   public showSpinner: boolean = false;
 
-
   public hide(): void {
-    this.showSpinner = false
+    this.showSpinner = false;
   }
 
   public show(): void {

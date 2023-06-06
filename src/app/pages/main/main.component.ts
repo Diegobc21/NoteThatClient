@@ -28,7 +28,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.subs.push(
-      this.userService.getUserByEmail().subscribe({
+      this.userService.getUser().subscribe({
         next: (user: User) => this.fullName = user.fullname
       })
     )
