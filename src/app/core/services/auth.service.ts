@@ -11,8 +11,7 @@ import {NavigationService} from "./navigation.service";
 })
 export class AuthService {
 
-  public sessionExpired: boolean = false;
-
+  private _sessionExpired: boolean = false;
   private endpoint: string = environment.apiUrl + `/user`;
 
   constructor(
@@ -21,17 +20,30 @@ export class AuthService {
   ) {
   }
 
+  get sessionExpired(): boolean {
+    return this._sessionExpired;
+  }
+
+  set sessionExpired(value: boolean) {
+    this._sessionExpired = value;
+  }
+
   get token(): string {
     return localStorage.getItem('token') ?? '';
   }
 
   get email(): string {
-    return localStorage.getItem('email') ?? '';
+    const email = localStorage.getItem('email')
+    if (email !== '' && email !== null) {
+      return email;
+    }
+    this.logout();
+    return '';
   }
 
   public isLoggedIn(): boolean {
-    return this.getLoginToken() !== ''
-      && this.getLoginToken() !== null;
+    return this.token !== ''
+      && this.token !== null;
   }
 
   public register(user: User): Observable<User> {
@@ -44,19 +56,15 @@ export class AuthService {
     return this.http.post<User>(this.endpoint + '/login', user)
       .pipe(
         tap((response: any): void => {
-          this.sessionExpired = false;
           this.saveLocalStorage(response.token, response.email);
         })
       );
   }
 
-  public logout(): Observable<void> {
-    return this.http.post<void>(this.endpoint + '/logout', {email: this.email})
-      .pipe(
-        tap((): void => {
-          this.emptyLocalStorage();
-        })
-      );
+  public logout(): void {
+    this.emptyLocalStorage();
+    this.navigatorService.navigateToLogin()
+      .finally(() => console.log('Logged out'))
   }
 
   public getHeaders(): HttpHeaders {
@@ -81,22 +89,19 @@ export class AuthService {
     return data.pipe(
       map((result: Object): any => {
         if (result) {
-          this.sessionExpired = false;
+          // this.sessionExpired = false;
           return result;
         } else {
-          console.log('Error retrieving user data.')
+          console.log('Error retrieving user data.');
+          this.logout();
           return EMPTY;
         }
       }),
       catchError((err: any) => {
-        if (err.statusText === 'Unauthorized') {
-          this.sessionExpired = true;
-          this.logout().subscribe({
-            next: () => this.navigatorService.navigateToLogin().then()
-          })
-        } else {
-          this.navigatorService.navigateToLogin().then();
-        }
+        // if (err.statusText === 'Unauthorized') {
+        //   this.sessionExpired = true;
+        // }
+        this.logout();
         return EMPTY;
       })
     );

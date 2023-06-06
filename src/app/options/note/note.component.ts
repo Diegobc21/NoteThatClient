@@ -54,7 +54,6 @@ export class NoteComponent implements OnDestroy {
       user: this.authService.email
     }).pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (note: Note) => console.log(note),
         complete: (): void => {
           this.toggleIsAddingNote();
           this.noteService.getNotes()
@@ -64,6 +63,7 @@ export class NoteComponent implements OnDestroy {
                 this._noteList = this.sortNotesByDate(notes) ?? [];
               }
             });
+          this.resetForm();
         }
       })
   }
@@ -90,6 +90,13 @@ export class NoteComponent implements OnDestroy {
     return new Date(date).toLocaleString();
   }
 
+  private resetForm(): void {
+    this.newNote = {
+      title: '',
+      content: ''
+    }
+  }
+
   private sortNotesByDate(list: Note[]): Note[] {
     return list.sort((a, b) => {
       const dateA = new Date(a.creationDate);
@@ -102,7 +109,7 @@ export class NoteComponent implements OnDestroy {
     this.subscriptions.push(
       this.noteService.getNotes().pipe(takeUntil(this.unsubscribe$))
         .subscribe({
-          next: (notes: Note[]) => {
+          next: (notes: Note[]): void => {
             this._noteList = this.sortNotesByDate(notes) ?? [];
           }
         })

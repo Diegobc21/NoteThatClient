@@ -54,17 +54,12 @@ export class NavbarComponent implements OnDestroy {
   }
 
   public navigateTo(route: string): void {
-    this.navigationService.navigateByUrl(route).then(() => this.toggleMenu());
+    this.navigationService.navigateByUrl(route)
+      .finally(() => this.toggleMenu());
   }
 
   public logout(): void {
-    this._subscriptions.push(
-      this.authService.logout().subscribe({
-        next: (): void => {
-          this.navigationService.navigateToLogin().then();
-        }
-      })
-    );
+    this.authService.logout();
   }
 
   public toggleMenu(): void {
