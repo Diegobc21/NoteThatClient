@@ -4,6 +4,7 @@ import {AuthService} from "../../core/services/auth.service";
 import {NavigationService} from "../../core/services/navigation.service";
 import {AlertType} from "../../shared/alert/alert-type";
 import {Subscription} from "rxjs";
+import {User} from "../../interfaces/user.interface";
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,14 @@ import {Subscription} from "rxjs";
 })
 export class RegisterComponent implements OnDestroy {
 
-  public form: FormGroup;
+  public form: User = {
+    fullname: '',
+    email: '',
+    password: ''
+  };
+
+  public repeatPassword = '';
+
   public showAlert: boolean = false;
   public errorMessage: string = '';
 
@@ -28,43 +36,32 @@ export class RegisterComponent implements OnDestroy {
     if (this.authService.isLoggedIn()) {
       this.navigationService.navigateToHome().then();
     }
-    this.form = this.formBuilder.group({
-      fullname: ['', [
-        Validators.required
-      ]],
-      email: ['', [
-        Validators.required,
-        Validators.email
-      ]],
-      password: ['', [
-        Validators.required,
-        // Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/),
-        Validators.minLength(6)
-      ]],
-      repeatPassword: ['', [
-        Validators.required,
-        Validators.minLength(6)
-      ]]
-    })
   }
 
   public register(event: SubmitEvent | MouseEvent): void {
     event.preventDefault();
 
-    if (this.form.value.password !== this.form.value.repeatPassword) {
+    if (this.form.password !== this.repeatPassword) {
       this.showAlert = true;
       this.errorMessage = 'Las contraseñas no coinciden';
     } else {
-      this.showAlert = this.form.invalid;
-      if (!this.form.invalid) {
+      this.showAlert = this.formInvalid();
+      if (!this.formInvalid()) {
         this.subscriptions.push(
-          this.authService.register(this.form.value).subscribe({
+          this.authService.register(
+            this.form
+          ).subscribe({
             next: () => this.navigationService.navigateToLogin().then(),
             error: () => this.enableAlert()
           })
         )
       }
     }
+  }
+
+  private formInvalid(): boolean {
+    return this.form.fullname === ''
+      || this.form.email === '' || this.form.password.length < 5;
   }
 
   public removeAlert(event: KeyboardEvent): void {

@@ -1,7 +1,9 @@
 <app-spinner *ngIf="showSpinner"></app-spinner>
 <app-popup *ngIf="sessionExpired" [message]="sessionExpiredMessage"></app-popup>
 <app-navbar *ngIf="show"></app-navbar>
-<div class="content">
-  <router-outlet></router-outlet>
+<div class="text-white max-w-screen-2xl mx-auto mt-6">
+  <div class="mx-3">
+    <router-outlet></router-outlet>
+  </div>
 </div>
 <!--<app-footer *ngIf="show"></app-footer>-->

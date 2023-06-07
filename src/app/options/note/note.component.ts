@@ -28,9 +28,10 @@ export class NoteComponent implements OnDestroy {
     content: ''
   };
 
-  private unsubscribe$ = new Subject<void>();
+  private unsubscribe$: Subject<void> = new Subject<void>();
   private _noteList: Note[] = [];
   private subscriptions: Subscription[] = [];
+  private _showAlert: boolean = true;
 
   protected readonly AlertType = AlertType;
 
@@ -40,40 +41,69 @@ export class NoteComponent implements OnDestroy {
     private noteService: NoteService
   ) {
     this.startSubscriptions();
+    this.updateAlertVisibility();
   }
 
   get noteList(): Note[] {
     return this._noteList;
   }
 
+  get showAlert() {
+    return this._showAlert;
+  }
+
+  set showAlert(value: boolean) {
+    this._showAlert = value;
+  }
+
+  get formIsEmpty(): boolean {
+    if (this.newNote.content === '') {
+      return this.newNote.title === '';
+    }
+    return this.newNote.title === '';
+  }
+
   public submitNote(): void {
-    this.noteService.addNote({
-      title: this.newNote.title,
-      content: this.newNote.content,
-      creationDate: new Date(),
-      user: this.authService.email
-    }).pipe(takeUntil(this.unsubscribe$))
-      .subscribe({
-        complete: (): void => {
-          this.toggleIsAddingNote();
-          this.noteService.getNotes()
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe({
-              next: (notes: Note[]) => {
-                this._noteList = this.sortNotesByDate(notes) ?? [];
-              }
-            });
-          this.resetForm();
-        }
-      })
+    if (!this.formIsEmpty) {
+      this.noteService.addNote({
+        title: this.newNote.title,
+        content: this.newNote.content,
+        creationDate: new Date(),
+        user: this.authService.email
+      }).pipe(takeUntil(this.unsubscribe$))
+        .subscribe({
+          complete: (): void => {
+            this.toggleIsAddingNote();
+            this.noteService.getNotes()
+              .pipe(takeUntil(this.unsubscribe$))
+              .subscribe({
+                next: (notes: Note[]) => {
+                  this._noteList = this.sortNotesByDate(notes) ?? [];
+                  this.updateAlertVisibility();
+                }
+              });
+            this.resetForm();
+          }
+        })
+    }
+  }
+
+  public modalClosed(): void {
+    this.showAlert = false;
   }
 
   public deleteNote(note: Note): void {
     this.noteService.deleteOne(note).pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (deletedNoteId: string) =>
-          this._noteList = this._noteList.filter(n => n._id !== deletedNoteId)
+        next: (deletedNoteId: string) => {
+          this._noteList = this._noteList.filter((n: Note) => n._id !== deletedNoteId)
+          this.updateAlertVisibility();
+        }
       });
+  }
+
+  private updateAlertVisibility(): void {
+    this.showAlert = this._noteList.length === 0;
   }
 
   public toggleIsAddingNote(): void {
@@ -86,7 +116,7 @@ export class NoteComponent implements OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  public getNoteDate(date: any): string {
+  public getNoteDate(date: Date): string {
     return new Date(date).toLocaleString();
   }
 
@@ -98,9 +128,9 @@ export class NoteComponent implements OnDestroy {
   }
 
   private sortNotesByDate(list: Note[]): Note[] {
-    return list.sort((a, b) => {
-      const dateA = new Date(a.creationDate);
-      const dateB = new Date(b.creationDate);
+    return list.sort((a: Note, b: Note) => {
+      const dateA: Date = new Date(a.creationDate);
+      const dateB: Date = new Date(b.creationDate);
       return dateB.getTime() - dateA.getTime();
     });
   }
@@ -111,6 +141,7 @@ export class NoteComponent implements OnDestroy {
         .subscribe({
           next: (notes: Note[]): void => {
             this._noteList = this.sortNotesByDate(notes) ?? [];
+            this.updateAlertVisibility();
           }
         })
     )

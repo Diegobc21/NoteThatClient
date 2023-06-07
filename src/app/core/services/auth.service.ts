@@ -71,10 +71,6 @@ export class AuthService {
     return new HttpHeaders().set('Authorization', `${this.token}`);
   }
 
-  private getLoginToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
   private saveLocalStorage(token: string, email: string): void {
     localStorage.setItem('token', token ?? '');
     localStorage.setItem('email', email ?? '');

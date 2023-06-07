@@ -1,10 +1,11 @@
 import {Component, OnDestroy} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 import {AlertType} from "../../shared/alert/alert-type";
 import {AuthService} from "../../core/services/auth.service";
 import {NavigationService} from "../../core/services/navigation.service";
 import {UserService} from "../../core/services/user.service";
 import {Subscription} from "rxjs";
+import {User} from "../../interfaces/user.interface";
 
 @Component({
   selector: 'app-login',
@@ -13,9 +14,15 @@ import {Subscription} from "rxjs";
 })
 export class LoginComponent implements OnDestroy {
 
-  public form: FormGroup;
+  public form: User = {
+    fullname: '',
+    email: '',
+    password: ''
+  };
+
   public showAlert: boolean = false;
   public errorMessage: string = '';
+
   private _subscriptions: Subscription[] = [];
 
   protected readonly AlertType = AlertType;
@@ -29,36 +36,43 @@ export class LoginComponent implements OnDestroy {
     if (this.authService.isLoggedIn()) {
       this.navigationService.navigateToHome().then();
     }
-    this.form = this.formBuilder.group({
-      email: ['', [
-        Validators.required,
-        Validators.email,
-      ]],
-      password: ['', [
-        Validators.required,
-        Validators.minLength(6)
-      ]]
-    })
+  }
+
+  private formInvalid(): boolean {
+    return this.form.email === '' || this.form.password.length < 5;
   }
 
   public login(event: SubmitEvent | MouseEvent): void {
     event.preventDefault();
 
-    this.showAlert = this.form.invalid;
+    this.showAlert = this.formInvalid();
 
-    if (!this.form.invalid) {
+    if (!this.formInvalid()) {
       this._subscriptions.push(
-        this.authService.login(this.form.value).subscribe({
-          next: () => this.navigationService.navigateToHome().then(),
-          error: (): void => {
-            this.form.reset();
-            this.enableAlert();
-          }
-        }))
+        this.authService.login(
+          {
+            email: this.form.email,
+            password: this.form.password
+          } as User)
+          .subscribe({
+            next: () => this.navigationService.navigateToHome().then(),
+            error: (): void => {
+              this.resetForm();
+              this.enableAlert();
+            }
+          }))
     } else {
-      this.form.reset();
+      this.resetForm();
       this.enableAlert();
     }
+  }
+
+  private resetForm(): void {
+    this.form = {
+      fullname: '',
+      email: '',
+      password: ''
+    };
   }
 
   public removeAlert(event: KeyboardEvent): void {

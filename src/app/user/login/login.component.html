@@ -2,20 +2,24 @@
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
     <img ngSrc="assets/NoteThatFull.png" style="max-width: 180px"
          alt="NoteThat" width="400" height="200">
-    <form [formGroup]="form" autocomplete="on"
+    <form autocomplete="on"
           class="bg-sky-900 px-6 py-8 rounded shadow-xl text-black w-full mt-8"
           (ngSubmit)="login($event)">
 
       <h1 class="mb-8 text-cyan-50 text-2xl text-center">Inicia sesión</h1>
 
-      <input formControlName="email"
+      <input required
+             email
+             autocomplete="on"
+             [(ngModel)]="form.email"
              (keyup)="removeAlert($event)"
-             type="text"
+             type="email"
              class="block border border-grey-light w-full p-3 rounded mb-4"
              placeholder="Email"
       />
 
-      <input formControlName="password"
+      <input required
+             [(ngModel)]="form.password"
              (keyup)="removeAlert($event)"
              type="password"
              class="block border border-grey-light w-full p-3 rounded mb-4"
@@ -38,7 +42,7 @@
     <div class="text-gray-300 mt-6">
       No tienes cuenta?
       <a
-        class="text-cyan-500 hover:text-cyan-200" (click)="navigateToRegister()">
+        class="pointer text-cyan-500 hover:text-cyan-200" (click)="navigateToRegister()">
         Regístrate
       </a>
     </div>

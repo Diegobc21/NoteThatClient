@@ -1,23 +1,21 @@
-<div class="container mx-auto text-white">
-  <div class="flex flex-col md:flex-row justify-between items-center mt-10">
-    <div class="mb-6 md:mb-0">
-      <img class="w-auto h-20" ngSrc="./assets/NoteThatFull.png" alt="Logo de la aplicación" height="200" width="400">
-    </div>
-    <div class="flex items-center">
-      <h2 class="text-xl font-bold ml-4">{{fullName}}</h2>
-      <a (click)="navigateToProfile()"
-         class="pointer mx-4 bg-cyan-600 hover:bg-cyan-400 text-white py-2 px-4 rounded-lg transition-colors duration-300 flex items-center">
-        <span class="">Ver perfil</span>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-        </svg>
-      </a>
-
-    </div>
+<div class="flex flex-col md:flex-row justify-between items-center">
+  <div class="mb-6 md:mb-0">
+    <img class="w-auto h-20" ngSrc="./assets/NoteThatFull.png" alt="Logo de la aplicación" height="200" width="400">
   </div>
-  <div class="mt-10 mx-4">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <app-card [option]="OptionType.Note" (click)="goToOption(OptionType.Note)"></app-card>
-    </div>
+  <div class="flex items-center">
+    <h2 class="text-xl font-bold text-white">{{fullName}}</h2>
+    <a (click)="navigateToProfile()"
+       class="pointer ml-4 bg-cyan-600 hover:bg-cyan-400 text-white py-2 px-4 rounded-lg transition-colors duration-300 flex items-center">
+      <span>Ver perfil</span>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+      </svg>
+    </a>
+
+  </div>
+</div>
+<div class="mt-10">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <app-card [option]="OptionType.Note" (click)="goToOption(OptionType.Note)"></app-card>
   </div>
 </div>
