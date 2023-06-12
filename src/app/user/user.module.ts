@@ -11,14 +11,14 @@ import {SharedModule} from "../shared/shared.module";
     LoginComponent,
     RegisterComponent
   ],
-    imports: [
-        CommonModule,
-        RouterLink,
-        FormsModule,
-        SharedModule,
-        ReactiveFormsModule,
-        NgOptimizedImage
-    ],
+  imports: [
+    CommonModule,
+    RouterLink,
+    FormsModule,
+    SharedModule,
+    ReactiveFormsModule,
+    NgOptimizedImage
+  ],
   exports: [
     LoginComponent,
     RegisterComponent

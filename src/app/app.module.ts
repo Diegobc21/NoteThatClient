@@ -10,25 +10,23 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {UserModule} from "./user/user.module";
 import {RouterModule} from "@angular/router";
 import {SpinnerInterceptor} from "./interceptor/spinner.interceptor";
-import { NoteComponent } from './options/note/note.component';
 import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NoteComponent
+    AppComponent
   ],
-    imports: [
-        HttpClientModule,
-        BrowserAnimationsModule,
-        BrowserModule,
-        RouterModule,
-        AppRoutingModule,
-        SharedModule,
-        PagesModule,
-        UserModule,
-        FormsModule,
-    ],
+  imports: [
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    BrowserModule,
+    RouterModule,
+    AppRoutingModule,
+    SharedModule,
+    PagesModule,
+    UserModule
+  ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     useClass: SpinnerInterceptor,

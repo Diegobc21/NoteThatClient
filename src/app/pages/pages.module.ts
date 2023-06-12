@@ -1,9 +1,10 @@
 import {NgModule} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {MainComponent} from "./main/main.component";
-import { ProfileComponent } from './profile/profile.component';
-import { OptionComponent } from './option/option.component';
+import {ProfileComponent} from './profile/profile.component';
+import {OptionComponent} from './option/option.component';
 import {SharedModule} from "../shared/shared.module";
+import {OptionsModule} from "../options/options.module";
 
 @NgModule({
   declarations: [
@@ -11,11 +12,12 @@ import {SharedModule} from "../shared/shared.module";
     ProfileComponent,
     OptionComponent
   ],
-    imports: [
-        CommonModule,
-        NgOptimizedImage,
-        SharedModule
-    ],
+  imports: [
+    CommonModule,
+    NgOptimizedImage,
+    SharedModule,
+    OptionsModule
+  ],
   exports: [
     MainComponent
   ]

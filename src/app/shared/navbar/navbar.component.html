@@ -34,15 +34,11 @@
 
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
-
-            <a (click)="navigateTo('/home')" [ngClass]="buttonClasses('/home')">
-              Inicio
-            </a>
-
-            <a (click)="navigateTo('/option/note')" [ngClass]="buttonClasses('/option/note')">
-              Notas
-            </a>
-
+            <div *ngFor="let option of OPTION_LIST">
+              <a (click)="navigateTo(option.route)" [ngClass]="buttonClasses(option.route)">
+                {{option.label}}
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -188,12 +184,11 @@
   <!--  Mobile menu-->
   <div *ngIf="showMobileMenu" class="sm:hidden" id="mobile-menu">
     <div class="space-y-1 px-2 pb-3 pt-2">
-
-      <a (click)="navigateTo('/home')"
-         [ngClass]="buttonClasses('/home')">Inicio</a>
-
-      <a (click)="navigateTo('/option/note')"
-         [ngClass]="buttonClasses('/option/note')">Notas</a>
+      <div *ngFor="let option of OPTION_LIST">
+        <a (click)="navigateTo(option.route)" [ngClass]="buttonClasses(option.route)">
+          {{option.label}}
+        </a>
+      </div>
     </div>
   </div>
 </nav>

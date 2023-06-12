@@ -2,15 +2,15 @@ import {Component, OnDestroy} from '@angular/core';
 import {Note} from "../../interfaces/note.interface";
 import {NoteService} from "../../core/services/note.service";
 import {Subject, Subscription, takeUntil} from "rxjs";
-import {AlertType} from "../../shared/alert/alert-type";
 import {SpinnerService} from "../../core/services/spinner.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {AuthService} from "../../core/services/auth.service";
+import {NavigationService} from "../../core/services/navigation.service";
 
 @Component({
-  selector: 'app-note',
-  templateUrl: './note.component.html',
-  styleUrls: ['./note.component.scss'],
+  selector: 'app-friend',
+  templateUrl: './friend.component.html',
+  styleUrls: ['./friend.component.scss'],
   animations: [
     trigger('slideDown', [
       state('hidden', style({height: '0', opacity: '0', overflow: 'hidden'})),
@@ -19,7 +19,7 @@ import {AuthService} from "../../core/services/auth.service";
     ]),
   ],
 })
-export class NoteComponent implements OnDestroy {
+export class FriendComponent implements OnDestroy {
 
   public isAddingNote: boolean = false;
 
@@ -29,23 +29,22 @@ export class NoteComponent implements OnDestroy {
   };
 
   private unsubscribe$: Subject<void> = new Subject<void>();
-  private _noteList: Note[] = [];
+  private _friendList: Note[] = [];
   private subscriptions: Subscription[] = [];
   private _showAlert: boolean = true;
-
-  protected readonly AlertType = AlertType;
 
   constructor(
     public spinnerService: SpinnerService,
     private authService: AuthService,
-    private noteService: NoteService
+    private noteService: NoteService,
+    private navigationService: NavigationService
   ) {
     this.startSubscriptions();
     this.updateAlertVisibility();
   }
 
-  get noteList(): Note[] {
-    return this._noteList;
+  get friendList(): Note[] {
+    return this._friendList;
   }
 
   get showAlert() {
@@ -61,6 +60,10 @@ export class NoteComponent implements OnDestroy {
       return this.newNote.title === '';
     }
     return this.newNote.title === '';
+  }
+
+  public goToHome(): void {
+    this.navigationService.navigateToHome().then();
   }
 
   public submitNote(): void {
@@ -79,7 +82,7 @@ export class NoteComponent implements OnDestroy {
               .pipe(takeUntil(this.unsubscribe$))
               .subscribe({
                 next: (notes: Note[]) => {
-                  this._noteList = this.sortNotesByDate(notes) ?? [];
+                  this._friendList = this.sortNotesByDate(notes) ?? [];
                   this.updateAlertVisibility();
                 }
               });
@@ -98,7 +101,7 @@ export class NoteComponent implements OnDestroy {
     this.noteService.deleteOne(note).pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (deletedNoteId: string) => {
-          this._noteList = this._noteList.filter((n: Note) => n._id !== deletedNoteId)
+          this._friendList = this._friendList.filter((n: Note) => n._id !== deletedNoteId)
           this.updateAlertVisibility();
         }
       });
@@ -109,7 +112,7 @@ export class NoteComponent implements OnDestroy {
   }
 
   private updateAlertVisibility(): void {
-    this.showAlert = this._noteList.length === 0;
+    this.showAlert = this._friendList.length === 0;
   }
 
   public toggleIsAddingNote(): void {
@@ -146,7 +149,7 @@ export class NoteComponent implements OnDestroy {
       this.noteService.getNotes().pipe(takeUntil(this.unsubscribe$))
         .subscribe({
           next: (notes: Note[]): void => {
-            this._noteList = this.sortNotesByDate(notes) ?? [];
+            this._friendList = this.sortNotesByDate(notes) ?? [];
             this.updateAlertVisibility();
           }
         })

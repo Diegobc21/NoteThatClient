@@ -8,7 +8,7 @@ import {RouterLink, RouterLinkActive} from "@angular/router";
 import {CardComponent} from './card/card.component';
 import {PopupComponent} from './popup/popup.component';
 import {SpinnerComponent} from './spinner/spinner.component';
-import { TagComponent } from './tag/tag.component';
+import {TagComponent} from './tag/tag.component';
 
 @NgModule({
   declarations: [
@@ -27,15 +27,15 @@ import { TagComponent } from './tag/tag.component';
     RouterLinkActive,
     NgOptimizedImage
   ],
-    exports: [
-        NavbarComponent,
-        FooterComponent,
-        AlertComponent,
-        CardComponent,
-        PopupComponent,
-        SpinnerComponent,
-        TagComponent
-    ],
+  exports: [
+    NavbarComponent,
+    FooterComponent,
+    AlertComponent,
+    CardComponent,
+    PopupComponent,
+    SpinnerComponent,
+    TagComponent
+  ],
 })
 export class SharedModule {
 }

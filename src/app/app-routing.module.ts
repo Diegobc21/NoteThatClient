@@ -6,6 +6,7 @@ import {LoginComponent} from "./user/login/login.component";
 import {AuthGuard} from "./guard/auth.guard";
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {NoteComponent} from "./options/note/note.component";
+import {FriendComponent} from "./options/friend/friend.component";
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
       {
         path: 'note',
         component: NoteComponent
+      },
+      {
+        path: 'friends',
+        component: FriendComponent
       }
     ]
   },

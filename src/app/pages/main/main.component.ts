@@ -4,6 +4,7 @@ import {NavigationService} from "../../core/services/navigation.service";
 import {User} from "../../interfaces/user.interface";
 import {Subscription} from "rxjs";
 import {OptionType} from "../../options/optionType.enum";
+import {OPTION_LIST} from "../../options/option-list";
 
 @Component({
   selector: 'app-main',
@@ -13,8 +14,9 @@ import {OptionType} from "../../options/optionType.enum";
 export class MainComponent implements OnInit, OnDestroy {
   public fullName: string = '';
 
+  protected readonly OPTION_LIST: any[] = OPTION_LIST;
+
   private subs: Subscription[] = [];
-  protected readonly OptionType = OptionType;
 
   constructor(
     private userService: UserService,
@@ -22,8 +24,12 @@ export class MainComponent implements OnInit, OnDestroy {
   ) {
   }
 
+  get optionList(): any[] {
+    return OPTION_LIST.filter(option => option.type !== OptionType.Home);
+  }
+
   public goToOption(option: OptionType): void {
-    this.navigationService.navigateToOption(option).then();
+    this.navigationService.navigateByUrl(option).then();
   }
 
   public ngOnInit(): void {
@@ -42,4 +48,5 @@ export class MainComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.subs.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
+
 }

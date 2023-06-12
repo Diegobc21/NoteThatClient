@@ -5,6 +5,7 @@ import {NavigationService} from "../../core/services/navigation.service";
 import {UserService} from "../../core/services/user.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
+import {OPTION_LIST} from "../../options/option-list";
 
 @Component({
   selector: 'app-navbar',
@@ -15,6 +16,8 @@ export class NavbarComponent implements OnDestroy {
   @ViewChild('menuButton') private menuButton: ElementRef | undefined;
   @ViewChild('userButton') private userButton!: ElementRef;
   @ViewChild('menu') private menu: ElementRef | undefined;
+
+  protected readonly OPTION_LIST: any[] = OPTION_LIST;
 
   public activeRouteClasses: string = 'pointer bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium';
   public inactiveRouteClasses: string = 'pointer text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium';
@@ -101,4 +104,5 @@ export class NavbarComponent implements OnDestroy {
   private unsubscribeAll(): void {
     this._subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
   }
+
 }

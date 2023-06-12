@@ -18,10 +18,19 @@ export class CardComponent implements OnInit {
   }
 
   private loadCardContent(): void {
+
     switch (this.optionType) {
       case OptionType.Note:
         this.description = 'Escribe tus ideas';
-        this.title = 'Notas';
+        this.title = OptionType.Note;
+        break;
+      case OptionType.Friends:
+        this.description = 'Encuentra a tus amigos';
+        this.title = OptionType.Friends;
+        break;
+      case OptionType.Home:
+        this.description = 'Inicio';
+        this.title = OptionType.Home;
         break;
       default:
         this.title = 'Título';

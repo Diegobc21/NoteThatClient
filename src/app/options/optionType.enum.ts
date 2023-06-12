@@ -1,3 +1,5 @@
 export enum OptionType {
-  Note = 'note'
+  Home = 'Inicio',
+  Note = 'Notas',
+  Friends = 'Amigos'
 }
