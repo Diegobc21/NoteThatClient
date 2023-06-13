@@ -1,0 +1,36 @@
+<div class="max-w-screen-xl mx-auto">
+  <div class="flex flex-row justify-between relative">
+    <button (click)="goToFriends()"
+            class="bg-gray-700 hover:bg-gray-400 transition-all
+              text-white font-bold py-2 px-4 rounded">
+      Contactos
+    </button>
+    <app-search-input></app-search-input>
+  </div>
+
+  <h1 class="text-xl text-cyan-100 text-center my-8">Lista de usuarios</h1>
+
+  <table  *ngIf="!showAlert" class="w-full bg-gray-700 text-white border border-cyan-600">
+    <thead>
+    <tr>
+      <th class="py-2 px-4 border-r">Nombre</th>
+      <th class="py-2 px-4">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of userList">
+      <td class="py-2 px-4 border-r">
+        <span class="text-white font-semibold neon-text mx-auto">{{ user.fullname }}</span>
+      </td>
+      <td class="py-2 px-4 content-center">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                (click)="sendFriendRequest(user)">Solicitar amistad
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <app-alert *ngIf="showAlert" class="mt-6" (onClose)="modalClosed()" [type]="AlertType.WARNING"
+             [message]="'Aún no tienes ninguna nota'"></app-alert>
+</div>

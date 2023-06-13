@@ -7,6 +7,7 @@ import {AuthGuard} from "./guard/auth.guard";
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {NoteComponent} from "./options/note/note.component";
 import {FriendComponent} from "./options/friend/friend.component";
+import {FriendSearchComponent} from "./options/friend/friend-search/friend-search.component";
 
 const routes: Routes = [
   {
@@ -24,7 +25,16 @@ const routes: Routes = [
       },
       {
         path: 'friends',
-        component: FriendComponent
+        children: [
+          {
+            path: '',
+            component: FriendComponent
+          },
+          {
+            path: 'search',
+            component: FriendSearchComponent
+          }
+        ]
       }
     ]
   },

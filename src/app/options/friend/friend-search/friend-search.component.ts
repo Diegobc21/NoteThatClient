@@ -1,35 +1,18 @@
-import {Component, ElementRef, HostListener, OnDestroy, ViewChild} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {Subject, Subscription, takeUntil} from "rxjs";
-import {SpinnerService} from "../../core/services/spinner.service";
-import {animate, state, style, transition, trigger} from "@angular/animations";
-import {AuthService} from "../../core/services/auth.service";
-import {NavigationService} from "../../core/services/navigation.service";
-import {User} from "../../interfaces/user.interface";
-import {UserService} from "../../core/services/user.service";
+import {User} from "../../../interfaces/user.interface";
+import {SpinnerService} from "../../../core/services/spinner.service";
+import {AuthService} from "../../../core/services/auth.service";
+import {UserService} from "../../../core/services/user.service";
+import {NavigationService} from "../../../core/services/navigation.service";
+import {AlertType} from "../../../shared/alert/alert-type";
 
 @Component({
-  selector: 'app-friend',
-  templateUrl: './friend.component.html',
-  styleUrls: ['./friend.component.scss'],
-  animations: [
-    trigger('slideDown', [
-      state('hidden', style({height: '0', opacity: '0', overflow: 'hidden'})),
-      state('visible', style({height: '*', opacity: '1', overflow: 'hidden'})),
-      transition('hidden <=> visible', animate('200ms ease-in-out')),
-    ]),
-  ],
+  selector: 'app-friend-search',
+  templateUrl: './friend-search.component.html',
+  styleUrls: ['./friend-search.component.scss']
 })
-export class FriendComponent implements OnDestroy {
-
-  @HostListener('click')
-  public onClick(): void {
-    console.log('clicked')
-  }
-
-  @ViewChild('searchInput') public searchInput!: ElementRef;
-
-  public isExpanded: boolean = false;
-  public isAddingNote: boolean = false;
+export class FriendSearchComponent implements OnDestroy {
 
   private unsubscribe$: Subject<void> = new Subject<void>();
   private _userList: User[] = [];
@@ -58,22 +41,18 @@ export class FriendComponent implements OnDestroy {
     this._showAlert = value;
   }
 
-  public goToHome(): void {
-    this.navigationService.navigateToHome().then();
-  }
-
-  public goToSearchFriends(): void {
-    this.navigationService.navigateToFriendsSearch().then();
+  public goToFriends(): void {
+    this.navigationService.navigateToFriends().then();
   }
 
   public modalClosed(): void {
     this.showAlert = false;
   }
 
+
   public sendFriendRequest(user: User): void {
     console.log('sent')
   }
-
 
   public ngOnDestroy(): void {
     this.stopSubscriptions();
@@ -101,4 +80,5 @@ export class FriendComponent implements OnDestroy {
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
+  protected readonly AlertType = AlertType;
 }

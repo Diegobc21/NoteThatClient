@@ -32,6 +32,14 @@ export class NavigationService {
     return this.navigateByUrl(`/option/${option.toString()}`);
   }
 
+  public navigateToFriends(): Promise<any> {
+    return this.navigateByUrl('/option/friends');
+  }
+
+  public navigateToFriendsSearch(): Promise<any> {
+    return this.navigateByUrl('/option/friends/search');
+  }
+
   public navigateByUrl(path: string): Promise<any> {
     return this.router.navigateByUrl(path);
   }

@@ -15,12 +15,20 @@
 </div>
 
 <div *ngIf="!spinnerService.showSpinner">
-
-  <button (click)="toggleIsAddingNote()"
-          class="bg-gradient-to-r to-green-500 via-blue-500 from-purple-600 hover:bg-blue-700
-    text-white font-bold py-2 px-4 rounded mx-auto block sm:inline-block">
-    {{isAddingNote ? 'Cancelar' : 'Añadir nota'}}
-  </button>
+  <div class="max-w-screen-xl mx-auto">
+    <div class="flex flex-row justify-between relative">
+      <button (click)="goToHome()"
+              class="bg-gray-700 hover:bg-gray-400 transition-all
+              text-white font-bold py-2 px-4 rounded">
+        Inicio
+      </button>
+      <button (click)="toggleIsAddingNote()"
+              class="bg-gradient-to-r to-green-500 via-blue-500 from-purple-600 hover:bg-blue-700
+    text-white font-bold py-2 px-4 rounded block sm:inline-block">
+        {{isAddingNote ? 'Cancelar' : 'Añadir nota'}}
+      </button>
+    </div>
+  </div>
 
   <div [@slideDown]="isAddingNote ? 'visible' : 'hidden'" class="overflow-hidden transition-all duration-500">
     <div *ngIf="isAddingNote"

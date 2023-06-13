@@ -6,6 +6,7 @@ import {AlertType} from "../../shared/alert/alert-type";
 import {SpinnerService} from "../../core/services/spinner.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {AuthService} from "../../core/services/auth.service";
+import {NavigationService} from "../../core/services/navigation.service";
 
 @Component({
   selector: 'app-note',
@@ -38,7 +39,8 @@ export class NoteComponent implements OnDestroy {
   constructor(
     public spinnerService: SpinnerService,
     private authService: AuthService,
-    private noteService: NoteService
+    private noteService: NoteService,
+    private navigationService: NavigationService
   ) {
     this.startSubscriptions();
     this.updateAlertVisibility();
@@ -61,6 +63,10 @@ export class NoteComponent implements OnDestroy {
       return this.newNote.title === '';
     }
     return this.newNote.title === '';
+  }
+
+  public goToHome(): void {
+    this.navigationService.navigateToHome().then();
   }
 
   public submitNote(): void {
@@ -91,7 +97,6 @@ export class NoteComponent implements OnDestroy {
 
   public editNote(note: Note): void {
     this.newNote = note;
-    console.log(this.newNote);
   }
 
   public deleteNote(note: Note): void {
