@@ -1,38 +1,42 @@
 <div class="max-w-screen-xl mx-auto">
   <div class="flex flex-row justify-between relative">
-    <button (click)="goToHome()"
-            class="bg-gray-700 hover:bg-gray-400 transition-all
+    <div>
+      <button (click)="goToHome()"
+              class="bg-gray-700 hover:bg-gray-400 transition-all
               text-white font-bold py-2 px-4 rounded">
-      Inicio
-    </button>
-    <button (click)="goToSearchFriends()"
-            class="bg-gradient-to-r to-green-500 via-blue-500 from-purple-600 hover:bg-blue-700
-              text-white font-bold py-2 px-4 rounded">
-      Añadir amigos
-    </button>
+        Inicio
+      </button>
+    </div>
+    <div>
+      <button (click)="goToSearchFriends()"
+              class="bg-gradient-to-r to-green-500 via-blue-500 from-purple-600 hover:bg-blue-700
+              text-white font-bold py-2 px-4 rounded mx-auto">
+        Añadir amigos
+      </button>
+    </div>
     <app-search-input></app-search-input>
   </div>
 
   <h1 class="text-xl text-cyan-100 text-center my-8">Lista de amigos</h1>
 
-  <table class="w-full bg-gray-700 text-white border border-cyan-600">
-    <thead>
-    <tr>
-      <th class="py-2 px-4 border-r">Nombre</th>
-      <th class="py-2 px-4">Acciones</th>
-    </tr>
-    </thead>
+  <table *ngIf="!showAlert" class="mx-auto text-center w-fit bg-gray-700 text-white border border-cyan-600">
     <tbody>
     <tr *ngFor="let user of userList">
-      <td class="py-2 px-4 border-r">
-        <span class="text-white font-semibold neon-text">{{ user.fullname }}</span>
+      <td class="py-2 px-4">
+        <span class="text-white font-semibold neon-text mx-auto">{{ user.fullname }}</span>
       </td>
       <td class="py-2 px-4">
-        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                (click)="sendFriendRequest(user)">Eliminar contacto
-        </button>
+        <div>
+          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-all"
+                  (click)="deleteFriend(user)">
+            Eliminar contacto
+          </button>
+        </div>
       </td>
     </tr>
     </tbody>
   </table>
+
+  <app-alert *ngIf="showAlert" class="mt-6" (onClose)="modalClosed()" [type]="AlertType.WARNING"
+             [message]="'Aún no tienes contactos'"></app-alert>
 </div>

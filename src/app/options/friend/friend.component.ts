@@ -6,6 +6,7 @@ import {AuthService} from "../../core/services/auth.service";
 import {NavigationService} from "../../core/services/navigation.service";
 import {User} from "../../interfaces/user.interface";
 import {UserService} from "../../core/services/user.service";
+import {AlertType} from "../../shared/alert/alert-type";
 
 @Component({
   selector: 'app-friend',
@@ -21,15 +22,7 @@ import {UserService} from "../../core/services/user.service";
 })
 export class FriendComponent implements OnDestroy {
 
-  @HostListener('click')
-  public onClick(): void {
-    console.log('clicked')
-  }
-
   @ViewChild('searchInput') public searchInput!: ElementRef;
-
-  public isExpanded: boolean = false;
-  public isAddingNote: boolean = false;
 
   private unsubscribe$: Subject<void> = new Subject<void>();
   private _userList: User[] = [];
@@ -70,10 +63,9 @@ export class FriendComponent implements OnDestroy {
     this.showAlert = false;
   }
 
-  public sendFriendRequest(user: User): void {
-    console.log('sent')
+  public deleteFriend(user: User): void {
+    console.log('deleted ' + user.fullname)
   }
-
 
   public ngOnDestroy(): void {
     this.stopSubscriptions();
@@ -101,4 +93,5 @@ export class FriendComponent implements OnDestroy {
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
+  protected readonly AlertType = AlertType;
 }

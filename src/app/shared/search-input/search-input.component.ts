@@ -1,26 +1,35 @@
-import {Component, ElementRef, HostListener, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
+import {MediaCheckService} from "../../core/services/media-check.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-search-input',
   templateUrl: './search-input.component.html',
   styleUrls: ['./search-input.component.scss']
 })
-export class SearchInputComponent {
-
-  @HostListener('click', ['$event'])
-  public onClick(event: MouseEvent): void {
-    this.checkSearchIsClicked(event);
-  }
+export class SearchInputComponent implements OnDestroy {
 
   @ViewChild('searchInput') public searchInput!: ElementRef;
+  @ViewChild('input') public input!: ElementRef;
 
   public isExpanded: boolean = false;
 
-  public checkSearchIsClicked(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (!this.searchInput.nativeElement.contains(target)) {
-      this.collapseSearch();
-    }
+  private clickSubscription: Subscription;
+
+  constructor(private mediaCheckService: MediaCheckService) {
+    this.clickSubscription =
+      this.mediaCheckService.getClicks()
+        .subscribe((event: MouseEvent) => {
+          if (this.isExpanded) {
+            if (!this.searchInput.nativeElement.contains(event.target)) {
+              this.collapseSearch();
+            }
+          }
+        });
+  }
+
+  public ngOnDestroy(): void {
+    this.clickSubscription.unsubscribe();
   }
 
   public expandSearch(): void {

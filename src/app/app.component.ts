@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
-import {filter} from "rxjs";
+import {filter, Subscription} from "rxjs";
 import {SpinnerService} from "./core/services/spinner.service";
 import {AuthService} from "./core/services/auth.service";
+import {MediaCheckService} from "./core/services/media-check.service";
 
 @Component({
   selector: 'app-root',
@@ -10,17 +11,34 @@ import {AuthService} from "./core/services/auth.service";
   styleUrls: ['./app.component.scss'],
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent implements OnDestroy {
+
+  @HostListener('click', ['${event}'])
+  private onClick(): void {
+    this.mediaCheckService.emitClick(event as MouseEvent);
+  }
+
   public title: string = 'NoteThat';
   public show: boolean = false;
 
+  private routerSubscription: Subscription;
   private currentUrlPath: string = '';
 
   constructor(
     private router: Router,
     private spinnerService: SpinnerService,
+    private mediaCheckService: MediaCheckService,
     private authService: AuthService
   ) {
+    this.routerSubscription =
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe({
+          next: (): void => {
+            this.currentUrlPath = this.router.routerState.snapshot.url;
+            this.show = this.currentUrlPath !== '/user/register' && this.currentUrlPath !== '/user/login';
+          }
+        });
   }
 
   get sessionExpiredMessage(): string {
@@ -35,15 +53,8 @@ export class AppComponent implements OnInit {
     return this.authService.sessionExpired;
   }
 
-  public ngOnInit(): void {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe({
-        next: (): void => {
-          this.currentUrlPath = this.router.routerState.snapshot.url;
-          this.show = this.currentUrlPath !== '/user/register' && this.currentUrlPath !== '/user/login';
-        }
-      });
+  public ngOnDestroy(): void {
+    this.routerSubscription.unsubscribe();
   }
 
 }

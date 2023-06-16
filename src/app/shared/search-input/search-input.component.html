@@ -1,18 +1,17 @@
 <div #searchInput>
-  <input
+  <input #input
     type="text"
-    class="w-12 h-12 pl-4 pr-10 py-2 rounded-full bg-gray-800 text-white focus:bg-gray-600 focus:outline-white transition-all duration-300"
-    [class.w-12]="!isExpanded"
+    class="h-10 py-2 rounded-full bg-gray-800 text-white focus:bg-gray-600 focus:outline-white transition-all duration-300"
+    [class.w-0]="!isExpanded"
     [class.w-40]="isExpanded"
-    [class.px-4]="!isExpanded"
-    [class.px-10]="isExpanded"
+    [class.px-0]="!isExpanded"
+    [class.px-4]="isExpanded"
     [class.cursor-pointer]="!isExpanded"
     [class.cursor-auto]="isExpanded"
     placeholder="Buscar"
   />
-  <div
+  <div (click)="expandSearch()"
     class="absolute rounded-full inset-y-0 right-0 flex focus:bg-gray-600 focus:outline-none items-center pr-3 pointer transition-all duration-300"
-    (click)="expandSearch()"
   >
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor"
          class="h-6 w-6 transition-colors duration-300 hover:text-gray-500">

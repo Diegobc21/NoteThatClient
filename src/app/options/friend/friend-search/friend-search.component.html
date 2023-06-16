@@ -10,27 +10,23 @@
 
   <h1 class="text-xl text-cyan-100 text-center my-8">Lista de usuarios</h1>
 
-  <table  *ngIf="!showAlert" class="w-full bg-gray-700 text-white border border-cyan-600">
-    <thead>
-    <tr>
-      <th class="py-2 px-4 border-r">Nombre</th>
-      <th class="py-2 px-4">Acciones</th>
-    </tr>
-    </thead>
+  <table *ngIf="!showAlert" class="mx-auto text-center w-fit bg-gray-700 text-white border border-cyan-600">
     <tbody>
     <tr *ngFor="let user of userList">
-      <td class="py-2 px-4 border-r">
+      <td class="py-2 px-4">
         <span class="text-white font-semibold neon-text mx-auto">{{ user.fullname }}</span>
       </td>
-      <td class="py-2 px-4 content-center">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                (click)="sendFriendRequest(user)">Solicitar amistad
-        </button>
+      <td class="py-2 px-4">
+        <div>
+          <button class="bg-cyan-700 hover:bg-cyan-900 text-white font-bold py-2 px-4 rounded transition-all"
+                  (click)="sendFriendRequest(user)">
+            Solicitar amistad
+          </button>
+        </div>
       </td>
     </tr>
     </tbody>
   </table>
-
   <app-alert *ngIf="showAlert" class="mt-6" (onClose)="modalClosed()" [type]="AlertType.WARNING"
-             [message]="'Aún no tienes ninguna nota'"></app-alert>
+             message="No se encontraron usuarios"></app-alert>
 </div>
