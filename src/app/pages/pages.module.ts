@@ -5,12 +5,14 @@ import {ProfileComponent} from './profile/profile.component';
 import {OptionComponent} from './option/option.component';
 import {SharedModule} from "../shared/shared.module";
 import {OptionsModule} from "../options/options.module";
+import {SpotifyComponent} from './spotify/spotify.component';
 
 @NgModule({
   declarations: [
     MainComponent,
     ProfileComponent,
-    OptionComponent
+    OptionComponent,
+    SpotifyComponent
   ],
   imports: [
     CommonModule,
@@ -18,9 +20,7 @@ import {OptionsModule} from "../options/options.module";
     SharedModule,
     OptionsModule
   ],
-  exports: [
-    MainComponent
-  ]
+  exports: []
 })
 export class PagesModule {
 }
