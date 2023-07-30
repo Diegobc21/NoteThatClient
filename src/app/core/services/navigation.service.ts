@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router} from "@angular/router";
-import {OptionType} from "../../options/optionType.enum";
+import {OptionType} from "../../options/option-type.enum";
 
 @Injectable({
   providedIn: 'root'

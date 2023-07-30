@@ -23,6 +23,12 @@ export class NoteService {
     }));
   }
 
+  public editNote(note: Note): Observable<Note> {
+    return this.authService.checkConnection(this.http.put<Note>(`${this.endpoint}/${note._id}`, note, {
+      headers: this.authService.getHeaders()
+    }));
+  }
+
   public deleteOne(note: Note): Observable<string> {
     return this.authService.checkConnection(this.http.delete<string>(`${this.endpoint}/${note._id}`, {
       headers: this.authService.getHeaders()

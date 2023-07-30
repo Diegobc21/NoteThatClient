@@ -3,7 +3,7 @@ import {UserService} from "../../core/services/user.service";
 import {NavigationService} from "../../core/services/navigation.service";
 import {User} from "../../interfaces/user.interface";
 import {Subscription} from "rxjs";
-import {OptionType} from "../../options/optionType.enum";
+import {OptionType} from "../../options/option-type.enum";
 import {OPTION_LIST} from "../../options/option-list";
 
 @Component({
@@ -13,8 +13,6 @@ import {OPTION_LIST} from "../../options/option-list";
 })
 export class MainComponent implements OnInit, OnDestroy {
   public fullName: string = '';
-
-  protected readonly OPTION_LIST: any[] = OPTION_LIST;
 
   private subs: Subscription[] = [];
 

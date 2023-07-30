@@ -17,10 +17,6 @@ const routes: Routes = [
     component: MainComponent
   },
   {
-    path: 'spotify',
-    component: SpotifyComponent
-  },
-  {
     path: 'option',
     canActivate: [AuthGuard],
     children: [
@@ -40,6 +36,10 @@ const routes: Routes = [
             component: FriendSearchComponent
           }
         ]
+      },
+      {
+        path: 'spotify',
+        component: SpotifyComponent
       }
     ]
   },

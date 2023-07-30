@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {Note} from "../../interfaces/note.interface";
 import {NoteService} from "../../core/services/note.service";
 import {Subject, Subscription, takeUntil} from "rxjs";
@@ -22,11 +22,21 @@ import {NavigationService} from "../../core/services/navigation.service";
 })
 export class NoteComponent implements OnDestroy {
 
+  @ViewChild('editingTitle', {static: false}) editingTitle!: ElementRef;
+  @ViewChild('editingContent', {static: false}) editingContent!: ElementRef;
+
   public isAddingNote: boolean = false;
+  public isEditingNote: boolean = false;
 
   public newNote: any = {
     title: '',
     content: ''
+  };
+
+  public editingNote: any = {
+    title: '',
+    content: '',
+    _id: ''
   };
 
   private unsubscribe$: Subject<void> = new Subject<void>();
@@ -58,11 +68,18 @@ export class NoteComponent implements OnDestroy {
     this._showAlert = value;
   }
 
-  get formIsEmpty(): boolean {
+  get addingFormIsEmpty(): boolean {
     if (this.newNote.content === '') {
       return this.newNote.title === '';
     }
     return this.newNote.title === '';
+  }
+
+  get editingFormIsEmpty(): boolean {
+    if (this.editingNote.content === '') {
+      return this.editingNote.title === '';
+    }
+    return this.editingNote.title === '';
   }
 
   public goToHome(): void {
@@ -70,7 +87,7 @@ export class NoteComponent implements OnDestroy {
   }
 
   public submitNote(): void {
-    if (!this.formIsEmpty) {
+    if (!this.addingFormIsEmpty) {
       this.noteService.addNote({
         title: this.newNote.title,
         content: this.newNote.content,
@@ -92,11 +109,61 @@ export class NoteComponent implements OnDestroy {
             this.resetForm();
           }
         })
+      this.resetNote();
     }
   }
 
-  public editNote(note: Note): void {
-    this.newNote = note;
+  public submitEditing(): void {
+    if (this.editingNote.title !== '') {
+      this.noteService.editNote({
+        title: this.editingTitle?.nativeElement.value,
+        content: this.editingContent?.nativeElement.value,
+        user: this.authService.email,
+        _id: this.editingNote._id,
+        creationDate: this.editingNote.creationDate
+      })
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe({
+          complete: (): void => {
+            this.toggleIsAddingNote();
+            this.noteService.getNotes()
+              .pipe(takeUntil(this.unsubscribe$))
+              .subscribe({
+                next: (notes: Note[]) => {
+                  this._noteList = this.sortNotesByDate(notes) ?? [];
+                  this.updateAlertVisibility();
+                }
+              });
+            this.resetForm();
+          }
+        })
+      this.resetNote();
+    }
+  }
+
+  public editNote(note: Note, event: MouseEvent): void {
+    this.editingNote = {
+      title: note.title,
+      content: note.content,
+      _id: note._id,
+      creationDate: note.creationDate,
+      user: note.user
+    };
+    this.toggleIsEditingNote();
+    event.stopPropagation();
+  }
+
+  public resetNote(): void {
+    this.isAddingNote = false;
+    this.isEditingNote = false;
+    this.newNote = {
+      title: '',
+      content: ''
+    };
+    this.editingNote = {
+      title: '',
+      content: ''
+    };
   }
 
   public deleteNote(note: Note): void {
@@ -119,6 +186,12 @@ export class NoteComponent implements OnDestroy {
 
   public toggleIsAddingNote(): void {
     this.isAddingNote = !this.isAddingNote;
+    this.isEditingNote = false;
+  }
+
+  public toggleIsEditingNote(): void {
+    this.isEditingNote = !this.isEditingNote;
+    this.isAddingNote = false;
   }
 
   public ngOnDestroy(): void {
@@ -132,10 +205,7 @@ export class NoteComponent implements OnDestroy {
   }
 
   private resetForm(): void {
-    this.newNote = {
-      title: '',
-      content: ''
-    }
+    this.resetNote();
   }
 
   private sortNotesByDate(list: Note[]): Note[] {

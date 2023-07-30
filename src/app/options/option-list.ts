@@ -1,4 +1,4 @@
-import {OptionType} from "./optionType.enum";
+import {OptionType} from "./option-type.enum";
 
 export const OPTION_LIST: any[] = [
   {
@@ -15,5 +15,10 @@ export const OPTION_LIST: any[] = [
     label: OptionType.Friends,
     route: '/option/friends',
     type: OptionType.Friends
+  },
+  {
+    label: OptionType.Spotify,
+    route: '/option/spotify',
+    type: OptionType.Spotify
   }
 ];
