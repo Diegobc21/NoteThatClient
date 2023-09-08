@@ -18,6 +18,11 @@ import {NavigationService} from "../../core/services/navigation.service";
       state('visible', style({height: '*', opacity: '1', overflow: 'hidden'})),
       transition('hidden <=> visible', animate('200ms ease-in-out')),
     ]),
+    trigger('slideUp', [
+      state('hidden', style({height: '0', opacity: '0', overflow: 'hidden'})),
+      state('visible', style({height: '*', opacity: '1', overflow: 'hidden'})),
+      transition('visible => hidden', animate('200ms ease-in-out')),
+    ])
   ],
 })
 export class NoteComponent implements OnDestroy {

@@ -38,9 +38,10 @@
   </div>
 
   <div [@slideDown]="isAddingNote ? 'visible' : 'hidden'"
-       class="overflow-hidden transition-all duration-500">
-    <div *ngIf="isAddingNote"
-         class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl transition hover:shadow-sm mt-4">
+       [@slideUp]="isAddingNote ? 'visible' : 'hidden'"
+       class="overflow-hidden">
+    <div
+      class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl transition hover:shadow-sm mt-4">
       <div class="rounded-[10px] bg-gray-800 p-4 sm:p-6">
 
         <h1 class="text-2xl font-bold text-white mb-2">Nueva nota</h1>
