@@ -9,7 +9,8 @@ import {CardComponent} from './card/card.component';
 import {PopupComponent} from './popup/popup.component';
 import {SpinnerComponent} from './spinner/spinner.component';
 import {TagComponent} from './tag/tag.component';
-import { SearchInputComponent } from './search-input/search-input.component';
+import {SearchInputComponent} from './search-input/search-input.component';
+import {PopupMenuComponent} from './popup-menu/popup-menu.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SearchInputComponent } from './search-input/search-input.component';
     PopupComponent,
     SpinnerComponent,
     TagComponent,
-    SearchInputComponent
+    SearchInputComponent,
+    PopupMenuComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +39,8 @@ import { SearchInputComponent } from './search-input/search-input.component';
     PopupComponent,
     SpinnerComponent,
     TagComponent,
-    SearchInputComponent
+    SearchInputComponent,
+    PopupMenuComponent
   ],
 })
 export class SharedModule {

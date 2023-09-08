@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, ViewChild} from '@angular/core';
 import {Note} from "../../interfaces/note.interface";
 import {NoteService} from "../../core/services/note.service";
 import {Subject, Subscription, takeUntil} from "rxjs";
@@ -21,12 +21,19 @@ import {NavigationService} from "../../core/services/navigation.service";
   ],
 })
 export class NoteComponent implements OnDestroy {
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll(): void {
+    this.windowScrollY = window.scrollY;
+  }
 
   @ViewChild('editingTitle', {static: false}) editingTitle!: ElementRef;
   @ViewChild('editingContent', {static: false}) editingContent!: ElementRef;
 
   public isAddingNote: boolean = false;
   public isEditingNote: boolean = false;
+  public popupEnabled: boolean = false;
+  public popupPosition: {} = {};
+  public popupOptions: string[] = ['Editar', 'Eliminar'];
 
   public newNote: any = {
     title: '',
@@ -43,6 +50,12 @@ export class NoteComponent implements OnDestroy {
   private _noteList: Note[] = [];
   private subscriptions: Subscription[] = [];
   private _showAlert: boolean = true;
+  private selectedNote: Note | null = null;
+  private windowScrollY: number = 0;
+
+  private months: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+    'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  private usedMonth: boolean[] = [false, false, false, false, false, false, false, false, false, false, false, false];
 
   protected readonly AlertType = AlertType;
 
@@ -54,6 +67,9 @@ export class NoteComponent implements OnDestroy {
   ) {
     this.startSubscriptions();
     this.updateAlertVisibility();
+    // for (let i: number = 0; i < 12; i++) {
+    //   this.usedMonth[i] = false;
+    // }
   }
 
   get noteList(): Note[] {
@@ -141,7 +157,35 @@ export class NoteComponent implements OnDestroy {
     }
   }
 
-  public editNote(note: Note, event: MouseEvent): void {
+  public handlePopupOption(event: string): void {
+    if (this.popupOptions[0] === event) {
+      this.editNote(this.selectedNote!)
+    } else {
+      this.deleteNote(this.selectedNote!);
+    }
+    this.toggleClickPopup();
+  }
+
+  public toggleEditing(note: Note, event: MouseEvent): void {
+    this.toggleClickPopup(event);
+    this.selectedNote = note;
+  }
+
+  private toggleClickPopup(event?: MouseEvent): void {
+    if (event) {
+      this.popupPosition = {
+        left: `${event.clientX}px`,
+        top: `${event.clientY + this.windowScrollY}px`
+      }
+    }
+    this.popupEnabled = !this.popupEnabled;
+  }
+
+  public getPopupPosition(): {} {
+    return this.popupPosition;
+  }
+
+  public editNote(note: Note, event?: MouseEvent): void {
     this.editingNote = {
       title: note.title,
       content: note.content,
@@ -150,7 +194,7 @@ export class NoteComponent implements OnDestroy {
       user: note.user
     };
     this.toggleIsEditingNote();
-    event.stopPropagation();
+    event?.stopPropagation();
   }
 
   public resetNote(): void {
@@ -165,6 +209,28 @@ export class NoteComponent implements OnDestroy {
       content: ''
     };
   }
+
+  public getMonth(note: Note): string {
+    const month: number = new Date(note.creationDate).getMonth();
+    let response: string = '';
+    if (!this.usedMonth[month]) {
+      this.usedMonth[month] = true;
+      response = this.months[month] + ' ' + new Date(note.creationDate).getFullYear().toString();
+    }
+    // this.tarjetasPorMes();
+    return response;
+  }
+
+  // public tarjetasPorMes() {
+  //   return this._noteList.reduce((result, tarjeta) => {
+  //     const monthYear: number = new Date(tarjeta.creationDate).getMonth();
+  //     if (!result[monthYear]) {
+  //       result[monthYear] = [];
+  //     }
+  //     result[monthYear].push(tarjeta);
+  //     return result;
+  //   }, {});
+  // }
 
   public deleteNote(note: Note): void {
     this.noteService.deleteOne(note).pipe(takeUntil(this.unsubscribe$))

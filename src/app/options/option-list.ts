@@ -20,5 +20,10 @@ export const OPTION_LIST: any[] = [
     label: OptionType.Spotify,
     route: '/option/spotify',
     type: OptionType.Spotify
+  },
+  {
+    label: OptionType.Calendar,
+    route: '/option/calendar',
+    type: OptionType.Calendar
   }
 ];

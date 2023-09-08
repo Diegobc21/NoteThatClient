@@ -17,26 +17,28 @@
     <app-search-input></app-search-input>
   </div>
 
-  <h1 class="text-xl text-cyan-100 text-center my-8">Lista de amigos</h1>
+  <h1 class="text-xl text-cyan-100 text-center my-8">Próximamente</h1>
 
-  <table *ngIf="!showAlert" class="mx-auto text-center w-fit bg-gray-700 text-white border border-cyan-600">
-    <tbody>
-    <tr *ngFor="let user of userList">
-      <td class="py-2 px-4">
-        <span class="text-white font-semibold neon-text mx-auto">{{ user.fullname }}</span>
-      </td>
-      <td class="py-2 px-4">
-        <div>
-          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-all"
-                  (click)="deleteFriend(user)">
-            Eliminar contacto
-          </button>
-        </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <!--  <h1 class="text-xl text-cyan-100 text-center my-8">Lista de amigos</h1>-->
 
-  <app-alert *ngIf="showAlert" class="mt-6" (onClose)="modalClosed()" [type]="AlertType.WARNING"
-             [message]="'Aún no tienes contactos'"></app-alert>
-</div>
+  <!--  <table *ngIf="!showAlert" class="mx-auto text-center w-fit bg-gray-700 text-white border border-cyan-600">-->
+  <!--    <tbody>-->
+  <!--    <tr *ngFor="let user of userList">-->
+  <!--      <td class="py-2 px-4">-->
+  <!--        <span class="text-white font-semibold neon-text mx-auto">{{ user.fullname }}</span>-->
+  <!--      </td>-->
+  <!--      <td class="py-2 px-4">-->
+  <!--        <div>-->
+  <!--          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-all"-->
+  <!--                  (click)="deleteFriend(user)">-->
+  <!--            Eliminar contacto-->
+  <!--          </button>-->
+  <!--        </div>-->
+  <!--      </td>-->
+  <!--    </tr>-->
+  <!--    </tbody>-->
+  <!--  </table>-->
+
+  <!--  <app-alert *ngIf="showAlert" class="mt-6" (onClose)="modalClosed()" [type]="AlertType.WARNING"-->
+  <!--             [message]="'Aún no tienes contactos'"></app-alert>-->
+  <!--</div>-->

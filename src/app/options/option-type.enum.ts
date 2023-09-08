@@ -2,5 +2,6 @@ export enum OptionType {
   Home = 'Inicio',
   Note = 'Notas',
   Friends = 'Amigos',
-  Spotify = "Spotify"
+  Spotify = "Spotify",
+  Calendar = "Calendario"
 }
