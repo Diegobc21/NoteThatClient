@@ -26,9 +26,15 @@ import {NavigationService} from "../../core/services/navigation.service";
   ],
 })
 export class NoteComponent implements OnDestroy {
+
   @HostListener('window:scroll', ['$event'])
   onWindowScroll(): void {
     this.windowScrollY = window.scrollY;
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleDocumentClick(event: MouseEvent): void {
+    console.log(event);
   }
 
   @ViewChild('editingTitle', {static: false}) editingTitle!: ElementRef;

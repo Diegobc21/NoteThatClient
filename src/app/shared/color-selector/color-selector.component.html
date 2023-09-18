@@ -1,0 +1,21 @@
+<div>
+<!--  <label for="colorSelect" class="block text-gray-700 text-sm font-bold mb-2">Selecciona un color:</label>-->
+  <div class="relative">
+    <select (change)="onColorChange()"
+            [(ngModel)]="selectedColor"
+            id="colorSelect"
+            class="block w-full bg-gray-800 text-white border border-gray-300 p-2 rounded-md">
+      <option value="" disabled selected>Color</option>
+      <option value="#ff0000">Rojo</option>
+      <option value="#00ff00">Verde</option>
+      <option value="#0000ff">Azul</option>
+      <!-- Agrega más opciones de color según tus necesidades -->
+    </select>
+    <div class="pointer-events-none absolute inset-y-0 right-0 flex px-2 text-gray-700">
+      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <path
+          d="M9.293 12.293a1 1 0 011.414 0l5 5a1 1 0 01-1.414 1.414L10 14.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 010-1.414z"/>
+      </svg>
+    </div>
+  </div>
+</div>

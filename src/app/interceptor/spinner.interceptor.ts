@@ -6,14 +6,14 @@ import {SpinnerService} from "../core/services/spinner.service";
 
 @Injectable()
 export class SpinnerInterceptor implements HttpInterceptor {
-  private _activeRequest = 0;
+  private _activeRequest: number = 0;
 
   constructor(private spinnerService: SpinnerService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this._activeRequest === 0) {
-      this.spinnerService.show(); // Mostrar el spinner antes de la solicitud
+      this.spinnerService.show();
     }
     this._activeRequest++;
 
@@ -26,7 +26,7 @@ export class SpinnerInterceptor implements HttpInterceptor {
   private _stopLoader() {
     this._activeRequest--;
     if (this._activeRequest === 0) {
-      this.spinnerService.hide(); // Ocultar el spinner después de la respuesta
+      this.spinnerService.hide();
     }
   }
 

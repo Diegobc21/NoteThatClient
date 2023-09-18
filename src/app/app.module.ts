@@ -11,10 +11,12 @@ import {UserModule} from "./user/user.module";
 import {RouterModule} from "@angular/router";
 import {SpinnerInterceptor} from "./interceptor/spinner.interceptor";
 import {FormsModule} from "@angular/forms";
+import { DarkModeDirective } from './core/directives/dark-mode.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DarkModeDirective
   ],
   imports: [
     HttpClientModule,
@@ -33,7 +35,8 @@ import {FormsModule} from "@angular/forms";
     multi: true
   }],
   exports: [
-    AppComponent
+    AppComponent,
+    DarkModeDirective
   ],
   bootstrap: [AppComponent]
 })
