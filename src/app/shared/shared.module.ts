@@ -13,6 +13,7 @@ import {SearchInputComponent} from './search-input/search-input.component';
 import {PopupMenuComponent} from './popup-menu/popup-menu.component';
 import {DarkModeButtonComponent} from './buttons/dark-mode-button/dark-mode-button.component';
 import {ColorSelectorComponent} from './color-selector/color-selector.component';
+import { OverlayComponent } from './overlay/overlay.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {ColorSelectorComponent} from './color-selector/color-selector.component'
     SearchInputComponent,
     PopupMenuComponent,
     DarkModeButtonComponent,
-    ColorSelectorComponent
+    ColorSelectorComponent,
+    OverlayComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ import {ColorSelectorComponent} from './color-selector/color-selector.component'
     SearchInputComponent,
     PopupMenuComponent,
     DarkModeButtonComponent,
-    ColorSelectorComponent
+    ColorSelectorComponent,
+    OverlayComponent
   ],
 })
 export class SharedModule {

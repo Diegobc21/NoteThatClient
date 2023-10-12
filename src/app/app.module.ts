@@ -9,7 +9,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {UserModule} from "./user/user.module";
 import {RouterModule} from "@angular/router";
-import {SpinnerInterceptor} from "./interceptor/spinner.interceptor";
+import {SpinnerInterceptor} from "./core/interceptor/spinner.interceptor";
 import {FormsModule} from "@angular/forms";
 import { DarkModeDirective } from './core/directives/dark-mode.directive';
 

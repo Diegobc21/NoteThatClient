@@ -32,7 +32,7 @@ export class NoteComponent implements OnDestroy {
     this.windowScrollY = window.scrollY;
   }
 
-  @HostListener('document:click', ['$event'])
+  @HostListener('document:dblclick', ['$event'])
   handleDocumentClick(event: MouseEvent): void {
     console.log(event);
   }
@@ -43,8 +43,10 @@ export class NoteComponent implements OnDestroy {
   public isAddingNote: boolean = false;
   public isEditingNote: boolean = false;
   public popupEnabled: boolean = false;
+  public isDeleteOverlayVisible: boolean = false;
   public popupPosition: {} = {};
   public popupOptions: string[] = ['Editar', 'Eliminar'];
+  public selectedNote: Note | null = null;
 
   public newNote: any = {
     title: '',
@@ -59,14 +61,13 @@ export class NoteComponent implements OnDestroy {
 
   private unsubscribe$: Subject<void> = new Subject<void>();
   private _noteList: Note[] = [];
+  private _editingFormIsEmpty: boolean = false;
   private subscriptions: Subscription[] = [];
   private _showAlert: boolean = true;
-  private selectedNote: Note | null = null;
   private windowScrollY: number = 0;
-
-  private months: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-    'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-  private usedMonth: boolean[] = [false, false, false, false, false, false, false, false, false, false, false, false];
+  // private usedMonth: boolean[] = [];
+  // private months: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+  //   'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   protected readonly AlertType = AlertType;
 
@@ -103,10 +104,11 @@ export class NoteComponent implements OnDestroy {
   }
 
   get editingFormIsEmpty(): boolean {
-    if (this.editingNote.content === '') {
-      return this.editingNote.title === '';
-    }
-    return this.editingNote.title === '';
+    return this._editingFormIsEmpty;
+  }
+
+  public setEditingFormIsEmpty(): void {
+    this._editingFormIsEmpty = !this.editingNote.title;
   }
 
   public goToHome(): void {
@@ -143,10 +145,10 @@ export class NoteComponent implements OnDestroy {
   public submitEditing(): void {
     if (this.editingNote.title !== '') {
       this.noteService.editNote({
+        _id: this.editingNote._id,
         title: this.editingTitle?.nativeElement.value,
         content: this.editingContent?.nativeElement.value,
         user: this.authService.email,
-        _id: this.editingNote._id,
         creationDate: this.editingNote.creationDate
       })
         .pipe(takeUntil(this.unsubscribe$))
@@ -172,9 +174,13 @@ export class NoteComponent implements OnDestroy {
     if (this.popupOptions[0] === event) {
       this.editNote(this.selectedNote!)
     } else {
-      this.deleteNote(this.selectedNote!);
+      this.toggleDeleteOverlay();
     }
     this.toggleClickPopup();
+  }
+
+  public toggleDeleteOverlay(): void {
+    this.isDeleteOverlayVisible = !this.isDeleteOverlayVisible;
   }
 
   public toggleEditing(note: Note, event: MouseEvent): void {
@@ -198,9 +204,9 @@ export class NoteComponent implements OnDestroy {
 
   public editNote(note: Note, event?: MouseEvent): void {
     this.editingNote = {
+      _id: note._id,
       title: note.title,
       content: note.content,
-      _id: note._id,
       creationDate: note.creationDate,
       user: note.user
     };
@@ -221,34 +227,13 @@ export class NoteComponent implements OnDestroy {
     };
   }
 
-  public getMonth(note: Note): string {
-    const month: number = new Date(note.creationDate).getMonth();
-    let response: string = '';
-    if (!this.usedMonth[month]) {
-      this.usedMonth[month] = true;
-      response = this.months[month] + ' ' + new Date(note.creationDate).getFullYear().toString();
-    }
-    // this.tarjetasPorMes();
-    return response;
-  }
-
-  // public tarjetasPorMes() {
-  //   return this._noteList.reduce((result, tarjeta) => {
-  //     const monthYear: number = new Date(tarjeta.creationDate).getMonth();
-  //     if (!result[monthYear]) {
-  //       result[monthYear] = [];
-  //     }
-  //     result[monthYear].push(tarjeta);
-  //     return result;
-  //   }, {});
-  // }
-
   public deleteNote(note: Note): void {
     this.noteService.deleteOne(note).pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (deletedNoteId: string) => {
           this._noteList = this._noteList.filter((n: Note) => n._id !== deletedNoteId)
           this.updateAlertVisibility();
+          this.toggleDeleteOverlay();
         }
       });
   }
@@ -263,18 +248,14 @@ export class NoteComponent implements OnDestroy {
 
   public toggleIsAddingNote(): void {
     this.isAddingNote = !this.isAddingNote;
-    this.isEditingNote = false;
   }
 
   public toggleIsEditingNote(): void {
     this.isEditingNote = !this.isEditingNote;
-    this.isAddingNote = false;
   }
 
   public ngOnDestroy(): void {
     this.stopSubscriptions();
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
   public getNoteDate(date: Date): string {
@@ -307,6 +288,7 @@ export class NoteComponent implements OnDestroy {
 
   private stopSubscriptions(): void {
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
-
 }

@@ -2,10 +2,9 @@ import {Component, ElementRef, OnDestroy, Renderer2, ViewChild} from '@angular/c
 import {ScreenSizeService} from "../../core/services/screen-size.service";
 import {AuthService} from "../../core/services/auth.service";
 import {NavigationService} from "../../core/services/navigation.service";
-import {UserService} from "../../core/services/user.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
-import {OPTION_LIST} from "../../options/option-list";
+import {optionList} from "../../options/option-list";
 
 @Component({
   selector: 'app-navbar',
@@ -17,12 +16,12 @@ export class NavbarComponent implements OnDestroy {
   @ViewChild('userButton') private userButton!: ElementRef;
   @ViewChild('menu') private menu: ElementRef | undefined;
 
-  protected readonly OPTION_LIST: any[] = OPTION_LIST;
+  protected readonly optionList: any[] = optionList;
 
-  public activeRouteClasses: string = 'pointer bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium';
-  public inactiveRouteClasses: string = 'pointer text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium';
-  public activeRouteClassesSm: string = 'bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium';
-  public inactiveRouteClassesSm: string = 'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium';
+  public activeRouteClasses: string = 'cursor-default bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium';
+  public inactiveRouteClasses: string = 'cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium';
+  public activeRouteClassesSm: string = 'cursor-default bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium';
+  public inactiveRouteClassesSm: string = 'cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium';
 
   private _subscriptions: Subscription[] = [];
   private _isOpenUserMenu: boolean = false;
@@ -34,7 +33,6 @@ export class NavbarComponent implements OnDestroy {
     private router: Router,
     private screenSizeService: ScreenSizeService,
     private authService: AuthService,
-    private userService: UserService,
     private navigationService: NavigationService
   ) {
     this.startSubscriptions();
@@ -96,7 +94,7 @@ export class NavbarComponent implements OnDestroy {
 
   private startSubscriptions(): void {
     this._subscriptions.push(this.screenSizeService.screenWidth$.asObservable().subscribe({
-        next: (value) => this._mobileScreen = value < 640
+        next: (value): boolean => this._mobileScreen = value < 640
       })
     )
   }

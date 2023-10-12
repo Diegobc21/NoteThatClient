@@ -17,7 +17,7 @@ import {CalendarComponent} from './calendar/calendar.component';
   imports: [
     CommonModule,
     FormsModule,
-    SharedModule,
+    SharedModule
   ],
   exports: [
     NoteComponent,

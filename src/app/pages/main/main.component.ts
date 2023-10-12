@@ -3,8 +3,7 @@ import {UserService} from "../../core/services/user.service";
 import {NavigationService} from "../../core/services/navigation.service";
 import {User} from "../../interfaces/user.interface";
 import {Subscription} from "rxjs";
-import {OptionType} from "../../options/option-type.enum";
-import {OPTION_LIST} from "../../options/option-list";
+import {optionList} from "../../options/option-list";
 
 @Component({
   selector: 'app-main',
@@ -12,6 +11,7 @@ import {OPTION_LIST} from "../../options/option-list";
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, OnDestroy {
+
   public fullName: string = '';
 
   private subs: Subscription[] = [];
@@ -23,10 +23,10 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   get optionList(): any[] {
-    return OPTION_LIST.filter(option => option.type !== OptionType.Home);
+    return optionList;
   }
 
-  public goToOption(option: OptionType): void {
+  public goToOption(option: string): void {
     this.navigationService.navigateByUrl(option).then();
   }
 
@@ -41,7 +41,6 @@ export class MainComponent implements OnInit, OnDestroy {
   public navigateToProfile(): void {
     this.navigationService.navigateToProfile().then();
   }
-
 
   public ngOnDestroy(): void {
     this.subs.forEach((subscription: Subscription) => subscription.unsubscribe());

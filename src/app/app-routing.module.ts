@@ -3,7 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {MainComponent} from "./pages/main/main.component";
 import {RegisterComponent} from "./user/register/register.component";
 import {LoginComponent} from "./user/login/login.component";
-import {AuthGuard} from "./guard/auth.guard";
+import {AuthGuard} from "./core/guard/auth.guard";
 import {ProfileComponent} from "./pages/profile/profile.component";
 import {NoteComponent} from "./options/note/note.component";
 import {FriendComponent} from "./options/friend/friend.component";

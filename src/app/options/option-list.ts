@@ -1,29 +1,24 @@
 import {OptionType} from "./option-type.enum";
 
-export const OPTION_LIST: any[] = [
+export let optionList: any[] = [
   {
-    label: OptionType.Home,
-    route: '/home',
-    type: OptionType.Home
-  },
-  {
-    label: OptionType.Note,
     route: '/option/note',
-    type: OptionType.Note
+    type: OptionType.Note,
+    description: 'Escribe tus ideas'
   },
   {
-    label: OptionType.Friends,
     route: '/option/friends',
-    type: OptionType.Friends
+    type: OptionType.Friends,
+    description: 'Encuentra a tus amigos'
   },
   {
-    label: OptionType.Spotify,
     route: '/option/spotify',
-    type: OptionType.Spotify
+    type: OptionType.Spotify,
+    description: 'Comparte tu música'
   },
   {
-    label: OptionType.Calendar,
     route: '/option/calendar',
-    type: OptionType.Calendar
+    type: OptionType.Calendar,
+    description: 'Organiza tus tareas'
   }
 ];

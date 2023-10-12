@@ -1,11 +1,11 @@
 <div class="flex flex-col md:flex-row justify-between items-center">
   <div class="mb-6 md:mb-0">
-    <img class="w-auto h-20" ngSrc="./assets/NoteThatFull.png" alt="Logo de la aplicación" height="200" width="400">
+    <img class="w-auto h-20" src="./assets/NoteThatFull.png" alt="Logo de la aplicación">
   </div>
   <div class="flex items-center">
     <h2 class="text-xl font-bold text-white">{{fullName}}</h2>
     <a (click)="navigateToProfile()"
-       class="pointer ml-4 bg-cyan-600 hover:bg-cyan-400 text-white py-2 px-4 rounded-lg transition-colors duration-300 flex items-center">
+       class="cursor-pointer ml-4 bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition-colors duration-300 flex items-center">
       <span>Ver perfil</span>
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -16,8 +16,13 @@
 </div>
 <div class="mt-10">
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-    <div *ngFor="let card of optionList">
-      <app-card [option]="card.type" (click)="goToOption(card.route)"></app-card>
+    <div *ngFor="let option of optionList">
+      <app-card (click)="goToOption(option.route)">
+        <ng-container>
+          <div class="text-lg font-bold mb-2 hover:text-cyan-800">{{option.type}}</div>
+          <p>{{option.description}}</p>
+        </ng-container>
+      </app-card>
     </div>
   </div>
 </div>
