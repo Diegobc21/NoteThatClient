@@ -132,17 +132,17 @@
     </div>
   </div>
 
-  <div class="mt-4">
-    <app-alert
-      *ngIf="showAlert"
-      [type]="AlertType.WARNING"
-      (onClose)="modalClosed()"
-      [message]="'Aún no tienes ninguna nota'">
-    </app-alert>
-  </div>
+<!--  <div class="mt-4">-->
+<!--    <app-alert-->
+<!--      *ngIf="showAlert"-->
+<!--      [type]="AlertType.WARNING"-->
+<!--      (onClose)="modalClosed()"-->
+<!--      [message]="'Aún no tienes ninguna nota'">-->
+<!--    </app-alert>-->
+<!--  </div>-->
 </div>
 
-<div *ngIf="spinnerService.showSpinner">
+<div *ngIf="showSpinner() | async">
   <div *ngFor="let _ of [].constructor(3)" class="border border-blue-300 shadow rounded-md mt-4 p-4 w-full">
     <div class="animate-pulse flex space-x-4">
       <div class="flex-1 space-y-6 py-1">

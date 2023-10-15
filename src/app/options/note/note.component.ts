@@ -1,7 +1,7 @@
 import {Component, ElementRef, HostListener, OnDestroy, ViewChild} from '@angular/core';
 import {Note} from "../../interfaces/note.interface";
 import {NoteService} from "../../core/services/note.service";
-import {Subject, Subscription, takeUntil} from "rxjs";
+import {Observable, Subject, Subscribable, Subscription, takeUntil} from "rxjs";
 import {AlertType} from "../../shared/alert/alert-type";
 import {SpinnerService} from "../../core/services/spinner.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
@@ -240,6 +240,10 @@ export class NoteComponent implements OnDestroy {
 
   public modalClosed(): void {
     this.showAlert = false;
+  }
+
+  public showSpinner(): Observable<boolean> {
+    return this.spinnerService.getSpinnerVisibility();
   }
 
   private updateAlertVisibility(): void {

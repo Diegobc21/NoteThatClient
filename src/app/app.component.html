@@ -2,7 +2,9 @@
   <app-spinner *ngIf="showSpinner"></app-spinner>
   <app-popup *ngIf="sessionExpired" [message]="sessionExpiredMessage"></app-popup>
   <app-navbar appDarkMode *ngIf="show"></app-navbar>
-  <div class="max-w-screen-2xl mx-auto p-3 mt-16 overflow-y-auto h-[calc(100vh-4rem)]">
+  <div
+    [ngClass]="getContentClasses()"
+    class="max-w-screen-2xl mx-auto p-3 overflow-y-auto">
     <router-outlet appDarkMode></router-outlet>
   </div>
   <!--<app-footer *ngIf="show"></app-footer>-->

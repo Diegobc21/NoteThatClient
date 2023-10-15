@@ -55,6 +55,9 @@ export class AppComponent implements OnDestroy {
   get sessionExpired(): boolean {
     return this.authService.sessionExpired;
   }
+  public getContentClasses(): string {
+    return this.show ? 'h-[calc(100vh-4rem)] mt-16' : 'h-[calc(100vh)]';
+  }
 
   public ngOnDestroy(): void {
     this.routerSubscription.unsubscribe();

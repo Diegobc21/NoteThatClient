@@ -1,6 +1,9 @@
-<div class="spinner-container">
+<div *ngIf="!getLoggedIn" class="spinner-container">
   <div class="lds-ripple">
     <div></div>
     <div></div>
   </div>
+</div>
+<div *ngIf="getLoggedIn" class="text-center">
+  <span *ngIf="spinnerVisible | async" class="loader"></span>
 </div>
