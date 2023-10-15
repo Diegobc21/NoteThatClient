@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+$gray-300: #555;
+$gray-800: #1f2937;
+$gray-700: #888;
+
 .neon-text {
   text-shadow: 0 0 5px #e600e6, 0 0 10px #e600e6, 0 0 20px #e600e6, 0 0 40px #e600e6;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: $gray-800;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $gray-700;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $gray-300;
 }

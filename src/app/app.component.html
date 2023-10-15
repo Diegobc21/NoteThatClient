@@ -1,10 +1,9 @@
-<app-spinner *ngIf="showSpinner"></app-spinner>
-<app-popup *ngIf="sessionExpired" [message]="sessionExpiredMessage"></app-popup>
-<!--<h1 appDarkMode class="bg-gray-800 text-white">Test</h1>-->
-<app-navbar *ngIf="show"></app-navbar>
-<div  class="bg-gray-800 text-white max-w-screen-2xl mx-auto mt-6">
-  <div class="mx-3">
+<div class="bg-gray-800 text-white">
+  <app-spinner *ngIf="showSpinner"></app-spinner>
+  <app-popup *ngIf="sessionExpired" [message]="sessionExpiredMessage"></app-popup>
+  <app-navbar appDarkMode *ngIf="show"></app-navbar>
+  <div class="max-w-screen-2xl mx-auto p-3 mt-16 overflow-y-auto h-[calc(100vh-4rem)]">
     <router-outlet appDarkMode></router-outlet>
   </div>
+  <!--<app-footer *ngIf="show"></app-footer>-->
 </div>
-<!--<app-footer *ngIf="show"></app-footer>-->

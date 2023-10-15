@@ -4,6 +4,7 @@ import {filter, Subscription} from "rxjs";
 import {SpinnerService} from "./core/services/spinner.service";
 import {AuthService} from "./core/services/auth.service";
 import {MediaCheckService} from "./core/services/media-check.service";
+import {ScreenSizeService} from "./core/services/screen-size.service";
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import {MediaCheckService} from "./core/services/media-check.service";
 export class AppComponent implements OnDestroy {
 
   @HostListener('click', ['${event}'])
-  private onClick(): void {
+  public onClick(): void {
     this.mediaCheckService.emitClick(event as MouseEvent);
   }
 
@@ -28,6 +29,7 @@ export class AppComponent implements OnDestroy {
     private router: Router,
     private spinnerService: SpinnerService,
     private mediaCheckService: MediaCheckService,
+    private screenSizeService: ScreenSizeService,
     private authService: AuthService
   ) {
     this.routerSubscription =
@@ -39,10 +41,11 @@ export class AppComponent implements OnDestroy {
             this.show = this.currentUrlPath !== '/user/register' && this.currentUrlPath !== '/user/login';
           }
         });
+
   }
 
   get sessionExpiredMessage(): string {
-    return 'Tu sesión ha expirado.';
+    return 'Tu sesión ha expirado';
   }
 
   get showSpinner(): boolean {
