@@ -1,31 +1,36 @@
-<app-popup-menu *ngIf="popupEnabled"
-                (emittedOption)="handlePopupOption($event)"
-                [popupPosition]="getPopupPosition()"
-                [options]="popupOptions"
+<app-popup-menu
+  *ngIf="popupEnabled"
+  (emittedOption)="handlePopupOption($event)"
+  [popupPosition]="getPopupPosition()"
+  [options]="popupOptions"
 ></app-popup-menu>
 
 <!--Deleting note-->
 
-<app-overlay *ngIf="isDeleteOverlayVisible"
-             (onCloseEvent)="toggleDeleteOverlay()"
-             (onAcceptEvent)="deleteNote(selectedNote!)">
+<app-overlay
+  *ngIf="isDeleteOverlayVisible"
+  (onCloseEvent)="toggleDeleteOverlay()"
+  (onAcceptEvent)="deleteNote(selectedNote!)"
+>
   <ng-container>
-    <h1 class="text-center font-bold">¿Seguro que deseas eliminar esta nota?</h1>
+    <h1 class="text-center font-bold">
+      ¿Seguro que deseas eliminar esta nota?
+    </h1>
     <div
       class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl hover:shadow-sm mt-4 is-note"
     >
-      <div class="rounded-[10px] bg-gray-800 p-4 sm:p-6">
+      <div class="rounded-[10px] bg-gray-950 p-4 sm:p-6">
         <time class="block text-xs opacity-80">
-          {{getNoteDate(selectedNote!.creationDate)}}
+          {{ getNoteDate(selectedNote!.creationDate) }}
         </time>
         <div class="flex flex-row justify-between">
           <div>
             <h3 class="mt-0.5 text-lg font-bold">
-              {{selectedNote!.title}}
+              {{ selectedNote!.title }}
             </h3>
 
             <h4 class="mt-0.5 text-sm font-medium">
-              {{selectedNote!.content}}
+              {{ selectedNote!.content }}
             </h4>
           </div>
         </div>
@@ -36,26 +41,37 @@
 
 <!--  Editing note  -->
 
-<app-overlay *ngIf="isEditingNote"
-             [disableAccept]="editingFormIsEmpty"
-             (onCloseEvent)="toggleIsEditingNote()"
-             (onAcceptEvent)="submitEditing()">
+<app-overlay
+  *ngIf="isEditingNote"
+  [disableAccept]="editingFormIsEmpty"
+  (onCloseEvent)="toggleIsEditingNote()"
+  (onAcceptEvent)="submitEditing()"
+>
   <ng-container>
-    <div class="overflow-hidden transition-all duration-500">
+    <div class="overflow-hidden">
       <h1 class="text-center font-bold text-xl mb-2">Editar nota</h1>
       <div
-        class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl transition hover:shadow-sm mt-4">
-        <div class="rounded-[10px] bg-gray-800 p-4 sm:p-6">
+        class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl transition hover:shadow-sm mt-4"
+      >
+        <div class="rounded-[10px] bg-gray-950 p-4 sm:p-6">
           <form (ngSubmit)="submitEditing()">
-            <input #editingTitle
-                   class="bg-gray-800 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-4 w-full focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
-                   type="text" placeholder="Título (obligatorio)*"
-                   [(ngModel)]="editingNote.title" (ngModelChange)="setEditingFormIsEmpty()"
-                    required>
+            <input
+              #editingTitle
+              class="bg-gray-950 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-4 w-full focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
+              type="text"
+              placeholder="Título (obligatorio)*"
+              [(ngModel)]="editingNote.title"
+              (ngModelChange)="setEditingFormIsEmpty()"
+              required
+            />
             <div class="flex flex-col">
-              <textarea #editingContent
-                        class="bg-gray-800 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-2 focus:outline-none focus:bg-gray-700  hover:bg-gray-700"
-                        rows="3" placeholder="Contenido" [value]="editingNote.content"></textarea>
+              <textarea
+                #editingContent
+                class="bg-gray-950 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-2 focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
+                rows="3"
+                placeholder="Contenido"
+                [value]="editingNote.content"
+              ></textarea>
             </div>
           </form>
         </div>
@@ -66,40 +82,48 @@
 
 <div *ngIf="!spinnerService.showSpinner">
   <div class="max-w-screen-xl mx-auto">
-    <div class="flex flex-row justify-between relative">
-      <button (click)="goToHome()"
-              class="bg-gray-700 hover:bg-gray-400 transition-all
-              text-white font-bold py-2 px-4 rounded">
-        Inicio
-      </button>
-      <button (click)="toggleIsAddingNote()"
-              class="bg-gradient-to-r to-green-500 via-blue-500 from-purple-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block sm:inline-block">
-        {{isAddingNote ? 'Cancelar' : 'Añadir nota'}}
+    <div class="flex flex-row justify-center relative">
+      <button
+        (click)="toggleIsAddingNote()"
+        class="bg-gradient-to-r to-green-500 via-blue-500 from-purple-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block sm:inline-block"
+      >
+        {{ isAddingNote ? "Cancelar" : "Añadir nota" }}
       </button>
     </div>
   </div>
 
-  <div [@slideDown]="isAddingNote ? 'visible' : 'hidden'"
-       [@slideUp]="isAddingNote ? 'visible' : 'hidden'"
-       class="overflow-hidden">
+  <div
+    [@slideDown]="isAddingNote ? 'visible' : 'hidden'"
+    [@slideUp]="isAddingNote ? 'visible' : 'hidden'"
+    class="overflow-hidden"
+  >
     <div
-      class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl transition hover:shadow-sm mt-4">
-      <div class="rounded-[10px] bg-gray-800 p-4 sm:p-6">
-
+      class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl transition hover:shadow-sm mt-4"
+    >
+      <div class="rounded-[10px] bg-gray-950 p-4 sm:p-6">
         <h1 class="text-2xl font-bold text-white mb-2">Nueva nota</h1>
         <form (ngSubmit)="submitNote()">
           <input
-            class="bg-gray-800 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-4 w-full focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
-            type="text" placeholder="*Título" [(ngModel)]="newNote.title" required>
+            class="bg-gray-950 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-4 w-full focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
+            type="text"
+            placeholder="*Título"
+            [(ngModel)]="newNote.title"
+            required
+          />
           <div class="flex flex-col">
-              <textarea
-                class="bg-gray-800 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-2 focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
-                rows="3" placeholder="Contenido" [(ngModel)]="newNote.content"></textarea>
+            <textarea
+              class="bg-gray-950 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-2 focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
+              rows="3"
+              placeholder="Contenido"
+              [(ngModel)]="newNote.content"
+            ></textarea>
             <div class="flex flex-row justify-end space-x-2">
-<!--              <app-color-selector></app-color-selector>-->
+              <!--              <app-color-selector></app-color-selector>-->
               <button
                 class="bg-purple-500 hover:bg-purple-700 disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded"
-                type="submit" [disabled]="addingFormIsEmpty">
+                type="submit"
+                [disabled]="addingFormIsEmpty"
+              >
                 Crear
               </button>
             </div>
@@ -109,22 +133,23 @@
     </div>
   </div>
   <div *ngFor="let note of noteList">
-    <div (click)="toggleEditing(note, $event)" id="note"
-         class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600
-       p-0.5 shadow-xl hover:shadow-sm mt-4 is-note cursor-pointer"
+    <div
+      (click)="toggleEditing(note, $event)"
+      id="note"
+      class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl hover:shadow-sm mt-4 is-note cursor-pointer"
     >
-      <div class="rounded-[10px] bg-gray-800 p-4 sm:p-6">
+      <div class="rounded-[10px] bg-gray-950 p-4 sm:p-6">
         <time class="block text-xs opacity-80">
-          {{getNoteDate(note.creationDate)}}
+          {{ getNoteDate(note.creationDate) }}
         </time>
         <div class="flex flex-row justify-between">
           <div>
             <h3 class="mt-0.5 text-lg font-bold">
-              {{note.title}}
+              {{ note.title }}
             </h3>
 
             <h4 class="mt-0.5 text-sm font-medium">
-              {{note.content}}
+              {{ note.content }}
             </h4>
           </div>
         </div>
@@ -132,18 +157,21 @@
     </div>
   </div>
 
-<!--  <div class="mt-4">-->
-<!--    <app-alert-->
-<!--      *ngIf="showAlert"-->
-<!--      [type]="AlertType.WARNING"-->
-<!--      (onClose)="modalClosed()"-->
-<!--      [message]="'Aún no tienes ninguna nota'">-->
-<!--    </app-alert>-->
-<!--  </div>-->
+  <div *ngIf="!(showSpinner() | async) && noteList?.length === 0" class="mt-4">
+    <app-alert
+      *ngIf="showAlert"
+      [type]="AlertType.WARNING"
+      (onClose)="modalClosed()"
+      [message]="'Aún no tienes ninguna nota'">
+    </app-alert>
+  </div>
 </div>
 
 <div *ngIf="showSpinner() | async">
-  <div *ngFor="let _ of [].constructor(3)" class="border border-blue-300 shadow rounded-md mt-4 p-4 w-full">
+  <div
+    *ngFor="let _ of [].constructor(3)"
+    class="border border-blue-300 shadow rounded-md mt-4 p-4 w-full"
+  >
     <div class="animate-pulse flex space-x-4">
       <div class="flex-1 space-y-6 py-1">
         <div class="h-2 bg-slate-700 rounded"></div>

@@ -24,7 +24,7 @@ export class DarkModeDirective {
 
   private toggleClasses() {
     const classMappings: {} = {
-      'bg-gray-800': this.isDarkMode ? 'bg-gray-100' : 'bg-gray-800',
+      'bg-gray-950': this.isDarkMode ? 'bg-gray-100' : 'bg-gray-950',
       'text-white': this.isDarkMode ? 'text-black' : 'text-white'
     };
 

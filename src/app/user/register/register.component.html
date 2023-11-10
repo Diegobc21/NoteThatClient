@@ -4,14 +4,14 @@
   >
     <img
       ngSrc="assets/NoteThatFull.png"
-      style="max-width: 180px"
+      class="max-w-[180px]"
       alt="NoteThat"
       width="400"
       height="200"
     />
     <form
       autocomplete="on"
-      class="bg-sky-900 px-6 py-8 rounded shadow-xl text-black w-full mt-8"
+      class="bg-gray-800 px-6 py-8 rounded shadow-xl text-black w-full mt-8"
       (ngSubmit)="register($event)"
     >
       <h1 class="mb-8 text-cyan-50 text-2xl text-center">Crea tu cuenta</h1>
@@ -21,7 +21,7 @@
         type="text"
         [(ngModel)]="form.fullname"
         (keyup)="removeAlert($event)"
-        class="block border border-grey-light w-full p-3 rounded mb-4"
+        class="block text-white bg-gray-700 hover:bg-gray-800 focus:bg-gray-800 w-full p-3 rounded mb-4"
         placeholder="Nombre completo"
       />
 
@@ -30,7 +30,7 @@
         type="email"
         [(ngModel)]="form.email"
         (keyup)="removeAlert($event)"
-        class="block border border-grey-light w-full p-3 rounded mb-4"
+        class="block text-white bg-gray-700 hover:bg-gray-800 focus:bg-gray-800 w-full p-3 rounded mb-4"
         placeholder="Email"
       />
 
@@ -39,7 +39,7 @@
         type="password"
         [(ngModel)]="form.password"
         (keyup)="removeAlert($event)"
-        class="block border border-grey-light w-full p-3 rounded mb-4"
+        class="block text-white bg-gray-700 hover:bg-gray-800 focus:bg-gray-800 w-full p-3 rounded mb-4"
         placeholder="Contraseña"
       />
       <input
@@ -47,7 +47,7 @@
         type="password"
         [(ngModel)]="repeatPassword"
         (keyup)="removeAlert($event)"
-        class="block border border-grey-light w-full p-3 rounded mb-4"
+        class="block text-white bg-gray-700 hover:bg-gray-800 focus:bg-gray-800 w-full p-3 rounded mb-4"
         placeholder="Confirmar contraseña"
       />
 
@@ -62,7 +62,7 @@
       <button
         (click)="register($event)"
         type="submit"
-        class="w-full text-center py-3 rounded text-black bg-cyan-300 hover:bg-cyan-200 focus:outline-none my-1"
+        class="w-full text-center font-medium py-3 rounded text-purple-50 bg-purple-700 hover:bg-purple-500 my-1"
       >
         <app-spinner></app-spinner>Crear cuenta
       </button>
@@ -71,7 +71,7 @@
     <div class="text-gray-300 mt-6">
       Ya tienes cuenta?
       <a
-        class="cursor-pointer text-cyan-500 hover:text-cyan-200"
+        class="cursor-pointer text-purple-400 hover:text-purple-500"
         (click)="navigateToLogin()"
       >
         Inicia sesión

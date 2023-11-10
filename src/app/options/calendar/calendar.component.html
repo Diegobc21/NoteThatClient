@@ -1,5 +1,5 @@
 <!--Month view-->
-<div class="bg-gray-800 p-4 rounded-lg shadow-md">
+<div class="bg-gray-950 p-4 rounded-lg shadow-md">
   <h3 class="text-2xl text-white mb-4">{{ getTodayText() }}</h3>
   <div class="flex justify-between mt-4">
     <button (click)="previousMonth()"
@@ -24,7 +24,7 @@
         'border border-white p-2': true,
         'bg-gray-900': !isSameMonth(day)
       }"
-      class="text-center cursor-pointer hover:bg-purple-200 hover:text-black transition-all h-24"
+      class="text-center cursor-pointer hover:bg-purple-200 hover:text-black h-24"
       (click)="selectDay(day)"
     >
       {{ day.getDate() }}

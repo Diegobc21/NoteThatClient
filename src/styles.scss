@@ -10,23 +10,44 @@ $gray-700: #888;
   text-shadow: 0 0 5px #e600e6, 0 0 10px #e600e6, 0 0 20px #e600e6, 0 0 40px #e600e6;
 }
 
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
+@at-root {
+  :hover {
+    @apply transition-all duration-300;
+  }
+
+  button,
+  img,
+  div,
+  input {
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+
+    &:hover {
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: $gray-800;
-}
+@media(min-width: 1024px) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: $gray-700;
-  border-radius: 5px;
-}
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: $gray-800;
+  }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: $gray-300;
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: $gray-700;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: $gray-300;
+  }
 }
