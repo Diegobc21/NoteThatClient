@@ -1,24 +1,22 @@
-import {Injectable} from '@angular/core';
-import {environment} from "../../../environments/environment";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {catchError, EMPTY, map, Observable, tap} from "rxjs";
-import {User} from "../../interfaces/user.interface";
+import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
+import { User } from '../../interfaces/user.interface';
 import * as CryptoJS from 'crypto-js';
-import {NavigationService} from "./navigation.service";
+import { NavigationService } from './navigation.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private _sessionExpired: boolean = false;
   private endpoint: string = environment.apiUrl + `/user`;
 
   constructor(
     private http: HttpClient,
     private navigatorService: NavigationService
-  ) {
-  }
+  ) {}
 
   get sessionExpired(): boolean {
     return this._sessionExpired;
@@ -33,17 +31,17 @@ export class AuthService {
   }
 
   get email(): string {
-    const email = localStorage.getItem('email')
+    const email = localStorage.getItem('email');
     if (email !== '' && email !== null) {
       return email;
     }
+    console.error('ERROR: Email not found')
     this.logout();
     return '';
   }
 
   public isLoggedIn(): boolean {
-    return this.token !== ''
-      && this.token !== null;
+    return this.token !== '' && this.token !== null;
   }
 
   public register(user: User): Observable<User> {
@@ -53,18 +51,19 @@ export class AuthService {
 
   public login(user: User): Observable<any> {
     user.password = this.encrypt(user.password);
-    return this.http.post<User>(this.endpoint + '/login', user)
-      .pipe(
-        tap((response: any): void => {
-          this.saveLocalStorage(response.token, response.email);
-        })
-      );
+    return this.http.post<User>(this.endpoint + '/login', user).pipe(
+      tap(
+        (res: any) => this.saveLocalStorage(res.token, res.email),
+        (err: any) => console.error(err)
+      )
+    );
   }
 
   public logout(): void {
     this.emptyLocalStorage();
-    this.navigatorService.navigateToLogin()
-      .finally(() => console.log('Logged out'))
+    this.navigatorService
+      .navigateToLogin()
+      .finally(() => console.log('Logged out'));
   }
 
   public getHeaders(): HttpHeaders {
@@ -85,7 +84,6 @@ export class AuthService {
     return data.pipe(
       map((result: Object): any => {
         if (result) {
-          // this.sessionExpired = false;
           return result;
         } else {
           console.log('Error retrieving user data.');
@@ -94,9 +92,7 @@ export class AuthService {
         }
       }),
       catchError((err: any) => {
-        // if (err.statusText === 'Unauthorized') {
-        //   this.sessionExpired = true;
-        // }
+        console.error(err)
         this.logout();
         return EMPTY;
       })
@@ -106,5 +102,4 @@ export class AuthService {
   private encrypt(input: string): string {
     return CryptoJS.SHA256(input).toString();
   }
-
 }

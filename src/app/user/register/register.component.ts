@@ -1,24 +1,21 @@
-import {Component, OnDestroy} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AuthService} from "../../core/services/auth.service";
-import {NavigationService} from "../../core/services/navigation.service";
-import {AlertType} from "../../shared/alert/alert-type";
-import {Subscription} from "rxjs";
-import {User} from "../../interfaces/user.interface";
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../core/services/auth.service';
+import { NavigationService } from '../../core/services/navigation.service';
+import { User } from '../../interfaces/user.interface';
+import { AlertType } from '../../shared/alert/alert-type';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnDestroy {
-
   public form: User = {
     fullname: '',
     email: '',
-    password: ''
+    password: '',
   };
-
   public repeatPassword = '';
 
   public showAlert: boolean = false;
@@ -29,7 +26,6 @@ export class RegisterComponent implements OnDestroy {
   protected readonly AlertType = AlertType;
 
   constructor(
-    private formBuilder: FormBuilder,
     private authService: AuthService,
     private navigationService: NavigationService
   ) {
@@ -48,20 +44,23 @@ export class RegisterComponent implements OnDestroy {
       this.showAlert = this.formInvalid();
       if (!this.formInvalid()) {
         this.subscriptions.push(
-          this.authService.register(
-            this.form
-          ).subscribe({
+          this.authService.register(this.form).subscribe({
             next: () => this.navigationService.navigateToLogin().then(),
-            error: () => this.enableAlert()
+            error: () => {
+              this.setMessageAsAuthError()
+              this.enableAlert()},
           })
-        )
+        );
       }
     }
   }
 
   private formInvalid(): boolean {
-    return this.form.fullname === ''
-      || this.form.email === '' || this.form.password.length < 5;
+    return (
+      this.form.fullname === '' ||
+      this.form.email === '' ||
+      this.form.password.length < 5
+    );
   }
 
   public removeAlert(event: KeyboardEvent): void {
@@ -79,12 +78,19 @@ export class RegisterComponent implements OnDestroy {
     this.navigationService.navigateToLogin().then();
   }
 
-  public ngOnDestroy() {
-    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+  private setMessageAsSystemError(): void {
+    this.errorMessage = 'Fallo de sistema';
+  }
+
+  private setMessageAsAuthError(): void {
+    this.errorMessage = 'Revisa los campos';
   }
 
   private enableAlert(): void {
-    this.errorMessage = 'Revisa los campos';
     this.showAlert = true;
+  }
+
+  public ngOnDestroy() {
+    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 }
