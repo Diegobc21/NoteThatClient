@@ -20,5 +20,10 @@ export let optionList: any[] = [
     route: '/option/calendar',
     type: OptionType.Calendar,
     description: 'Organiza tus tareas'
+  },
+  {
+    route: '/option/passwords',
+    type: OptionType.Passwords,
+    description: 'Gestiona tus contraseñas'
   }
 ];

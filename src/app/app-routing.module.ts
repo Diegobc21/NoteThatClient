@@ -10,6 +10,7 @@ import {FriendComponent} from "./options/friend/friend.component";
 import {FriendSearchComponent} from "./options/friend/friend-search/friend-search.component";
 import {SpotifyComponent} from "./pages/spotify/spotify.component";
 import {CalendarComponent} from "./options/calendar/calendar.component";
+import { PasswordsComponent } from './pages/passwords/passwords.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,10 @@ const routes: Routes = [
       {
         path: 'calendar',
         component: CalendarComponent
+      },
+      {
+        path: 'passwords',
+        component: PasswordsComponent
       }
     ]
   },
