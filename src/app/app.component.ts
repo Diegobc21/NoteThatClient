@@ -1,18 +1,18 @@
-import {Component, HostListener, OnDestroy} from '@angular/core';
-import {NavigationEnd, Router} from "@angular/router";
-import {filter, Subscription} from "rxjs";
-import {SpinnerService} from "./core/services/spinner.service";
-import {AuthService} from "./core/services/auth.service";
-import {MediaCheckService} from "./core/services/media-check.service";
-import {ScreenSizeService} from "./core/services/screen-size.service";
+import { Component, HostListener, Inject, OnDestroy } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription, filter } from 'rxjs';
+import { AuthService } from './core/services/auth.service';
+import { MediaCheckService } from './core/services/media-check.service';
+import { SpinnerService } from './core/services/spinner.service';
+import { SubscriptionService } from './core/services/subscription.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-
 export class AppComponent implements OnDestroy {
+  private _subscriptionService = Inject(SubscriptionService);
 
   @HostListener('click', ['${event}'])
   public onClick(): void {
@@ -29,19 +29,18 @@ export class AppComponent implements OnDestroy {
     private router: Router,
     private spinnerService: SpinnerService,
     private mediaCheckService: MediaCheckService,
-    private screenSizeService: ScreenSizeService,
     private authService: AuthService
   ) {
-    this.routerSubscription =
-      this.router.events
-        .pipe(filter((event) => event instanceof NavigationEnd))
-        .subscribe({
-          next: (): void => {
-            this.currentUrlPath = this.router.routerState.snapshot.url;
-            this.show = this.currentUrlPath !== '/user/register' && this.currentUrlPath !== '/user/login';
-          }
-        });
-
+    this.routerSubscription = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe({
+        next: (): void => {
+          this.currentUrlPath = this.router.routerState.snapshot.url;
+          this.show =
+            this.currentUrlPath !== '/user/register' &&
+            this.currentUrlPath !== '/user/login';
+        },
+      });
   }
 
   get sessionExpiredMessage(): string {
@@ -60,7 +59,7 @@ export class AppComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.routerSubscription.unsubscribe();
+    this._subscriptionService.unsubscribe(this.routerSubscription);
+    // this.routerSubscription.unsubscribe();
   }
-
 }

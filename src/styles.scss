@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-$gray-300: #555;
-$gray-800: #1f2937;
-$gray-700: #888;
+$gray-300: #374151;
+$gray-800: #030712;
+$gray-700: #22304e;
 
 .neon-text {
   text-shadow: 0 0 5px #e600e6, 0 0 10px #e600e6, 0 0 20px #e600e6, 0 0 40px #e600e6;
@@ -12,7 +12,7 @@ $gray-700: #888;
 
 @at-root {
   :hover {
-    @apply transition-all duration-300;
+    @apply transition-all duration-200;
   }
 
   button,
@@ -32,7 +32,7 @@ $gray-700: #888;
 
 @media(min-width: 1024px) {
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
   }
 
   /* Track */

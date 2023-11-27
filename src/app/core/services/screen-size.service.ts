@@ -6,8 +6,8 @@ import {BehaviorSubject, debounceTime, fromEvent, Subject, takeUntil} from "rxjs
 })
 export class ScreenSizeService implements OnDestroy {
 
-  public screenWidth$: BehaviorSubject<any> = new BehaviorSubject(null);
-  public screenHeight$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public screenWidth$: BehaviorSubject<number> = new BehaviorSubject(0);
+  public screenHeight$: BehaviorSubject<number> = new BehaviorSubject(0);
 
   private _unsubscriber$: Subject<any> = new Subject();
 
