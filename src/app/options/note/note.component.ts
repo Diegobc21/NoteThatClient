@@ -1,12 +1,25 @@
-import {Component, ElementRef, HostListener, OnDestroy, ViewChild} from '@angular/core';
-import {Note} from "../../interfaces/note.interface";
-import {NoteService} from "../../core/services/note.service";
-import {Observable, Subject, Subscribable, Subscription, takeUntil} from "rxjs";
-import {AlertType} from "../../shared/alert/alert-type";
-import {SpinnerService} from "../../core/services/spinner.service";
-import {animate, state, style, transition, trigger} from "@angular/animations";
-import {AuthService} from "../../core/services/auth.service";
-import {NavigationService} from "../../core/services/navigation.service";
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
+import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { months } from 'src/app/utils/months';
+import { AuthService } from '../../core/services/auth.service';
+import { NavigationService } from '../../core/services/navigation.service';
+import { NoteService } from '../../core/services/note.service';
+import { SpinnerService } from '../../core/services/spinner.service';
+import { Note } from '../../interfaces/note.interface';
+import { AlertType } from '../../shared/alert/alert-type';
 
 @Component({
   selector: 'app-note',
@@ -14,22 +27,27 @@ import {NavigationService} from "../../core/services/navigation.service";
   styleUrls: ['./note.component.scss'],
   animations: [
     trigger('slideDown', [
-      state('hidden', style({height: '0', opacity: '0', overflow: 'hidden'})),
-      state('visible', style({height: '*', opacity: '1', overflow: 'hidden'})),
+      state('hidden', style({ height: '0', opacity: '0', overflow: 'hidden' })),
+      state(
+        'visible',
+        style({ height: '*', opacity: '1', overflow: 'hidden' })
+      ),
       transition('hidden <=> visible', animate('200ms ease-in-out')),
     ]),
     trigger('slideUp', [
-      state('hidden', style({height: '0', opacity: '0', overflow: 'hidden'})),
-      state('visible', style({height: '*', opacity: '1', overflow: 'hidden'})),
+      state('hidden', style({ height: '0', opacity: '0', overflow: 'hidden' })),
+      state(
+        'visible',
+        style({ height: '*', opacity: '1', overflow: 'hidden' })
+      ),
       transition('visible => hidden', animate('200ms ease-in-out')),
-    ])
+    ]),
   ],
 })
 export class NoteComponent implements OnDestroy {
-
   @HostListener('window:scroll', ['$event'])
   onWindowScroll(): void {
-    this.windowScrollY = window.scrollY;
+    this._windowScrollY = window.scrollY;
   }
 
   @HostListener('document:dblclick', ['$event'])
@@ -37,8 +55,8 @@ export class NoteComponent implements OnDestroy {
     console.log(event);
   }
 
-  @ViewChild('editingTitle', {static: false}) editingTitle!: ElementRef;
-  @ViewChild('editingContent', {static: false}) editingContent!: ElementRef;
+  @ViewChild('editingTitle', { static: false }) editingTitle!: ElementRef;
+  @ViewChild('editingContent', { static: false }) editingContent!: ElementRef;
 
   public isAddingNote: boolean = false;
   public isEditingNote: boolean = false;
@@ -50,24 +68,22 @@ export class NoteComponent implements OnDestroy {
 
   public newNote: any = {
     title: '',
-    content: ''
+    content: '',
   };
 
   public editingNote: any = {
     title: '',
     content: '',
-    _id: ''
+    _id: '',
   };
 
-  private unsubscribe$: Subject<void> = new Subject<void>();
+  private _unsubscribe$: Subject<void> = new Subject<void>();
   private _noteList: Note[] = [];
   private _editingFormIsEmpty: boolean = false;
-  private subscriptions: Subscription[] = [];
+  private _subscriptions: Subscription[] = [];
   private _showAlert: boolean = true;
-  private windowScrollY: number = 0;
-  // private usedMonth: boolean[] = [];
-  // private months: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
-  //   'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  private _windowScrollY: number = 0;
+  private _months: string[] = months;
 
   protected readonly AlertType = AlertType;
 
@@ -79,9 +95,6 @@ export class NoteComponent implements OnDestroy {
   ) {
     this.startSubscriptions();
     this.updateAlertVisibility();
-    // for (let i: number = 0; i < 12; i++) {
-    //   this.usedMonth[i] = false;
-    // }
   }
 
   get noteList(): Note[] {
@@ -111,68 +124,84 @@ export class NoteComponent implements OnDestroy {
     this._editingFormIsEmpty = !this.editingNote.title;
   }
 
+  public getTimeLineDate(date: Date): string {
+    const newDate = new Date(date);
+    return `${this._months[newDate.getMonth()]} ${newDate.getFullYear()}`;
+  }
+
+  public isDifferentMonth(index: number): boolean {
+    const note = new Date(this.noteList[index].creationDate);
+    const previousNote = new Date(this.noteList[index - 1]?.creationDate);
+
+    return note.getUTCMonth() !== previousNote.getUTCMonth();
+  }
+
   public goToHome(): void {
     this.navigationService.navigateToHome().then();
   }
 
   public submitNote(): void {
     if (!this.addingFormIsEmpty) {
-      this.noteService.addNote({
-        title: this.newNote.title,
-        content: this.newNote.content,
-        creationDate: new Date(),
-        user: this.authService.email
-      })
-        .pipe(takeUntil(this.unsubscribe$))
+      this.noteService
+        .addNote({
+          title: this.newNote.title,
+          content: this.newNote.content,
+          creationDate: new Date(),
+          user: this.authService.email,
+        })
+        .pipe(takeUntil(this._unsubscribe$))
         .subscribe({
           complete: (): void => {
             this.toggleIsAddingNote();
-            this.noteService.getNotes()
-              .pipe(takeUntil(this.unsubscribe$))
+            this.noteService
+              .getNotes()
+              .pipe(takeUntil(this._unsubscribe$))
               .subscribe({
                 next: (notes: Note[]) => {
                   this._noteList = this.sortNotesByDate(notes) ?? [];
                   this.updateAlertVisibility();
-                }
+                },
               });
             this.resetForm();
-          }
-        })
+          },
+        });
       this.resetNote();
     }
   }
 
   public submitEditing(): void {
     if (this.editingNote.title !== '') {
-      this.noteService.editNote({
-        _id: this.editingNote._id,
-        title: this.editingTitle?.nativeElement.value,
-        content: this.editingContent?.nativeElement.value,
-        user: this.authService.email,
-        creationDate: this.editingNote.creationDate
-      })
-        .pipe(takeUntil(this.unsubscribe$))
+      this.noteService
+        .editNote({
+          _id: this.editingNote._id,
+          title: this.editingTitle?.nativeElement.value,
+          content: this.editingContent?.nativeElement.value,
+          user: this.authService.email,
+          creationDate: this.editingNote.creationDate,
+        })
+        .pipe(takeUntil(this._unsubscribe$))
         .subscribe({
           complete: (): void => {
             this.toggleIsAddingNote();
-            this.noteService.getNotes()
-              .pipe(takeUntil(this.unsubscribe$))
+            this.noteService
+              .getNotes()
+              .pipe(takeUntil(this._unsubscribe$))
               .subscribe({
                 next: (notes: Note[]) => {
                   this._noteList = this.sortNotesByDate(notes) ?? [];
                   this.updateAlertVisibility();
-                }
+                },
               });
             this.resetForm();
-          }
-        })
+          },
+        });
       this.resetNote();
     }
   }
 
   public handlePopupOption(event: string): void {
     if (this.popupOptions[0] === event) {
-      this.editNote(this.selectedNote!)
+      this.editNote(this.selectedNote!);
     } else {
       this.toggleDeleteOverlay();
     }
@@ -192,8 +221,8 @@ export class NoteComponent implements OnDestroy {
     if (event) {
       this.popupPosition = {
         left: `${event.clientX}px`,
-        top: `${event.clientY + this.windowScrollY}px`
-      }
+        top: `${event.clientY + this._windowScrollY}px`,
+      };
     }
     this.popupEnabled = !this.popupEnabled;
   }
@@ -208,7 +237,7 @@ export class NoteComponent implements OnDestroy {
       title: note.title,
       content: note.content,
       creationDate: note.creationDate,
-      user: note.user
+      user: note.user,
     };
     this.toggleIsEditingNote();
     event?.stopPropagation();
@@ -219,22 +248,26 @@ export class NoteComponent implements OnDestroy {
     this.isEditingNote = false;
     this.newNote = {
       title: '',
-      content: ''
+      content: '',
     };
     this.editingNote = {
       title: '',
-      content: ''
+      content: '',
     };
   }
 
   public deleteNote(note: Note): void {
-    this.noteService.deleteOne(note).pipe(takeUntil(this.unsubscribe$))
+    this.noteService
+      .deleteOne(note)
+      .pipe(takeUntil(this._unsubscribe$))
       .subscribe({
         next: (deletedNoteId: string) => {
-          this._noteList = this._noteList.filter((n: Note) => n._id !== deletedNoteId)
+          this._noteList = this._noteList.filter(
+            (n: Note) => n._id !== deletedNoteId
+          );
           this.updateAlertVisibility();
           this.toggleDeleteOverlay();
-        }
+        },
       });
   }
 
@@ -258,12 +291,17 @@ export class NoteComponent implements OnDestroy {
     this.isEditingNote = !this.isEditingNote;
   }
 
-  public ngOnDestroy(): void {
-    this.stopSubscriptions();
+  public getNoteDate(date: Date): string {
+    const newDate = new Date(date);
+    const dayOfMonth = newDate.getUTCDate();
+    const monthIndex = newDate.getUTCMonth();
+    const year = newDate.getUTCFullYear();
+
+    return `${dayOfMonth} de ${months[monthIndex].toLowerCase()} ${year}`;
   }
 
-  public getNoteDate(date: Date): string {
-    return new Date(date).toLocaleString();
+  public ngOnDestroy(): void {
+    this.stopSubscriptions();
   }
 
   private resetForm(): void {
@@ -279,20 +317,22 @@ export class NoteComponent implements OnDestroy {
   }
 
   private startSubscriptions(): void {
-    this.subscriptions.push(
-      this.noteService.getNotes().pipe(takeUntil(this.unsubscribe$))
+    this._subscriptions.push(
+      this.noteService
+        .getNotes()
+        .pipe(takeUntil(this._unsubscribe$))
         .subscribe({
           next: (notes: Note[]): void => {
             this._noteList = this.sortNotesByDate(notes) ?? [];
             this.updateAlertVisibility();
-          }
+          },
         })
-    )
+    );
   }
 
   private stopSubscriptions(): void {
-    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+    this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete();
   }
 }

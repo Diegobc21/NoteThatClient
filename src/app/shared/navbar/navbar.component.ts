@@ -1,15 +1,21 @@
-import {Component, ElementRef, OnDestroy, Renderer2, ViewChild} from '@angular/core';
-import {ScreenSizeService} from "../../core/services/screen-size.service";
-import {AuthService} from "../../core/services/auth.service";
-import {NavigationService} from "../../core/services/navigation.service";
-import {Subscription} from "rxjs";
-import {Router} from "@angular/router";
-import {optionList} from "../../options/option-list";
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../core/services/auth.service';
+import { NavigationService } from '../../core/services/navigation.service';
+import { ScreenSizeService } from '../../core/services/screen-size.service';
+import { optionList } from '../../options/option-list';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnDestroy {
   @ViewChild('menuButton') private menuButton: ElementRef | undefined;
@@ -18,22 +24,17 @@ export class NavbarComponent implements OnDestroy {
 
   protected readonly optionList: any[] = optionList;
 
-  public activeRouteClasses: string = 'cursor-default bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium';
-  public inactiveRouteClasses: string = 'cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium';
-  public activeRouteClassesSm: string = 'cursor-default bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium';
-  public inactiveRouteClassesSm: string = 'cursor-pointer text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium';
-
   private _subscriptions: Subscription[] = [];
   private _isOpenUserMenu: boolean = false;
   private _isOpenMenu: boolean = false;
   private _mobileScreen!: boolean;
 
   constructor(
-    private renderer: Renderer2,
-    private router: Router,
-    private screenSizeService: ScreenSizeService,
-    private authService: AuthService,
-    private navigationService: NavigationService
+    private _renderer: Renderer2,
+    private _router: Router,
+    private _screenSizeService: ScreenSizeService,
+    private _authService: AuthService,
+    private _navigationService: NavigationService
   ) {
     this.startSubscriptions();
     this.enableClickListener();
@@ -47,24 +48,16 @@ export class NavbarComponent implements OnDestroy {
     return this._isOpenMenu;
   }
 
-  public buttonClasses(route: string): string {
-    if (this._mobileScreen) {
-      return this.isActiveRoute(route) ? this.activeRouteClassesSm : this.inactiveRouteClassesSm;
-    }
-    return this.isActiveRoute(route) ? this.activeRouteClasses : this.inactiveRouteClasses;
-  }
-
   public navigateTo(route: string): void {
-    this.navigationService.navigateByUrl(route)
-      .finally(() => {
-        if (this._isOpenMenu) {
-          this.toggleMenu();
-        }
-      });
+    this._navigationService.navigateByUrl(route).finally(() => {
+      if (this._isOpenMenu) {
+        this.toggleMenu();
+      }
+    });
   }
 
   public logout(): void {
-    this.authService.logout();
+    this._authService.logout();
   }
 
   public toggleMenu(): void {
@@ -74,18 +67,24 @@ export class NavbarComponent implements OnDestroy {
   }
 
   private enableClickListener(): void {
-    this.renderer.listen('window', 'click', (e: Event): void => {
-      if (this.userButton.nativeElement.contains(e.target) || this._isOpenUserMenu) {
+    this._renderer.listen('window', 'click', (e: Event): void => {
+      if (
+        this.userButton.nativeElement.contains(e.target) ||
+        this._isOpenUserMenu
+      ) {
         this.toggleUserMenu();
       }
-      if (!this.menu?.nativeElement.contains(e.target) && this.menuButton?.nativeElement.contains(e.target)) {
+      if (
+        !this.menu?.nativeElement.contains(e.target) &&
+        this.menuButton?.nativeElement.contains(e.target)
+      ) {
         this.toggleMenu();
       }
     });
   }
 
   public isActiveRoute(route: string): boolean {
-    return this.router.url === route;
+    return this._router.url === route;
   }
 
   private toggleUserMenu(): void {
@@ -97,14 +96,16 @@ export class NavbarComponent implements OnDestroy {
   }
 
   private startSubscriptions(): void {
-    this._subscriptions.push(this.screenSizeService.screenWidth$.asObservable().subscribe({
-        next: (value): boolean => this._mobileScreen = value < 640
+    this._subscriptions.push(
+      this._screenSizeService.screenWidth$?.subscribe({
+        next: (value: number) => (this._mobileScreen = value < 640),
       })
-    )
+    );
   }
 
   private unsubscribeAll(): void {
-    this._subscriptions.forEach((subscription: Subscription) => subscription.unsubscribe());
+    this._subscriptions.forEach((subscription: Subscription) =>
+      subscription.unsubscribe()
+    );
   }
-
 }

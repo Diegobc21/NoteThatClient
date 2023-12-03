@@ -1,0 +1,15 @@
+.active {
+  @apply cursor-default bg-gray-700 rounded-lg text-white px-3 py-2 text-sm font-medium;
+
+  &:focus {
+    @apply outline-none ring-2 ring-inset ring-white;
+  }
+}
+
+.inactive {
+  @apply cursor-pointer text-gray-300 bg-gray-900 rounded-md px-3 py-2 text-sm font-medium;
+
+  &:hover {
+    @apply text-white bg-gray-700;
+  }
+}
