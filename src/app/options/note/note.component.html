@@ -1,95 +1,96 @@
-<app-popup-menu
-  *ngIf="popupEnabled"
+@if(showSpinner() | async){
+<ng-template *ngFor="let _ of [].constructor(3)">
+  <div class="max-w-md mx-auto">
+    <app-loading-note></app-loading-note>
+  </div>
+</ng-template>
+}
+
+<!-- Popup -->
+@if (popupEnabled) {
+<app-popup-menu #popupMenuTemplate
   (emittedOption)="handlePopupOption($event)"
   [popupPosition]="getPopupPosition()"
   [options]="popupOptions"
 ></app-popup-menu>
+}
 
 <!--Deleting note-->
-
+@if (isDeleteOverlayVisible) {
 <app-overlay
-  *ngIf="isDeleteOverlayVisible"
   (onCloseEvent)="toggleDeleteOverlay()"
   (onAcceptEvent)="deleteNote(selectedNote!)"
 >
-  <ng-container>
-    <h1 class="text-center font-bold">
-      ¿Seguro que deseas eliminar esta nota?
-    </h1>
-    <div
-      class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl hover:shadow-sm mt-4 is-note"
-    >
-      <div class="rounded-[10px] bg-gray-950 p-4 sm:p-6">
-        <time class="block text-xs opacity-80">
-          {{ getNoteDate(selectedNote!.creationDate) }}
-        </time>
-        <div class="flex flex-row justify-between">
-          <div>
-            <h3 class="mt-0.5 text-lg font-bold">
-              {{ selectedNote!.title }}
-            </h3>
+  <h1 class="text-center font-bold">¿Seguro que deseas eliminar esta nota?</h1>
+  <div
+    class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl hover:shadow-sm mt-4 is-note"
+  >
+    <div class="rounded-[10px] bg-gray-950 p-4 sm:p-6">
+      <time class="block text-xs opacity-80">
+        {{ getNoteDate(selectedNote!.creationDate) }}
+      </time>
+      <div class="flex flex-row justify-between">
+        <div>
+          <h3 class="mt-0.5 text-lg font-bold">
+            {{ selectedNote!.title }}
+          </h3>
 
-            <h4 class="mt-0.5 text-sm font-medium">
-              {{ selectedNote!.content }}
-            </h4>
-          </div>
+          <h4 class="mt-0.5 text-sm font-medium">
+            {{ selectedNote!.content }}
+          </h4>
         </div>
       </div>
     </div>
-  </ng-container>
+  </div>
 </app-overlay>
+}
 
 <!--  Editing note  -->
-
 <app-overlay
   *ngIf="isEditingNote"
   [disableAccept]="editingFormIsEmpty"
   (onCloseEvent)="toggleIsEditingNote()"
   (onAcceptEvent)="submitEditing()"
 >
-  <ng-container>
-    <div class="overflow-hidden">
-      <h1 class="text-center font-bold text-xl mb-2">Editar nota</h1>
-      <div
-        class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl transition hover:shadow-sm mt-4"
-      >
-        <div class="rounded-[10px] bg-gray-950 p-4 sm:p-6">
-          <form (ngSubmit)="submitEditing()">
-            <input
-              #editingTitle
-              class="bg-gray-950 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-4 w-full focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
-              type="text"
-              placeholder="Título (obligatorio)*"
-              [(ngModel)]="editingNote.title"
-              (ngModelChange)="setEditingFormIsEmpty()"
-              required
-            />
-            <div class="flex flex-col">
-              <textarea
-                #editingContent
-                class="bg-gray-950 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-2 focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
-                rows="3"
-                placeholder="Contenido"
-                [value]="editingNote.content"
-              ></textarea>
-            </div>
-          </form>
-        </div>
+  <div class="overflow-hidden">
+    <h1 class="text-center font-bold text-xl mb-2">Editar nota</h1>
+    <div
+      class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl transition hover:shadow-sm mt-4"
+    >
+      <div class="rounded-[10px] bg-gray-950 p-4 sm:p-6">
+        <form (ngSubmit)="submitEditing()">
+          <input
+            #editingTitle
+            class="bg-gray-950 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-4 w-full focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
+            type="text"
+            placeholder="Título (obligatorio)*"
+            [(ngModel)]="editingNote.title"
+            (ngModelChange)="setEditingFormIsEmpty()"
+            required
+          />
+          <div class="flex flex-col">
+            <textarea
+              #editingContent
+              class="bg-gray-950 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-2 focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
+              rows="3"
+              placeholder="Contenido"
+              [value]="editingNote.content"
+            ></textarea>
+          </div>
+        </form>
       </div>
     </div>
-  </ng-container>
+  </div>
 </app-overlay>
 
 <div *ngIf="!spinnerService.showSpinner" class="max-w-md mx-auto">
-  <div class="">
-    <div class="flex flex-row justify-center relative">
-      <button
-        (click)="toggleIsAddingNote()"
-        class="bg-gradient-to-r to-green-500 via-blue-500 from-purple-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block sm:inline-block"
-      >
-        {{ isAddingNote ? "Cancelar" : "Añadir nota" }}
-      </button>
-    </div>
+  <div class="flex flex-row justify-center relative">
+    <button
+      (click)="toggleIsAddingNote()"
+      class="bg-gradient-to-r to-green-500 via-blue-500 from-purple-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block sm:inline-block"
+    >
+      {{ isAddingNote ? "Cancelar" : "Añadir nota" }}
+    </button>
   </div>
 
   <div
@@ -149,7 +150,7 @@
         ></div>
         }
         <div
-          (click)="toggleEditing(note, $event)"
+          (click)="enablePopup(note, $event)"
           id="note"
           class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl hover:shadow-sm mt-2 is-note cursor-pointer"
         >
@@ -185,25 +186,5 @@
       [message]="'Aún no tienes ninguna nota'"
     >
     </app-alert>
-  </div>
-</div>
-
-<div *ngIf="showSpinner() | async">
-  <div
-    *ngFor="let _ of [].constructor(3)"
-    class="border border-blue-300 shadow rounded-md mt-4 p-4 w-full"
-  >
-    <div class="animate-pulse flex space-x-4">
-      <div class="flex-1 space-y-6 py-1">
-        <div class="h-2 bg-slate-700 rounded"></div>
-        <div class="space-y-3">
-          <div class="grid grid-cols-3 gap-4">
-            <div class="h-2 bg-slate-700 rounded col-span-2"></div>
-            <div class="h-2 bg-slate-700 rounded col-span-1"></div>
-          </div>
-          <div class="h-2 bg-slate-700 rounded"></div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>

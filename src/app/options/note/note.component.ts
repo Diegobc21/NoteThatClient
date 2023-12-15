@@ -13,6 +13,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
+import { PopupMenuComponent } from 'src/app/shared/popup-menu/popup-menu.component';
 import { months } from 'src/app/utils/months';
 import { AuthService } from '../../core/services/auth.service';
 import { NavigationService } from '../../core/services/navigation.service';
@@ -45,18 +46,34 @@ import { AlertType } from '../../shared/alert/alert-type';
   ],
 })
 export class NoteComponent implements OnDestroy {
-  @HostListener('window:scroll', ['$event'])
+  @HostListener('window:scroll', [])
   onWindowScroll(): void {
+    this.popupEnabled = false;
     this._windowScrollY = window.scrollY;
   }
 
-  @HostListener('document:dblclick', ['$event'])
-  handleDocumentClick(event: MouseEvent): void {
-    console.log(event);
+  // TODO: Finish double click
+  // @HostListener('document:dblclick', ['$event'])
+  // handleDocumentClick(event: MouseEvent): void {
+  //   console.log(event);
+  // }
+
+  // TODO: Finish
+  @HostListener('click', ['$event'])
+  onClick(event: MouseEvent): void {
+    if (this.popupMenuTemplate?.nativeElement?.contains(event.target)) {
+      this.disablePopup();
+    }
+    // if (this.popupMenuTemplate?.nativeElement?.contains(event.target)) {
+    //   this.disablePopup();
+    // }
   }
 
   @ViewChild('editingTitle', { static: false }) editingTitle!: ElementRef;
   @ViewChild('editingContent', { static: false }) editingContent!: ElementRef;
+  @ViewChild('popupMenuTemplate', { read: ElementRef }) popupMenuTemplate:
+    | ElementRef
+    | undefined;
 
   public isAddingNote: boolean = false;
   public isEditingNote: boolean = false;
@@ -93,8 +110,8 @@ export class NoteComponent implements OnDestroy {
     private noteService: NoteService,
     private navigationService: NavigationService
   ) {
-    this.startSubscriptions();
-    this.updateAlertVisibility();
+    this._startSubscriptions();
+    this._updateAlertVisibility();
   }
 
   get noteList(): Note[] {
@@ -126,7 +143,7 @@ export class NoteComponent implements OnDestroy {
 
   public getTimeLineDate(date: Date): string {
     const newDate = new Date(date);
-    return `${this._months[newDate.getMonth()]} ${newDate.getFullYear()}`;
+    return `${this._months[newDate.getUTCMonth()]} ${newDate.getFullYear()}`;
   }
 
   public isDifferentMonth(index: number): boolean {
@@ -142,13 +159,14 @@ export class NoteComponent implements OnDestroy {
 
   public submitNote(): void {
     if (!this.addingFormIsEmpty) {
+      const newNote = {
+        title: this.newNote.title,
+        content: this.newNote.content,
+        creationDate: new Date(),
+        user: this.authService.email,
+      };
       this.noteService
-        .addNote({
-          title: this.newNote.title,
-          content: this.newNote.content,
-          creationDate: new Date(),
-          user: this.authService.email,
-        })
+        .addNote(newNote)
         .pipe(takeUntil(this._unsubscribe$))
         .subscribe({
           complete: (): void => {
@@ -158,11 +176,12 @@ export class NoteComponent implements OnDestroy {
               .pipe(takeUntil(this._unsubscribe$))
               .subscribe({
                 next: (notes: Note[]) => {
-                  this._noteList = this.sortNotesByDate(notes) ?? [];
-                  this.updateAlertVisibility();
+                  this._noteList.push(newNote);
+                  this._noteList = this._sortNotesByDate(notes) ?? [];
+                  this._updateAlertVisibility();
                 },
               });
-            this.resetForm();
+            this._resetForm();
           },
         });
       this.resetNote();
@@ -188,11 +207,11 @@ export class NoteComponent implements OnDestroy {
               .pipe(takeUntil(this._unsubscribe$))
               .subscribe({
                 next: (notes: Note[]) => {
-                  this._noteList = this.sortNotesByDate(notes) ?? [];
-                  this.updateAlertVisibility();
+                  this._noteList = this._sortNotesByDate(notes) ?? [];
+                  this._updateAlertVisibility();
                 },
               });
-            this.resetForm();
+            this._resetForm();
           },
         });
       this.resetNote();
@@ -202,29 +221,29 @@ export class NoteComponent implements OnDestroy {
   public handlePopupOption(event: string): void {
     if (this.popupOptions[0] === event) {
       this.editNote(this.selectedNote!);
-    } else {
+    } else if (this.popupOptions[1] === event) {
       this.toggleDeleteOverlay();
     }
-    this.toggleClickPopup();
+    this.disablePopup();
   }
 
-  public toggleDeleteOverlay(): void {
-    this.isDeleteOverlayVisible = !this.isDeleteOverlayVisible;
-  }
-
-  public toggleEditing(note: Note, event: MouseEvent): void {
-    this.toggleClickPopup(event);
+  public enablePopup(note: Note, event?: MouseEvent): void {
     this.selectedNote = note;
-  }
-
-  private toggleClickPopup(event?: MouseEvent): void {
     if (event) {
       this.popupPosition = {
         left: `${event.clientX}px`,
         top: `${event.clientY + this._windowScrollY}px`,
       };
     }
-    this.popupEnabled = !this.popupEnabled;
+    this.popupEnabled = true;
+  }
+
+  public toggleDeleteOverlay(): void {
+    this.isDeleteOverlayVisible = !this.isDeleteOverlayVisible;
+  }
+
+  private disablePopup(): void {
+    this.popupEnabled = false;
   }
 
   public getPopupPosition(): {} {
@@ -265,7 +284,7 @@ export class NoteComponent implements OnDestroy {
           this._noteList = this._noteList.filter(
             (n: Note) => n._id !== deletedNoteId
           );
-          this.updateAlertVisibility();
+          this._updateAlertVisibility();
           this.toggleDeleteOverlay();
         },
       });
@@ -277,10 +296,6 @@ export class NoteComponent implements OnDestroy {
 
   public showSpinner(): Observable<boolean> {
     return this.spinnerService.getSpinnerVisibility();
-  }
-
-  private updateAlertVisibility(): void {
-    this.showAlert = this._noteList.length === 0;
   }
 
   public toggleIsAddingNote(): void {
@@ -301,14 +316,18 @@ export class NoteComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.stopSubscriptions();
+    this._stopSubscriptions();
   }
 
-  private resetForm(): void {
+  private _resetForm(): void {
     this.resetNote();
   }
 
-  private sortNotesByDate(list: Note[]): Note[] {
+  private _updateAlertVisibility(): void {
+    this.showAlert = this._noteList.length === 0;
+  }
+
+  private _sortNotesByDate(list: Note[]): Note[] {
     return list.sort((a: Note, b: Note) => {
       const dateA: Date = new Date(a.creationDate);
       const dateB: Date = new Date(b.creationDate);
@@ -316,21 +335,21 @@ export class NoteComponent implements OnDestroy {
     });
   }
 
-  private startSubscriptions(): void {
+  private _startSubscriptions(): void {
     this._subscriptions.push(
       this.noteService
         .getNotes()
         .pipe(takeUntil(this._unsubscribe$))
         .subscribe({
           next: (notes: Note[]): void => {
-            this._noteList = this.sortNotesByDate(notes) ?? [];
-            this.updateAlertVisibility();
+            this._noteList = this._sortNotesByDate(notes) ?? [];
+            this._updateAlertVisibility();
           },
         })
     );
   }
 
-  private stopSubscriptions(): void {
+  private _stopSubscriptions(): void {
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._unsubscribe$.next();
     this._unsubscribe$.complete();

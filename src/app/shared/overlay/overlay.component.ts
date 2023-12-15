@@ -1,12 +1,30 @@
-import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
-import {BodyManagerService} from "../../core/services/body-manager.service";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { BodyManagerService } from '../../core/services/body-manager.service';
 
 @Component({
   selector: 'app-overlay',
   templateUrl: './overlay.component.html',
-  styleUrls: ['./overlay.component.scss']
+  styleUrls: ['./overlay.component.scss'],
 })
 export class OverlayComponent implements OnDestroy {
+  @ViewChild('overlayTemplate') public overlayTemplate!: ElementRef<any>;
+
+  @HostListener('click', ['$event'])
+  public onClick(event: MouseEvent): void {
+    if (!this.overlayTemplate.nativeElement.contains(event.target)) {
+      this.toggleModal();
+    }
+  }
+
   @Output() onCloseEvent: EventEmitter<null> = new EventEmitter<null>();
   @Output() onAcceptEvent: EventEmitter<null> = new EventEmitter<null>();
 
