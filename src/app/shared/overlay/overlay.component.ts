@@ -29,6 +29,8 @@ export class OverlayComponent implements OnDestroy {
   @Output() onAcceptEvent: EventEmitter<null> = new EventEmitter<null>();
 
   @Input() disableAccept: boolean = false;
+  @Input() useActionButton: boolean = true;
+  @Input() useCancelButton: boolean = true;
 
   constructor(private bodyManagerService: BodyManagerService) {
     bodyManagerService.disableScroll();

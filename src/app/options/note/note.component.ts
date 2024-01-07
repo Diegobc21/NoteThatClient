@@ -1,26 +1,12 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
-import { PopupMenuComponent } from 'src/app/shared/popup-menu/popup-menu.component';
-import { months } from 'src/app/utils/months';
-import { AuthService } from '../../core/services/auth.service';
-import { NavigationService } from '../../core/services/navigation.service';
-import { NoteService } from '../../core/services/note.service';
-import { SpinnerService } from '../../core/services/spinner.service';
-import { Note } from '../../interfaces/note.interface';
-import { AlertType } from '../../shared/alert/alert-type';
+import {animate, state, style, transition, trigger,} from '@angular/animations';
+import {Component, ElementRef, HostListener, OnDestroy, ViewChild,} from '@angular/core';
+import {Observable, Subject, Subscription, takeUntil} from 'rxjs';
+import {months} from 'src/app/utils/months';
+import {AuthService} from '../../core/services/auth.service';
+import {NoteService} from '../../core/services/note.service';
+import {SpinnerService} from '../../core/services/spinner.service';
+import {Note} from '../../interfaces/note.interface';
+import {AlertType} from '../../shared/alert/alert-type';
 
 @Component({
   selector: 'app-note',
@@ -28,18 +14,18 @@ import { AlertType } from '../../shared/alert/alert-type';
   styleUrls: ['./note.component.scss'],
   animations: [
     trigger('slideDown', [
-      state('hidden', style({ height: '0', opacity: '0', overflow: 'hidden' })),
+      state('hidden', style({height: '0', opacity: '0', overflow: 'hidden'})),
       state(
         'visible',
-        style({ height: '*', opacity: '1', overflow: 'hidden' })
+        style({height: '*', opacity: '1', overflow: 'hidden'})
       ),
       transition('hidden <=> visible', animate('200ms ease-in-out')),
     ]),
     trigger('slideUp', [
-      state('hidden', style({ height: '0', opacity: '0', overflow: 'hidden' })),
+      state('hidden', style({height: '0', opacity: '0', overflow: 'hidden'})),
       state(
         'visible',
-        style({ height: '*', opacity: '1', overflow: 'hidden' })
+        style({height: '*', opacity: '1', overflow: 'hidden'})
       ),
       transition('visible => hidden', animate('200ms ease-in-out')),
     ]),
@@ -69,9 +55,9 @@ export class NoteComponent implements OnDestroy {
     // }
   }
 
-  @ViewChild('editingTitle', { static: false }) editingTitle!: ElementRef;
-  @ViewChild('editingContent', { static: false }) editingContent!: ElementRef;
-  @ViewChild('popupMenuTemplate', { read: ElementRef }) popupMenuTemplate:
+  @ViewChild('editingTitle', {static: false}) editingTitle!: ElementRef;
+  @ViewChild('editingContent', {static: false}) editingContent!: ElementRef;
+  @ViewChild('popupMenuTemplate', {read: ElementRef}) popupMenuTemplate:
     | ElementRef
     | undefined;
 
@@ -107,8 +93,7 @@ export class NoteComponent implements OnDestroy {
   constructor(
     public spinnerService: SpinnerService,
     private authService: AuthService,
-    private noteService: NoteService,
-    private navigationService: NavigationService
+    private noteService: NoteService
   ) {
     this._startSubscriptions();
     this._updateAlertVisibility();
@@ -151,10 +136,6 @@ export class NoteComponent implements OnDestroy {
     const previousNote = new Date(this.noteList[index - 1]?.creationDate);
 
     return note.getUTCMonth() !== previousNote.getUTCMonth();
-  }
-
-  public goToHome(): void {
-    this.navigationService.navigateToHome().then();
   }
 
   public submitNote(): void {

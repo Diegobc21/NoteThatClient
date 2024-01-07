@@ -6,6 +6,7 @@ import { PasswordsComponent } from '../options/passwords/passwords.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SpotifyComponent } from '../options/spotify/spotify.component';
 import { OptionsModule } from '../options/options.module';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { OptionsModule } from '../options/options.module';
     SpotifyComponent,
     PasswordsComponent,
   ],
-  imports: [CommonModule, NgOptimizedImage, SharedModule, OptionsModule],
+    imports: [CommonModule, NgOptimizedImage, SharedModule, OptionsModule, FormsModule],
   exports: [],
 })
 export class PagesModule {}
