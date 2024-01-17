@@ -1,12 +1,12 @@
 import {Component, OnDestroy} from '@angular/core';
 import {PasswordService} from "../../core/services/password.service";
-import {Subscription} from "rxjs";
+import {Subscription, takeUntil} from "rxjs";
 
 interface Password {
-  pass: string,
+  password: string,
   url: string,
   username?: string,
-  email?: string,
+  user?: string,
   section?: string
 }
 
@@ -29,10 +29,10 @@ export class PasswordsComponent implements OnDestroy {
   public sectionList: Section[] = [];
 
   public form: Password = {
-    pass: '',
+    password: '',
     url: '',
     username: '',
-    email: '',
+    user: '',
     section: ''
   };
 
@@ -63,16 +63,12 @@ export class PasswordsComponent implements OnDestroy {
 
   public changeCurrentSection(title: string): void {
     this.currentSection = title;
-    this._startSubscriptions();
+    this.getPasswords();
   }
 
   public createSection(): void {
-    console.log('crear sección');
     this.subscriptions.push(this.passwordService.addSection(this.sectionForm.title).subscribe({
-      complete: () => {
-        this.toggleCreateSection();
-        console.log('Section added successfully')
-      }
+      complete: () => this.toggleCreateSection()
     }));
   }
 
@@ -84,7 +80,7 @@ export class PasswordsComponent implements OnDestroy {
     event?.preventDefault();
 
     if (this._formValid()) {
-      this.subscriptions.push(this.passwordService.addPassword(this.currentSection, this.form.pass, this.form.url).subscribe({
+      this.subscriptions.push(this.passwordService.addPassword(this.currentSection, this.form.password, this.form.url).subscribe({
           next: () => {
             console.log('Contraseña añadida correctamente');
           },
@@ -110,9 +106,7 @@ export class PasswordsComponent implements OnDestroy {
   }
 
   private _formValid(): boolean {
-    return (
-      this.form.pass !== '' && this.form.url !== ''
-    );
+    return this.form.password !== '' && this.form.url !== '';
   }
 
   private _startSubscriptions(): void {
@@ -121,23 +115,27 @@ export class PasswordsComponent implements OnDestroy {
   }
 
   public getSections(): void {
-    this.subscriptions.push(this.passwordService.getAllSections().subscribe((value: Section[]) => {
-      if (value) {
-        this.currentSection = value[0].title;
-        this.sectionList = value;
+    this.passwordService.getUserSections().subscribe({
+      next: (value: Section[]) => {
+        if (value) {
+          this.currentSection = value[0].title;
+          this.sectionList = value;
+        }
       }
-    }));
+    });
   }
 
   public getPasswords(): void {
     if (this.currentSection) {
-      this.subscriptions.push(
-        this.passwordService.getPasswordsBySection(this.currentSection).subscribe((value: Password[]) => {
-          console.log(value)
-          if (value) {
-            this.passwords = value;
-          }
-        })
+      console.log('contraseñas')
+      this.passwordService.getPasswordsBySection(this.currentSection).subscribe({
+          next: (value: Password[]) => {
+            if (value) {
+              this.passwords = value;
+            }
+          },
+          error: (err) => console.log('Error al obtener contraseñas: ', err)
+        }
       );
     }
   }

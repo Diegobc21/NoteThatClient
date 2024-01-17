@@ -24,9 +24,11 @@ export class PasswordService {
     return this.http.get(`${this.apiUrl}/${section}`, {headers: this.authService.getHeaders()});
   }
 
-  public getAllSections(): Observable<any> {
+  public getUserSections(): Observable<any> {
     const user: string = this.authService.email;
-    return this.http.get(`${this.apiUrl}/section/${user}`, {headers: this.authService.getHeaders()});
+    return this.http.get(`${this.apiUrl}/section/${user}`, {
+      headers: this.authService.getHeaders()
+    });
   }
 
   public addPassword(section: string, password: string, url: string): Observable<any> {
