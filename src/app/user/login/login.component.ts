@@ -11,7 +11,6 @@ import { AlertType } from '../../shared/alert/alert-type';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnDestroy {
-
   public form: User = {
     fullname: '',
     email: '',
@@ -68,13 +67,12 @@ export class LoginComponent implements OnDestroy {
               } else {
                 this.setMessageAsAuthError();
               }
-              this.resetForm();
               this.enableAlert();
             },
           })
       );
     } else {
-      this.resetForm();
+      this.setMessageAsAuthError();
       this.enableAlert();
     }
   }

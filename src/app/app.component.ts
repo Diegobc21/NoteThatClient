@@ -47,9 +47,9 @@ export class AppComponent implements OnDestroy {
     return 'Tu sesión ha expirado';
   }
 
-  get showSpinner(): boolean {
-    return this.spinnerService.showSpinner;
-  }
+  // get showSpinner(): boolean {
+  //   return this.spinnerService.showSpinner;
+  // }
 
   get sessionExpired(): boolean {
     return this.authService.sessionExpired;

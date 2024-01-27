@@ -38,18 +38,22 @@ export class RegisterComponent implements OnDestroy {
     event.preventDefault();
 
     if (this.form.password !== this.repeatPassword) {
-      this.showAlert = true;
-      this.errorMessage = 'Las contraseñas no coinciden';
+      this.setMessageAsNotMatchingPasswords();
+      this.enableAlert();
     } else {
       this.showAlert = this.formInvalid();
       if (!this.formInvalid()) {
         this.subscriptions.push(
           this.authService.register(this.form).subscribe({
             next: () => this.navigationService.navigateToLogin().then(),
-            error: () => {
-              this.setMessageAsAuthError()
-              this.enableAlert()},
-          })
+            error: (err): void => {
+              if (err?.message.includes('0 Unknown Error')) {
+                this.setMessageAsSystemError();
+              } else {
+                this.setMessageAsAuthError();
+              }
+              this.enableAlert();
+            }})
         );
       }
     }
@@ -84,6 +88,10 @@ export class RegisterComponent implements OnDestroy {
 
   private setMessageAsAuthError(): void {
     this.errorMessage = 'Revisa los campos';
+  }
+
+  private setMessageAsNotMatchingPasswords(): void {
+    this.errorMessage = 'Las contraseñas no coinciden';
   }
 
   private enableAlert(): void {

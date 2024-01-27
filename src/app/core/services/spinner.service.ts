@@ -7,15 +7,15 @@ import {BehaviorSubject} from "rxjs";
 export class SpinnerService {
 
   private spinnerVisible = new BehaviorSubject<boolean>(false);
-  public showSpinner: boolean = false;
+  // public showSpinner: boolean = false;
 
-  public hide(): void {
-    this.showSpinner = false;
-  }
+  // public hide(): void {
+  //   this.showSpinner = false;
+  // }
 
-  public show(): void {
-    this.showSpinner = true;
-  }
+  // public show(): void {
+  //   this.showSpinner = true;
+  // }
 
   show2(): void {
     this.spinnerVisible.next(true);
