@@ -5,10 +5,11 @@ import { PasswordService } from '../../core/services/password.service';
 interface Password {
   _id: string;
   password: string;
-  url: string;
+  title: string;
+  user: string; // email
+  section: string;
   username?: string;
-  user?: string;
-  section?: string;
+  visible?: boolean;
 }
 
 interface Section {
@@ -27,14 +28,17 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   public isCreatingPassword: boolean = false;
   public isCreatingSection: boolean = false;
   public currentSection: string = '';
+  public accountPass: string = '';
   public sectionList: Section[] = [];
   public savedPasswordId: string = '';
   public savedSectionId: string = '';
+  public showPassword: boolean = false;
+  public passwordIdToShow: string = '';
 
   public form: Password = {
     _id: '',
     password: '',
-    url: '',
+    title: '',
     username: '',
     user: '',
     section: '',
@@ -47,6 +51,7 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   public passwords: Password[] = [];
   public isDeleteOverlayVisible = false;
   public isDeleteSectionOverlayVisible = false;
+  public isAccountPasswordOverlayVisible = false;
 
   private subscriptions: Subscription[] = [];
 
@@ -64,8 +69,9 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     return this.passwords.length > 0;
   }
 
-  public triggerVisibility(): void {
-    console.log('contraseñas visibles');
+  public triggerVisibility(passwordId: string): void {
+    this.passwordIdToShow = passwordId;
+    this.toggleAccountPasswordOverlay();
   }
 
   public changeCurrentSection(title: string): void {
@@ -93,53 +99,57 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   public deleteSection(): void {
     if (this.savedSectionId !== '') {
-      this.passwordService
-        .deleteOneSection(this.savedSectionId)
-        .subscribe({
-          next: () => {
-            this.toggleDeleteSectionOverlay();
-            this.sectionList = this.sectionList.filter(
-              (section: Section) => section._id !== this.savedSectionId
-            );
-            this.currentSection = this.sectionList[0]?.title ?? '';
-            this.getPasswords();
-          },
-          error: (error) => {
-            console.error('Error al eliminar sección:', error);
-          },
-          complete: () => (this.savedSectionId = ''),
-        });
+      this.passwordService.deleteOneSection(this.savedSectionId).subscribe({
+        next: () => {
+          this.toggleDeleteSectionOverlay();
+          this.sectionList = this.sectionList.filter(
+            (section: Section) => section._id !== this.savedSectionId
+          );
+          this.currentSection = this.sectionList[0]?.title ?? '';
+          this.getPasswords();
+        },
+        error: (error) => {
+          console.error('Error al eliminar sección:', error);
+        },
+        complete: () => (this.savedSectionId = ''),
+      });
     }
   }
 
   public deletePassword(): void {
     if (this.savedPasswordId !== '') {
-      this.passwordService
-        .deleteOne(this.savedPasswordId)
-        .subscribe({
-          next: (deletedPasswordId: string) => {
-            this.passwords = this.passwords.filter(
-              (pass: Password) => pass._id !== deletedPasswordId
-            );
-            this.toggleDeleteOverlay();
-          },
-          error: (error) => {
-            console.error('No se pudo eliminar la contraseña: ', error);
-          },
-          complete: () => (this.savedSectionId = ''),
-        });
+      this.passwordService.deleteOne(this.savedPasswordId).subscribe({
+        next: (deletedPasswordId: string) => {
+          this.passwords = this.passwords.filter(
+            (pass: Password) => pass._id !== deletedPasswordId
+          );
+          this.toggleDeleteOverlay();
+        },
+        error: (error) => {
+          console.error('No se pudo eliminar la contraseña: ', error);
+        },
+        complete: () => (this.savedSectionId = ''),
+      });
     }
   }
 
-  public postCreate(event?: SubmitEvent | MouseEvent): void {
+  public createPassword(event?: SubmitEvent | MouseEvent): void {
     event?.preventDefault();
 
     if (this._formValid()) {
       this.subscriptions.push(
         this.passwordService
-          .addPassword(this.currentSection, this.form.password, this.form.url)
+          .addPassword(
+            this.currentSection,
+            this.form.password,
+            this.form.title,
+            this.form.username ?? undefined
+          )
           .subscribe({
-            next: () => this.getPasswords(),
+            next: () => {
+              this.getPasswords();
+              this._resetPasswordForm();
+            },
             error: (error) =>
               console.error('Error al añadir contraseña: ', error),
           })
@@ -210,8 +220,35 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     }
   }
 
+  public toggleAccountPasswordOverlay(): void {
+    this.isAccountPasswordOverlayVisible =
+      !this.isAccountPasswordOverlayVisible;
+  }
+
+  public checkAccountPassword(): void {
+    // TODO: terminar esto
+    if (this.accountPass === '123456') {
+      this.showPassword = true;
+    }
+    this.passwords.forEach((p) => {
+      if (p._id === this.passwordIdToShow) {
+        p.visible = true;
+      }
+    });
+    this.toggleAccountPasswordOverlay();
+  }
+
+  private _resetPasswordForm(): void {
+    this.form._id = '';
+    this.form.password = '';
+    this.form.section = '';
+    this.form.user = '';
+    this.form.username = '';
+    this.form.title = '';
+  }
+
   private _formValid(): boolean {
-    return this.form.password !== '' && this.form.url !== '';
+    return this.form.password !== '' && this.form.title !== '';
   }
 
   private _startSubscriptions(): void {

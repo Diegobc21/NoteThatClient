@@ -34,12 +34,13 @@ export class PasswordService {
   public addPassword(
     section: string,
     password: string,
-    url: string
+    title: string,
+    username?: string
   ): Observable<any> {
-    const user: string = this.authService.email;
+    const user = this.authService.email;
     return this.http.post(
       `${this.apiUrl}/`,
-      { user, section, password, url },
+      { section, password, title, user, username },
       { headers: this.authService.getHeaders() }
     );
   }

@@ -12,24 +12,16 @@ $gray-700: #22304e;
 
 @at-root {
   :hover {
-    @apply transition-all duration-200;
+    @apply transition-all duration-150;
   }
 
-  button,
-  img,
-  div,
-  input {
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-
-    &:hover {
-      outline: none;
-      -webkit-tap-highlight-color: transparent;
-    }
+  :focus {
+    @apply transition-all duration-150;
   }
 
 }
 
+// Scroll bar settings
 @media(min-width: 1024px) {
   ::-webkit-scrollbar {
     width: 8px;
