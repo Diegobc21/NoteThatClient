@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PasswordService } from '../../core/services/password.service';
 import { Subscription, take } from 'rxjs';
+import { PasswordService } from '../../core/services/password.service';
 
 interface Password {
   _id: string;
@@ -12,6 +12,7 @@ interface Password {
 }
 
 interface Section {
+  _id: string;
   title: string;
   user: string;
   creationDate?: Date;
@@ -28,6 +29,7 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   public currentSection: string = '';
   public sectionList: Section[] = [];
   public savedPasswordId: string = '';
+  public savedSectionId: string = '';
 
   public form: Password = {
     _id: '',
@@ -44,6 +46,7 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   public passwords: Password[] = [];
   public isDeleteOverlayVisible = false;
+  public isDeleteSectionOverlayVisible = false;
 
   private subscriptions: Subscription[] = [];
 
@@ -62,45 +65,68 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   }
 
   public triggerVisibility(): void {
-    console.log('ver');
+    console.log('contraseñas visibles');
   }
 
   public changeCurrentSection(title: string): void {
-    this.currentSection = title;
-    this.getPasswords();
+    if (this.currentSection !== title) {
+      this.currentSection = title;
+      this.getPasswords();
+    }
   }
 
   public createSection(): void {
-    this.subscriptions.push(
-      this.passwordService.addSection(this.sectionForm.title).subscribe({
-        complete: () => {
-          this.getSections();
-          this.toggleCreateSection();
-        },
-      })
-    );
-  }
-
-  public toggleDeleteOverlay(): void {
-    this.isDeleteOverlayVisible = !this.isDeleteOverlayVisible;
+    if (this.sectionForm.title?.length > 0) {
+      this.subscriptions.push(
+        this.passwordService.addSection(this.sectionForm.title).subscribe({
+          complete: () => {
+            this.toggleCreateSection();
+            this.getSections();
+            this.currentSection = this.sectionForm.title;
+            this.sectionForm.title = '';
+            this.getPasswords();
+          },
+        })
+      );
+    }
   }
 
   public deleteSection(): void {
-    console.log('delete section');
+    if (this.savedSectionId !== '') {
+      this.passwordService
+        .deleteOneSection(this.savedSectionId)
+        .subscribe({
+          next: () => {
+            this.toggleDeleteSectionOverlay();
+            this.sectionList = this.sectionList.filter(
+              (section: Section) => section._id !== this.savedSectionId
+            );
+            this.currentSection = this.sectionList[0]?.title ?? '';
+            this.getPasswords();
+          },
+          error: (error) => {
+            console.error('Error al eliminar sección:', error);
+          },
+          complete: () => (this.savedSectionId = ''),
+        });
+    }
   }
 
   public deletePassword(): void {
-    if (this.saveSelectedPassword !== undefined){
+    if (this.savedPasswordId !== '') {
       this.passwordService
         .deleteOne(this.savedPasswordId)
-        .pipe(take(1))
         .subscribe({
           next: (deletedPasswordId: string) => {
             this.passwords = this.passwords.filter(
-              (n: Password) => n._id !== deletedPasswordId
+              (pass: Password) => pass._id !== deletedPasswordId
             );
             this.toggleDeleteOverlay();
           },
+          error: (error) => {
+            console.error('No se pudo eliminar la contraseña: ', error);
+          },
+          complete: () => (this.savedSectionId = ''),
         });
     }
   }
@@ -113,13 +139,9 @@ export class PasswordsComponent implements OnInit, OnDestroy {
         this.passwordService
           .addPassword(this.currentSection, this.form.password, this.form.url)
           .subscribe({
-            next: () => {
-              console.log('Contraseña añadida correctamente');
-            },
-            error: (error) => {
-              console.error('Error al añadir contraseña:', error);
-            },
-            complete: () => this.getPasswords(),
+            next: () => this.getPasswords(),
+            error: (error) =>
+              console.error('Error al añadir contraseña: ', error),
           })
       );
       this.toggleCreate();
@@ -130,9 +152,22 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     this.savedPasswordId = password._id;
   }
 
-  public delete(passwordId: string): void {
+  public onDeletePassword(passwordId: string): void {
     this.savedPasswordId = passwordId;
     this.toggleDeleteOverlay();
+  }
+
+  public onDeleteSection(sectionId: string): void {
+    this.savedSectionId = sectionId;
+    this.toggleDeleteSectionOverlay();
+  }
+
+  public toggleDeleteOverlay(): void {
+    this.isDeleteOverlayVisible = !this.isDeleteOverlayVisible;
+  }
+
+  public toggleDeleteSectionOverlay(): void {
+    this.isDeleteSectionOverlayVisible = !this.isDeleteSectionOverlayVisible;
   }
 
   public toggleCreate(): void {
@@ -143,14 +178,6 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     this.isCreatingSection = !this.isCreatingSection;
   }
 
-  private _formValid(): boolean {
-    return this.form.password !== '' && this.form.url !== '';
-  }
-
-  private _startSubscriptions(): void {
-    this.getSections();
-  }
-
   public getSections(): void {
     this.passwordService
       .getUserSections()
@@ -158,18 +185,17 @@ export class PasswordsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (value: Section[]) => {
           if (value) {
-            this.currentSection = value[0].title;
             this.sectionList = value;
+            this.currentSection = this.sectionList[0]?.title;
           }
-        },
-        complete: () => {
           this.getPasswords();
         },
+        error: (err) => console.log('No se pudo obtener las secciones: ', err),
       });
   }
 
   public getPasswords(): void {
-    if (this.currentSection) {
+    if (this.currentSection?.length > 0) {
       this.passwordService
         .getPasswordsBySection(this.currentSection)
         .pipe(take(1))
@@ -182,6 +208,14 @@ export class PasswordsComponent implements OnInit, OnDestroy {
           error: (err) => console.log('Error al obtener contraseñas: ', err),
         });
     }
+  }
+
+  private _formValid(): boolean {
+    return this.form.password !== '' && this.form.url !== '';
+  }
+
+  private _startSubscriptions(): void {
+    this.getSections();
   }
 
   public ngOnDestroy() {

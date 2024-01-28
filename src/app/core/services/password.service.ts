@@ -44,13 +44,16 @@ export class PasswordService {
     );
   }
 
-  public deleteOne(
-    passwordId: string
-  ): Observable<any> {
-    return this.http.delete(
-      `${this.apiUrl}/${passwordId}`,
-      { headers: this.authService.getHeaders() }
-    );
+  public deleteOne(passwordId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${passwordId}`, {
+      headers: this.authService.getHeaders(),
+    });
+  }
+
+  public deleteOneSection(sectionId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/section/${sectionId}`, {
+      headers: this.authService.getHeaders(),
+    });
   }
 
   public addSection(title: string): Observable<any> {
