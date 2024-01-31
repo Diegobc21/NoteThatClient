@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { SpinnerService } from '../../core/services/spinner.service';
 import { Observable } from 'rxjs';
-import { AuthService } from '../../core/services/auth.service';
+import {SpinnerService} from "../../core/services/spinner/spinner.service";
+import {AuthService} from "../../core/services/auth/auth.service";
 
 @Component({
   selector: 'app-spinner',

@@ -5,13 +5,13 @@ import {Observable, Subject} from "rxjs";
   providedIn: 'root'
 })
 export class MediaCheckService {
-  private clickSubject: Subject<MouseEvent> = new Subject<MouseEvent>();
+  private clickSubject: Subject<MouseEvent | undefined> = new Subject<MouseEvent | undefined>();
 
-  public getClicks(): Observable<MouseEvent> {
+  public getClicks(): Observable<MouseEvent | undefined> {
     return this.clickSubject.asObservable();
   }
 
-  public emitClick(event: MouseEvent): void {
+  public emitClick(event?: MouseEvent): void {
     this.clickSubject.next(event);
   }
 

@@ -1,11 +1,11 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Subject, Subscription, takeUntil} from "rxjs";
 import {User} from "../../../interfaces/user.interface";
-import {SpinnerService} from "../../../core/services/spinner.service";
-import {AuthService} from "../../../core/services/auth.service";
-import {UserService} from "../../../core/services/user.service";
-import {NavigationService} from "../../../core/services/navigation.service";
 import {AlertType} from "../../../shared/alert/alert-type";
+import {SpinnerService} from "../../../core/services/spinner/spinner.service";
+import {AuthService} from "../../../core/services/auth/auth.service";
+import {UserService} from "../../../core/services/user/user.service";
+import {NavigationService} from "../../../core/services/navigation/navigation.service";
 
 @Component({
   selector: 'app-friend-search',

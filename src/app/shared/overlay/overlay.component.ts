@@ -1,14 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  HostListener,
-  Input,
-  OnDestroy,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { BodyManagerService } from '../../core/services/body-manager.service';
+import {Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Output, ViewChild,} from '@angular/core';
+import {BodyManagerService} from '../../core/services/body-manager/body-manager.service';
 
 @Component({
   selector: 'app-overlay',
@@ -16,7 +7,7 @@ import { BodyManagerService } from '../../core/services/body-manager.service';
   styleUrls: ['./overlay.component.scss'],
 })
 export class OverlayComponent implements OnDestroy {
-  @ViewChild('overlayTemplate') public overlayTemplate!: ElementRef<any>;
+  @ViewChild('overlayTemplate') public overlayTemplate!: ElementRef;
 
   @HostListener('click', ['$event'])
   public onClick(event: MouseEvent): void {

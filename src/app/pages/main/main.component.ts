@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from "../../core/services/user.service";
-import {NavigationService} from "../../core/services/navigation.service";
 import {User} from "../../interfaces/user.interface";
 import {Subscription} from "rxjs";
 import {optionList} from "../../options/option-list";
+import {UserService} from "../../core/services/user/user.service";
+import {NavigationService} from "../../core/services/navigation/navigation.service";
 
 @Component({
   selector: 'app-main',

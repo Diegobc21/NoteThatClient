@@ -12,6 +12,7 @@ import {
   subMonths
 } from 'date-fns';
 import {es} from 'date-fns/locale';
+import {months_ES} from "../../utils/months_ES";
 
 @Component({
   selector: 'app-calendar',
@@ -20,7 +21,7 @@ import {es} from 'date-fns/locale';
 })
 export class CalendarComponent implements OnInit {
   daysOfWeek: string[] = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-  currentMonth: string = 'September';
+  currentMonth: string = months_ES[new Date().getUTCMonth()];
   currentDate: Date = new Date();
   daysInMonth: Date[] = [];
   referenceDate: Date = new Date();

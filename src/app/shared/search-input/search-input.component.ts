@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
-import {MediaCheckService} from "../../core/services/media-check.service";
+import {MediaCheckService} from "../../core/services/media-check/media-check.service";
 import {Subscription} from "rxjs";
 
 @Component({
@@ -19,9 +19,9 @@ export class SearchInputComponent implements OnDestroy {
   constructor(private mediaCheckService: MediaCheckService) {
     this.clickSubscription =
       this.mediaCheckService.getClicks()
-        .subscribe((event: MouseEvent) => {
+        .subscribe((event: MouseEvent | undefined) => {
           if (this.isExpanded) {
-            if (!this.searchInput.nativeElement.contains(event.target)) {
+            if (event && !this.searchInput.nativeElement.contains(event.target)) {
               this.collapseSearch();
             }
           }

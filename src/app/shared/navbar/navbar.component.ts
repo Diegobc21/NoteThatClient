@@ -7,10 +7,10 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../../core/services/auth.service';
-import { NavigationService } from '../../core/services/navigation.service';
-import { ScreenSizeService } from '../../core/services/screen-size.service';
 import { optionList } from '../../options/option-list';
+import {ScreenSizeService} from "../../core/services/screen-size/screen-size.service";
+import {AuthService} from "../../core/services/auth/auth.service";
+import {NavigationService} from "../../core/services/navigation/navigation.service";
 
 @Component({
   selector: 'app-navbar',
@@ -97,7 +97,7 @@ export class NavbarComponent implements OnDestroy {
 
   private startSubscriptions(): void {
     this._subscriptions.push(
-      this._screenSizeService.screenWidth$?.subscribe({
+      this._screenSizeService.screenWidth?.subscribe({
         next: (value: number) => (this._mobileScreen = value < 640),
       })
     );

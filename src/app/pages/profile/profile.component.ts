@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UserService } from '../../core/services/user.service';
-import { User } from '../../interfaces/user.interface';
-import { Subscription } from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {User} from '../../interfaces/user.interface';
+import {Subscription} from 'rxjs';
+import {UserService} from "../../core/services/user/user.service";
+import {ClipboardService} from "../../core/services/clipboard/clipboard.service";
 
 @Component({
   selector: 'app-profile',
@@ -12,9 +13,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public fullName: string = '';
   public email: string = '';
 
+  public icon: string = 'mail';
+
   private subs: Subscription[] = [];
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private clipboardService: ClipboardService) {
+  }
 
   public ngOnInit(): void {
     this.subs.push(
@@ -28,8 +34,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
     );
   }
 
-  public copyToClipboard(): void {
-    console.log('copied')
+  public copyToClipboard(text: string): void {
+    if (this.clipboardService.copyToClipboard(text)) {
+      this.icon = 'check'
+      setTimeout(() => {
+        this.getSvg('mail');
+      }, 1500)
+    }
+  }
+
+  public getSvg(type: string): void {
+    this.icon = type;
   }
 
   public ngOnDestroy(): void {

@@ -11,7 +11,7 @@ import {UserModule} from "./user/user.module";
 import {RouterModule} from "@angular/router";
 import {SpinnerInterceptor} from "./core/interceptor/spinner.interceptor";
 import {FormsModule} from "@angular/forms";
-import { DarkModeDirective } from './core/directives/dark-mode.directive';
+import {DarkModeDirective} from "./core/directives/dark-mode.directive";
 
 @NgModule({
   declarations: [

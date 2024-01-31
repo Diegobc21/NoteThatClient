@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {DarkModeService} from "../../../core/services/dark-mode.service";
+import {DarkModeService} from "../../../core/services/dark-mode/dark-mode.service";
 
 @Component({
   selector: 'app-dark-mode-button',

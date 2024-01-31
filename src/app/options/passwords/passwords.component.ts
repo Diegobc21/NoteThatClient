@@ -1,14 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, take } from 'rxjs';
-import { PasswordService } from '../../core/services/password.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subscription, take} from 'rxjs';
+import {PasswordService} from "../../core/services/password/password.service";
+import {ClipboardService} from "../../core/services/clipboard/clipboard.service";
+import {DeviceService} from "../../core/services/device/device.service";
+import {ScreenSizeService} from "../../core/services/screen-size/screen-size.service";
 
 interface Password {
   _id: string;
   password: string;
   title: string;
-  user: string; // email
+  user: string;
   section: string;
   username?: string;
+  email?: string;
   visible?: boolean;
 }
 
@@ -30,10 +34,14 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   public currentSection: string = '';
   public accountPass: string = '';
   public sectionList: Section[] = [];
-  public savedPasswordId: string = '';
-  public savedSectionId: string = '';
+  public savedPassword: Password | undefined;
+  public savedSection: Section | undefined;
   public showPassword: boolean = false;
   public passwordIdToShow: string = '';
+  public newPasswordVisible: boolean = false;
+  public isOpenSectionMenu: boolean = true;
+  // TODO: move this logic to a new component
+  public clipboardIcon: string = 'Copy';
 
   public form: Password = {
     _id: '',
@@ -41,6 +49,7 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     title: '',
     username: '',
     user: '',
+    email: '',
     section: '',
   };
 
@@ -55,7 +64,13 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private passwordService: PasswordService) {}
+  constructor(
+    private passwordService: PasswordService,
+    private clipboardService: ClipboardService,
+    private deviceService: DeviceService,
+    private screenSizeService: ScreenSizeService
+  ) {
+  }
 
   public ngOnInit(): void {
     this._startSubscriptions();
@@ -65,13 +80,23 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     return this.sectionList.length > 0;
   }
 
-  get isAnyPassword(): boolean {
-    return this.passwords.length > 0;
+  public copyToClipboard(text: string): void {
+    if (this.clipboardService.copyToClipboard(text)) {
+      this.clipboardIcon = 'check';
+      setTimeout(() => {
+        this.clipboardIcon = 'Copy';
+      }, 1500)
+    }
   }
 
   public triggerVisibility(passwordId: string): void {
-    this.passwordIdToShow = passwordId;
-    this.toggleAccountPasswordOverlay();
+    const pass = this.passwords.find((p) => p._id === passwordId)
+    if (pass && !pass.visible) {
+      this.passwordIdToShow = passwordId;
+      this.toggleAccountPasswordOverlay();
+    } else if (pass) {
+      pass.visible = false;
+    }
   }
 
   public changeCurrentSection(title: string): void {
@@ -81,7 +106,7 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createSection(): void {
+  public createSection(event?: SubmitEvent | MouseEvent): void {
     if (this.sectionForm.title?.length > 0) {
       this.subscriptions.push(
         this.passwordService.addSection(this.sectionForm.title).subscribe({
@@ -98,12 +123,12 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   }
 
   public deleteSection(): void {
-    if (this.savedSectionId !== '') {
-      this.passwordService.deleteOneSection(this.savedSectionId).subscribe({
+    if (this.savedSection) {
+      this.passwordService.deleteOneSection(this.savedSection._id).subscribe({
         next: () => {
           this.toggleDeleteSectionOverlay();
           this.sectionList = this.sectionList.filter(
-            (section: Section) => section._id !== this.savedSectionId
+            (section: Section) => section._id !== this.savedSection?._id
           );
           this.currentSection = this.sectionList[0]?.title ?? '';
           this.getPasswords();
@@ -111,14 +136,14 @@ export class PasswordsComponent implements OnInit, OnDestroy {
         error: (error) => {
           console.error('Error al eliminar sección:', error);
         },
-        complete: () => (this.savedSectionId = ''),
+        complete: () => (this.savedSection = undefined),
       });
     }
   }
 
   public deletePassword(): void {
-    if (this.savedPasswordId !== '') {
-      this.passwordService.deleteOne(this.savedPasswordId).subscribe({
+    if (this.savedPassword) {
+      this.passwordService.deleteOne(this.savedPassword._id).subscribe({
         next: (deletedPasswordId: string) => {
           this.passwords = this.passwords.filter(
             (pass: Password) => pass._id !== deletedPasswordId
@@ -128,7 +153,7 @@ export class PasswordsComponent implements OnInit, OnDestroy {
         error: (error) => {
           console.error('No se pudo eliminar la contraseña: ', error);
         },
-        complete: () => (this.savedSectionId = ''),
+        complete: () => (this.savedSection = undefined),
       });
     }
   }
@@ -158,17 +183,14 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public saveSelectedPassword(password: Password): void {
-    this.savedPasswordId = password._id;
-  }
 
-  public onDeletePassword(passwordId: string): void {
-    this.savedPasswordId = passwordId;
+  public onDeletePassword(password: Password): void {
+    this.saveSelectedPassword(password);
     this.toggleDeleteOverlay();
   }
 
-  public onDeleteSection(sectionId: string): void {
-    this.savedSectionId = sectionId;
+  public onDeleteSection(sectionId: Section): void {
+    this.savedSection = sectionId;
     this.toggleDeleteSectionOverlay();
   }
 
@@ -188,8 +210,12 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     this.isCreatingSection = !this.isCreatingSection;
   }
 
+  public toggleOpenSectionMenu(): void {
+    this.isOpenSectionMenu = !this.isOpenSectionMenu;
+  }
+
   public getSections(): void {
-    this.passwordService
+    this.subscriptions.push(this.passwordService
       .getUserSections()
       .pipe(take(1))
       .subscribe({
@@ -201,12 +227,12 @@ export class PasswordsComponent implements OnInit, OnDestroy {
           this.getPasswords();
         },
         error: (err) => console.log('No se pudo obtener las secciones: ', err),
-      });
+      }));
   }
 
   public getPasswords(): void {
     if (this.currentSection?.length > 0) {
-      this.passwordService
+      this.subscriptions.push(this.passwordService
         .getPasswordsBySection(this.currentSection)
         .pipe(take(1))
         .subscribe({
@@ -216,13 +242,27 @@ export class PasswordsComponent implements OnInit, OnDestroy {
             }
           },
           error: (err) => console.log('Error al obtener contraseñas: ', err),
-        });
+        }));
     }
   }
 
   public toggleAccountPasswordOverlay(): void {
     this.isAccountPasswordOverlayVisible =
       !this.isAccountPasswordOverlayVisible;
+    this.accountPass = '';
+  }
+
+  public getNewPasswordVisibility(): string {
+    return this.newPasswordVisible ? 'text' : 'password';
+  }
+
+  public toggleNewPasswordVisibility(): void {
+    this.newPasswordVisible = !this.newPasswordVisible;
+  }
+
+  public getEyeVisibleTypeImage(): string {
+    const svg: string = this.newPasswordVisible ? 'eye' : 'eye-not-visible'
+    return `../../../assets/svg/${svg}.svg`
   }
 
   public checkAccountPassword(): void {
@@ -236,6 +276,10 @@ export class PasswordsComponent implements OnInit, OnDestroy {
       }
     });
     this.toggleAccountPasswordOverlay();
+  }
+
+  private saveSelectedPassword(password: Password): void {
+    this.savedPassword = password;
   }
 
   private _resetPasswordForm(): void {
@@ -253,6 +297,11 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   private _startSubscriptions(): void {
     this.getSections();
+    this.isOpenSectionMenu = !this.deviceService.isMobile();
+    this.subscriptions.push(
+      this.screenSizeService.screenWidth.subscribe((width: number) => {
+        this.isOpenSectionMenu = width >= 640;
+      }));
   }
 
   public ngOnDestroy() {

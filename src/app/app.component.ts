@@ -1,10 +1,10 @@
 import { Component, HostListener, Inject, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
-import { AuthService } from './core/services/auth.service';
-import { MediaCheckService } from './core/services/media-check.service';
-import { SpinnerService } from './core/services/spinner.service';
-import { SubscriptionService } from './core/services/subscription.service';
+import {SubscriptionService} from "./core/services/subscription/subscription.service";
+import {SpinnerService} from "./core/services/spinner/spinner.service";
+import {MediaCheckService} from "./core/services/media-check/media-check.service";
+import {AuthService} from "./core/services/auth/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ export class AppComponent implements OnDestroy {
 
   @HostListener('click', ['${event}'])
   public onClick(): void {
-    this.mediaCheckService.emitClick(event as MouseEvent);
+    this.mediaCheckService.emitClick();
   }
 
   public title: string = 'NoteThat';

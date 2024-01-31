@@ -17,25 +17,12 @@
         <h2 class="text-2xl font-medium text-purple-400">{{ fullName }}</h2>
       </div>
       <div class="mt-6 text-center">
-        <div (click)="copyToClipboard()"
-          class="cursor-pointer flex flex-row justify-center gap-2 p-1 rounded-md hover:bg-slate-700"
-        >
-          @if (false) {
-          <img
-            src="../../../assets/svg/tick-animated.svg"
-            alt=""
-            height="21px"
-            width="21px"
-          />
-          } @else {
-          <img
-            src="../../../assets/svg/letter.svg"
-            alt=""
-            height="21px"
-            width="21px"
-          />
-          }
-          <span class="font-bold">{{ email }} </span>
+        <div (click)="copyToClipboard(email)"
+             class="cursor-pointer flex flex-row justify-center gap-2 p-1 rounded-md hover:bg-slate-700"
+        ><app-spinner></app-spinner>
+          <lucide-icon [name]="icon"></lucide-icon>
+          <span class="font-bold">
+            {{ email }} </span>
         </div>
       </div>
     </div>

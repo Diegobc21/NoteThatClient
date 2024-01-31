@@ -1,12 +1,12 @@
 import {Component, ElementRef, HostListener, OnDestroy, ViewChild} from '@angular/core';
 import {Subject, Subscription, takeUntil} from "rxjs";
-import {SpinnerService} from "../../core/services/spinner.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import {AuthService} from "../../core/services/auth.service";
-import {NavigationService} from "../../core/services/navigation.service";
 import {User} from "../../interfaces/user.interface";
-import {UserService} from "../../core/services/user.service";
 import {AlertType} from "../../shared/alert/alert-type";
+import {SpinnerService} from "../../core/services/spinner/spinner.service";
+import {AuthService} from "../../core/services/auth/auth.service";
+import {UserService} from "../../core/services/user/user.service";
+import {NavigationService} from "../../core/services/navigation/navigation.service";
 
 @Component({
   selector: 'app-friend',

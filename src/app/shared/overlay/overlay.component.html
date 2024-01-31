@@ -10,20 +10,23 @@
     </div>
     <!-- Buttons -->
     <div class="flex justify-around sm:justify-end">
-      <button *ngIf="useCancelButton"
+      <button
+        *ngIf="useCancelButton"
         type="button"
         class="transition-colors duration-300 bg-gradient-to-r to-red-500 via-orange-500 from-yellow-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded self-end mx-1"
         (click)="toggleModal()"
       >
         Cancelar
       </button>
-      <button *ngIf="useCancelButton"
-        type="button"
+      <button
+        *ngIf="useCancelButton"
+        type="submit"
         class="transition-colors duration-300 disabled:bg-gray-400 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded self-end mx-1"
         [disabled]="disableAccept"
         (click)="accept()"
       >
-        <app-spinner></app-spinner>Aceptar
+        <app-spinner></app-spinner>
+        Aceptar
       </button>
     </div>
   </div>

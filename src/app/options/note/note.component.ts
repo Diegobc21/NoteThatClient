@@ -1,12 +1,12 @@
 import {animate, state, style, transition, trigger,} from '@angular/animations';
 import {Component, ElementRef, HostListener, OnDestroy, ViewChild,} from '@angular/core';
 import {Observable, Subject, Subscription, takeUntil} from 'rxjs';
-import {months} from 'src/app/utils/months';
-import {AuthService} from '../../core/services/auth.service';
-import {NoteService} from '../../core/services/note.service';
-import {SpinnerService} from '../../core/services/spinner.service';
+import {months_ES} from 'src/app/utils/months_ES';
 import {Note} from '../../interfaces/note.interface';
 import {AlertType} from '../../shared/alert/alert-type';
+import {SpinnerService} from "../../core/services/spinner/spinner.service";
+import {AuthService} from "../../core/services/auth/auth.service";
+import {NoteService} from "../../core/services/note/note.service";
 
 @Component({
   selector: 'app-note',
@@ -86,7 +86,7 @@ export class NoteComponent implements OnDestroy {
   private _subscriptions: Subscription[] = [];
   private _showAlert: boolean = true;
   private _windowScrollY: number = 0;
-  private _months: string[] = months;
+  private _months: string[] = months_ES;
 
   protected readonly AlertType = AlertType;
 
@@ -293,7 +293,7 @@ export class NoteComponent implements OnDestroy {
     const monthIndex = newDate.getUTCMonth();
     const year = newDate.getUTCFullYear();
 
-    return `${dayOfMonth} de ${months[monthIndex].toLowerCase()} ${year}`;
+    return `${dayOfMonth} de ${months_ES[monthIndex].toLowerCase()} ${year}`;
   }
 
   public ngOnDestroy(): void {

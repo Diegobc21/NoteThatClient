@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
-import { User } from '../../interfaces/user.interface';
+import { User } from '../../../interfaces/user.interface';
 import * as CryptoJS from 'crypto-js';
-import { NavigationService } from './navigation.service';
+import { NavigationService } from '../navigation/navigation.service';
 
 @Injectable({
   providedIn: 'root',

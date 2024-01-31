@@ -1,9 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../../core/services/auth.service';
-import { NavigationService } from '../../core/services/navigation.service';
 import { User } from '../../interfaces/user.interface';
 import { AlertType } from '../../shared/alert/alert-type';
+import {AuthService} from "../../core/services/auth/auth.service";
+import {NavigationService} from "../../core/services/navigation/navigation.service";
 
 @Component({
   selector: 'app-login',

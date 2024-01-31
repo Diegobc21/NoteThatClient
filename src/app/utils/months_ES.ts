@@ -1,4 +1,4 @@
-export const months: string[] = [
+export const months_ES: string[] = [
   'Enero',
   'Febrero',
   'Marzo',
