@@ -1,11 +1,10 @@
-<div class="bg-gray-950 text-white">
-  <!-- <app-spinner *ngIf="showSpinner"></app-spinner> -->
+<div class="bg-gray-50 text-gray-950 dark:bg-gray-950 dark:text-white">
   <app-popup *ngIf="sessionExpired" [message]="sessionExpiredMessage"></app-popup>
-  <app-navbar appDarkMode *ngIf="show"></app-navbar>
+  <app-navbar *ngIf="show"></app-navbar>
   <div
     [ngClass]="getContentClasses()"
     class="max-w-screen-2xl mx-auto p-3 overflow-y-auto">
-    <router-outlet appDarkMode></router-outlet>
+    <router-outlet></router-outlet>
   </div>
   <!--<app-footer *ngIf="show"></app-footer>-->
 </div>

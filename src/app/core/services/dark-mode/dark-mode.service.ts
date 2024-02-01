@@ -1,18 +1,21 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
+import { Injectable, effect, signal } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DarkModeService {
-  private isDarkModeSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public darkMode = signal<boolean>(
+    JSON.parse(window.localStorage.getItem('darkMode') ?? 'false')
+  );
 
-  get isDarkMode(): Observable<boolean> {
-    return this.isDarkModeSubject.asObservable();
+  constructor() {
+    effect(() => {
+      window.localStorage.setItem('darkMode', JSON.stringify(this.darkMode()));
+    });
   }
 
-  toggleDarkMode(): void {
-    const currentMode: boolean = this.isDarkModeSubject.value;
-    this.isDarkModeSubject.next(!currentMode);
+  public toggleDarkMode(): boolean {
+    this.darkMode.set(!this.darkMode());
+    return this.darkMode();
   }
 }

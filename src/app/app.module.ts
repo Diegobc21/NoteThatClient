@@ -1,23 +1,19 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {SharedModule} from "./shared/shared.module";
-import {PagesModule} from "./pages/pages.module";
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {UserModule} from "./user/user.module";
-import {RouterModule} from "@angular/router";
-import {SpinnerInterceptor} from "./core/interceptor/spinner.interceptor";
-import {FormsModule} from "@angular/forms";
-import {DarkModeDirective} from "./core/directives/dark-mode.directive";
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { SpinnerInterceptor } from './core/interceptor/spinner.interceptor';
+import { PagesModule } from './pages/pages.module';
+import { SharedModule } from './shared/shared.module';
+import { UserModule } from './user/user.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DarkModeDirective
-  ],
+  declarations: [AppComponent],
   imports: [
     HttpClientModule,
     FormsModule,
@@ -27,18 +23,16 @@ import {DarkModeDirective} from "./core/directives/dark-mode.directive";
     AppRoutingModule,
     SharedModule,
     PagesModule,
-    UserModule
+    UserModule,
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: SpinnerInterceptor,
-    multi: true
-  }],
-  exports: [
-    AppComponent,
-    DarkModeDirective
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptor,
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  exports: [AppComponent],
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

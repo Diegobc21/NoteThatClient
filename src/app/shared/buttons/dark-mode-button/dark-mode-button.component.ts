@@ -9,15 +9,11 @@ import {DarkModeService} from "../../../core/services/dark-mode/dark-mode.servic
 export class DarkModeButtonComponent {
   public isDarkMode: boolean = true;
 
-
   constructor(private darkModeService: DarkModeService) {
-    this.darkModeService.isDarkMode.subscribe(isDarkMode => {
-      this.isDarkMode = isDarkMode;
-    })
   }
 
   public toggleDarkMode(): void {
-    this.darkModeService.toggleDarkMode();
+    this.isDarkMode = this.darkModeService.toggleDarkMode();
   }
 
 }

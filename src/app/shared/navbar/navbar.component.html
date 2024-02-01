@@ -1,5 +1,5 @@
 <nav
-  class="bg-gray-950 mx-auto max-w-full px-2 :px-6 lg:px-8 fixed top-0 left-0 right-0 z-50 border-b-2 border-b-purple-800"
+  class="dark:bg-gray-950 mx-auto max-w-full px-2 :px-6 lg:px-8 fixed top-0 left-0 right-0 z-50 border-b-2 border-b-purple-800"
 >
   <!-- Desktop menu-->
   <div class="h-16 flex flex-row justify-between items-center">
@@ -8,7 +8,7 @@
       <button
         type="button"
         #menuButton
-        class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+        class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-400 dark:focus:ring-white"
         aria-controls="mobile-menu"
         aria-expanded="false"
       >
@@ -65,36 +65,12 @@
             [text]="option.type"
             [activeRoute]="isActiveRoute(option.route)"
           ></app-regular-button>
-          <!-- <a
-            (click)="navigateTo(option.route)"
-            [ngClass]="buttonClasses(option.route)"
-          >
-            {{ option.type }}
-          </a> -->
         </div>
       </div>
     </div>
 
-    <div class="flex">
-      <!--        Settings button-->
-      <!-- <button type="button" class="rounded-full bg-gray-950 p-1 text-gray-400 hover:text-white">
-        <svg
-          xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-          />
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-        </svg>
-      </button> -->
-
-      <!--        <app-dark-mode-button></app-dark-mode-button>-->
+    <div class="flex items-center">
+      <app-dark-mode-button></app-dark-mode-button>
 
       <!-- User menu-->
       <div class="relative ml-3">
@@ -102,7 +78,7 @@
         <div #userButton>
           <button
             type="button"
-            class="flex rounded-full bg-gray-950 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-950"
+            class="flex rounded-full dark:bg-gray-950 text-sm ocus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-white focus:ring-offset-2 dark:focus:ring-offset-gray-950"
             id="user-menu-button"
             aria-expanded="false"
             aria-haspopup="true"
@@ -111,7 +87,7 @@
             <svg
               class="h-8 w-8 rounded-full"
               fill="none"
-              stroke="gainsboro"
+              stroke="gray"
               stroke-width="1.5"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +101,6 @@
             </svg>
           </button>
         </div>
-
         <div
           *ngIf="isOpenUserMenu"
           class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
@@ -190,7 +165,7 @@
             <!-- User settings button-->
             <a
               role="button"
-              routerLink="/user/login"
+              routerLink="/user/settings"
               routerLinkActive="bg-gray-100 text-gray-700"
               class="flex items-center gap-2 rounded-lg hover:bg-gray-100 px-4 py-2 text-gray-500 hover:text-gray-700"
             >
@@ -230,8 +205,8 @@
   </div>
 
   <!--  Mobile menu-->
-  <div *ngIf="showMobileMenu" class="lg:hidden" id="mobile-menu">
-    <div class="space-y-1 px-2 pb-3 pt-2">
+  <div *ngIf="showMobileMenu" class="bg-white lg:hidden" id="mobile-menu">
+    <div class="dark:bg-gray-950 space-y-1 px-2 pb-3 pt-2">
       <div *ngFor="let option of optionList" class="w-full">
         <app-regular-button
           (click)="navigateTo(option.route)"

@@ -10,16 +10,16 @@ $gray-700: #22304e;
   text-shadow: 0 0 5px #e600e6, 0 0 10px #e600e6, 0 0 20px #e600e6, 0 0 40px #e600e6;
 }
 
-@at-root {
-  :hover {
-    @apply transition-all duration-150;
-  }
+// @at-root {
+  // :hover {
+  //   @apply transition-all duration-150;
+  // }
 
-  :focus {
-    @apply transition-all duration-150;
-  }
+  // :focus {
+  //   @apply transition-all duration-150;
+  // }
 
-}
+// }
 
 // Scroll bar settings
 @media(min-width: 1024px) {

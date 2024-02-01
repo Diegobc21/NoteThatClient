@@ -1,10 +1,16 @@
-import { Component, HostListener, Inject, OnDestroy } from '@angular/core';
+import {
+  Component,
+  HostBinding,
+  HostListener,
+  Inject,
+  OnDestroy
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
-import {SubscriptionService} from "./core/services/subscription/subscription.service";
-import {SpinnerService} from "./core/services/spinner/spinner.service";
-import {MediaCheckService} from "./core/services/media-check/media-check.service";
-import {AuthService} from "./core/services/auth/auth.service";
+import { AuthService } from './core/services/auth/auth.service';
+import { DarkModeService } from './core/services/dark-mode/dark-mode.service';
+import { MediaCheckService } from './core/services/media-check/media-check.service';
+import { SubscriptionService } from './core/services/subscription/subscription.service';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +25,10 @@ export class AppComponent implements OnDestroy {
     this.mediaCheckService.emitClick();
   }
 
+  @HostBinding('class.dark') get mode() {
+    return this.darkModeService.darkMode();
+  }
+
   public title: string = 'NoteThat';
   public show: boolean = false;
 
@@ -27,9 +37,9 @@ export class AppComponent implements OnDestroy {
 
   constructor(
     private router: Router,
-    private spinnerService: SpinnerService,
     private mediaCheckService: MediaCheckService,
-    private authService: AuthService
+    private authService: AuthService,
+    private darkModeService: DarkModeService
   ) {
     this.routerSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -47,10 +57,6 @@ export class AppComponent implements OnDestroy {
     return 'Tu sesión ha expirado';
   }
 
-  // get showSpinner(): boolean {
-  //   return this.spinnerService.showSpinner;
-  // }
-
   get sessionExpired(): boolean {
     return this.authService.sessionExpired;
   }
@@ -60,6 +66,5 @@ export class AppComponent implements OnDestroy {
 
   public ngOnDestroy(): void {
     this._subscriptionService.unsubscribe(this.routerSubscription);
-    // this.routerSubscription.unsubscribe();
   }
 }
