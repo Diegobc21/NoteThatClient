@@ -12,14 +12,14 @@ import {ClipboardService} from "../../core/services/clipboard/clipboard.service"
 export class ProfileComponent implements OnInit, OnDestroy {
   public fullName: string = '';
   public email: string = '';
-
   public icon: string = 'mail';
 
   private subs: Subscription[] = [];
 
   constructor(
     private userService: UserService,
-    private clipboardService: ClipboardService) {
+    private clipboardService: ClipboardService
+  ) {
   }
 
   public ngOnInit(): void {

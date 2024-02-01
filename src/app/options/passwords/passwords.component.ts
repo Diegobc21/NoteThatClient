@@ -260,11 +260,6 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     this.newPasswordVisible = !this.newPasswordVisible;
   }
 
-  public getEyeVisibleTypeImage(): string {
-    const svg: string = this.newPasswordVisible ? 'eye' : 'eye-not-visible'
-    return `../../../assets/svg/${svg}.svg`
-  }
-
   public checkAccountPassword(): void {
     // TODO: terminar esto
     if (this.accountPass === '123456') {
