@@ -18,7 +18,7 @@
   <div
     class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl hover:shadow-sm mt-4 is-note"
   >
-    <div class="rounded-[10px] bg-gray-950 p-4 sm:p-6">
+    <div class="rounded-[10px] bg-gray-50 dark:bg-gray-950 p-4 sm:p-6">
       <time class="block text-xs opacity-80">
         {{ getNoteDate(selectedNote!.creationDate) }}
       </time>
@@ -98,7 +98,7 @@
         <h1 class="text-2xl font-bold text-white mb-2">Nueva nota</h1>
         <form (ngSubmit)="submitNote()">
           <input
-            class="bg-gray-950 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-4 w-full focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
+            class="bg-gray-100 dark:bg-gray-950  placeholder-gray-400 px-4 py-2 rounded-md mb-4 w-full focus:outline-none focus:bg-gray-300 dark:focus:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-700"
             type="text"
             placeholder="*Título"
             [(ngModel)]="newNote.title"
@@ -164,9 +164,9 @@
       <div
         (click)="enablePopup(note, $event)"
         id="note"
-        class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl hover:shadow-sm mt-2 is-note cursor-pointer"
+        class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-md transition-shadow hover:shadow-sm mt-2 is-note cursor-pointer"
       >
-        <div class="rounded-[10px] bg-gray-950 p-2 sm:py-2 sm:px-4">
+        <div class="rounded-[10px] bg-gray-100 dark:bg-gray-950 p-2 sm:py-2 sm:px-4">
           <time
             class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
           >
@@ -174,7 +174,7 @@
           </time>
           <div class="flex flex-row justify-between">
             <div>
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 class="text-lg font-semibold ">
                 {{ note.title }}
               </h3>
               <p class="text-base font-normal text-gray-500 dark:text-gray-400">
