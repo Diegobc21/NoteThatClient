@@ -196,6 +196,7 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   public toggleCreateSection(): void {
     this.isCreatingSection = !this.isCreatingSection;
+    this._resetNewSection();
   }
 
   public toggleOpenSectionMenu(): void {
@@ -272,6 +273,10 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     this.form.user = '';
     this.form.username = '';
     this.form.title = '';
+  }
+
+  private _resetNewSection(): void {
+    this.sectionForm.title = '';
   }
 
   private _formValid(): boolean {
