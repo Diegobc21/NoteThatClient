@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {User} from '../../interfaces/user.interface';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {UserService} from "../../core/services/user/user.service";
-import {ClipboardService} from "../../core/services/clipboard/clipboard.service";
+import {SpinnerService} from "../../core/services/spinner/spinner.service";
 
 @Component({
   selector: 'app-profile',
@@ -12,13 +12,12 @@ import {ClipboardService} from "../../core/services/clipboard/clipboard.service"
 export class ProfileComponent implements OnInit, OnDestroy {
   public fullName: string = '';
   public email: string = '';
-  public icon: string = 'mail';
 
   private subs: Subscription[] = [];
 
   constructor(
     private userService: UserService,
-    private clipboardService: ClipboardService
+    private spinnerService: SpinnerService
   ) {
   }
 
@@ -34,17 +33,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     );
   }
 
-  public copyToClipboard(text: string): void {
-    if (this.clipboardService.copyToClipboard(text)) {
-      this.icon = 'check'
-      setTimeout(() => {
-        this.getSvg('mail');
-      }, 1500)
-    }
-  }
-
-  public getSvg(type: string): void {
-    this.icon = type;
+  public get showSpinner(): Observable<boolean> {
+    return this.spinnerService.spinnerVisible$;
   }
 
   public ngOnDestroy(): void {

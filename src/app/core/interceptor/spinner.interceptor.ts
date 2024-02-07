@@ -26,7 +26,7 @@ export class SpinnerInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this._activeRequest === 0) {
-      this.spinnerService.show2();
+      this.spinnerService.show();
     }
     this._activeRequest++;
 
@@ -40,7 +40,7 @@ export class SpinnerInterceptor implements HttpInterceptor {
     this._activeRequest--;
     if (this._activeRequest === 0) {
       // this.spinnerService.hide();
-      this.spinnerService.hideSpinner()
+      this.spinnerService.hide()
     }
   }
 

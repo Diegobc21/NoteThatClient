@@ -7,7 +7,7 @@ import {FriendSearchComponent} from './friend/friend-search/friend-search.compon
 import {FriendComponent} from './friend/friend.component';
 import {NoteComponent} from './note/note.component';
 import {LoadingNoteComponent} from './note/loading-note.component.ts/loading-note.component';
-import {Check, ChevronDown, ChevronUp, Copy, Eye, EyeOff, LucideAngularModule, Trash} from "lucide-angular";
+import {Check, ChevronDown, ChevronUp, Copy, Eye, EyeOff, LucideAngularModule, Trash, Lock} from "lucide-angular";
 import {PasswordsComponent} from "./passwords/passwords.component";
 import {SpotifyComponent} from "./spotify/spotify.component";
 
@@ -27,8 +27,9 @@ import {SpotifyComponent} from "./spotify/spotify.component";
     SharedModule,
     NgOptimizedImage,
     LucideAngularModule.pick({
-      Copy, Check, Trash, Eye, EyeOff, ChevronDown, ChevronUp,
-    })],
+      Copy, Check, Trash, Eye, EyeOff, ChevronDown, ChevronUp, Lock
+    })
+  ],
   exports: [],
 })
 export class OptionsModule {

@@ -5,8 +5,20 @@ import {MainComponent} from './main/main.component';
 import {ProfileComponent} from './profile/profile.component';
 import {OptionsModule} from '../options/options.module';
 import {FormsModule} from "@angular/forms";
-import {Check, Copy, Eye, EyeOff, LucideAngularModule, Mail, Trash} from "lucide-angular";
-import { SettingsComponent } from './settings/settings.component';
+import {
+  BellRing,
+  Check,
+  Copy,
+  Eye,
+  EyeOff,
+  LogOut,
+  LucideAngularModule,
+  Mail,
+  Settings,
+  Trash,
+  User
+} from "lucide-angular";
+import {SettingsComponent} from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +28,7 @@ import { SettingsComponent } from './settings/settings.component';
   ],
   imports: [CommonModule, NgOptimizedImage, SharedModule, OptionsModule, FormsModule,
     LucideAngularModule.pick({
-      Copy, Check, Trash, Eye, EyeOff, Mail
+      BellRing, Copy, Check, Trash, Eye, EyeOff, Mail, User, Settings, LogOut
     })],
   exports: [],
 })

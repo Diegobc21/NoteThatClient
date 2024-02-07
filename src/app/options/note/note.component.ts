@@ -47,12 +47,10 @@ export class NoteComponent implements OnDestroy {
   // TODO: Finish
   @HostListener('click', ['$event'])
   onClick(event: MouseEvent): void {
-    if (this.popupMenuTemplate?.nativeElement?.contains(event.target)) {
-      this.disablePopup();
-    }
     // if (this.popupMenuTemplate?.nativeElement?.contains(event.target)) {
     //   this.disablePopup();
     // }
+    this.disablePopup();
   }
 
   @ViewChild('editingTitle', {static: false}) editingTitle!: ElementRef;
@@ -275,8 +273,8 @@ export class NoteComponent implements OnDestroy {
     this.showAlert = false;
   }
 
-  public showSpinner(): Observable<boolean> {
-    return this.spinnerService.getSpinnerVisibility();
+  public get showSpinner(): Observable<boolean> {
+    return this.spinnerService.spinnerVisible$;
   }
 
   public toggleIsAddingNote(): void {

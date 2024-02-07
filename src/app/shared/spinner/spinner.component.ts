@@ -16,8 +16,8 @@ export class SpinnerComponent {
     private authService: AuthService
   ) {}
 
-  get spinnerVisible(): Observable<boolean> {
-    return this.spinnerService.getSpinnerVisibility();
+  public get spinnerVisible(): Observable<boolean> {
+    return this.spinnerService.spinnerVisible$;
   }
 
   public getSize(): string {

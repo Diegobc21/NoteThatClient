@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription, take} from 'rxjs';
 import {PasswordService} from "../../core/services/password/password.service";
-import {ClipboardService} from "../../core/services/clipboard/clipboard.service";
 import {DeviceService} from "../../core/services/device/device.service";
 import {ScreenSizeService} from "../../core/services/screen-size/screen-size.service";
 
@@ -40,8 +39,6 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   public passwordIdToShow: string = '';
   public newPasswordVisible: boolean = false;
   public isOpenSectionMenu: boolean = true;
-  // TODO: move this logic to a new component
-  public clipboardIcon: string = 'Copy';
 
   public form: Password = {
     _id: '',
@@ -66,7 +63,6 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   constructor(
     private passwordService: PasswordService,
-    private clipboardService: ClipboardService,
     private deviceService: DeviceService,
     private screenSizeService: ScreenSizeService
   ) {
@@ -78,15 +74,6 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   get isAnySection(): boolean {
     return this.sectionList.length > 0;
-  }
-
-  public copyToClipboard(text: string): void {
-    if (this.clipboardService.copyToClipboard(text)) {
-      this.clipboardIcon = 'check';
-      setTimeout(() => {
-        this.clipboardIcon = 'Copy';
-      }, 1500)
-    }
   }
 
   public triggerVisibility(passwordId: string): void {
@@ -108,6 +95,7 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   public createSection(event?: SubmitEvent | MouseEvent): void {
     if (this.sectionForm.title?.length > 0) {
+      event?.preventDefault();
       this.subscriptions.push(
         this.passwordService.addSection(this.sectionForm.title).subscribe({
           complete: () => {
