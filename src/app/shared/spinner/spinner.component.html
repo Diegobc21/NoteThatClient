@@ -1,8 +1,8 @@
-<!-- <div *ngIf="getLoggedIn" class="text-center"> -->
-<span
-  *ngIf="spinnerVisible | async"
-  class="loader"
-  [style.height]="getSize()"
-  [style.width]="getSize()"
-></span>
-<!-- </div> -->
+<span class="inline-block align-sub">
+  <lucide-icon
+    *ngIf="spinnerVisible | async"
+    [size]="getSize()"
+    class="animate-spin"
+    name="loader-2"
+  ></lucide-icon>
+</span>

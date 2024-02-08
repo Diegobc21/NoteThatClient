@@ -16,7 +16,7 @@ import {SearchInputComponent} from './search-input/search-input.component';
 import {SpinnerComponent} from './spinner/spinner.component';
 import {TagComponent} from './tag/tag.component';
 import {CopyBadgeComponent} from "./badges/copy-badge/copy-badge.component";
-import {Check, CircleUserRound, ChevronDown, ChevronUp, Copy, Eye, EyeOff, LucideAngularModule, Mail, Trash, KeyRound} from "lucide-angular";
+import {Check, CircleUserRound, ChevronDown, ChevronUp, Copy, Eye, EyeOff, LucideAngularModule, Mail, Trash, KeyRound, Loader2} from "lucide-angular";
 
 @NgModule({
   declarations: [
@@ -43,7 +43,7 @@ import {Check, CircleUserRound, ChevronDown, ChevronUp, Copy, Eye, EyeOff, Lucid
     FormsModule,
     RegularButtonComponent,
     LucideAngularModule.pick({
-      Copy, CircleUserRound, Check, Trash, Eye, EyeOff, ChevronDown, ChevronUp, Mail, KeyRound
+      Copy, CircleUserRound, Check, Trash, Eye, EyeOff, ChevronDown, ChevronUp, Mail, KeyRound, Loader2
     })
   ],
   exports: [

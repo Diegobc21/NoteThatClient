@@ -13,7 +13,8 @@ export class SpinnerService {
   }
 
   hide(): void {
-    this.spinnerVisible.next(false);
+    setTimeout(() => this.spinnerVisible.next(false), 800)
+
   }
 
   public get spinnerVisible$(): Observable<boolean> {
