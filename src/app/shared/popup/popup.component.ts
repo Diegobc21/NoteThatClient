@@ -1,35 +1,26 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Component({
   selector: 'app-popup',
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.scss']
 })
-export class PopupComponent implements OnInit {
+export class PopupComponent {
+  @Input('message') public message: string = 'Texto copiado al portapapeles';
 
-  @Input('message') input: string = '';
+  private visibleSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  public style: {} = {};
-
-  private _message: string;
-
-  get message(): string {
-    return this._message;
+  public get visible$(): Observable<boolean> {
+    return this.visibleSubject.asObservable();
   }
 
-  constructor() {
-    this._message = 'popup';
-  }
-
-  public ngOnInit(): void {
-    this.style = {};
-    if (this.input !== '') {
-      this._message = this.input;
-    }
+  public open(): void {
+    this.visibleSubject.next(true);
+    setTimeout(() => this.visibleSubject.next(false), 2000);
   }
 
   public close(): void {
-    this.style = {display: 'none'};
+    this.visibleSubject.next(false);
   }
-
 }

@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription, take } from 'rxjs';
-import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
-import { DeviceService } from "../../core/services/device/device.service";
-import { PasswordService } from "../../core/services/password/password.service";
-import { ScreenSizeService } from "../../core/services/screen-size/screen-size.service";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable, Subscription, take} from 'rxjs';
+import {SpinnerService} from 'src/app/core/services/spinner/spinner.service';
+import {DeviceService} from "../../core/services/device/device.service";
+import {PasswordService} from "../../core/services/password/password.service";
+import {ScreenSizeService} from "../../core/services/screen-size/screen-size.service";
 
 interface Password {
   _id: string;
@@ -80,16 +80,6 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   get loadingContent(): Observable<boolean> {
     return this.spinnerService.spinnerVisible$;
-  }
-
-  public triggerVisibility(passwordId: string): void {
-    const pass = this.passwords.find((p) => p._id === passwordId)
-    if (pass && !pass.visible) {
-      this.passwordIdToShow = passwordId;
-      this.toggleAccountPasswordOverlay();
-    } else if (pass) {
-      pass.visible = false;
-    }
   }
 
   public changeCurrentSection(title: string): void {
@@ -241,10 +231,46 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     }
   }
 
+  public triggerVisibility(passwordId: string): void {
+    const pass: Password | undefined = this.passwords.find((p: Password) => p._id === passwordId)
+    if (pass?.visible) {
+      pass.visible = false;
+    } else {
+      this.passwordIdToShow = passwordId;
+      this.toggleAccountPasswordOverlay();
+    }
+  }
+
+  public checkAccountPassword(): void {
+    this.passwordService.checkAccountPassword(this.accountPass)
+      .subscribe((response) => {
+        if (response.valid === true) {
+          this.passwordService.setPasswordsVisible();
+          this.showPassword = true;
+          this.isAccountPasswordOverlayVisible = false;
+          this.makePasswordVisible();
+        }
+      });
+  }
+
   public toggleAccountPasswordOverlay(): void {
-    this.isAccountPasswordOverlayVisible =
-      !this.isAccountPasswordOverlayVisible;
-    this.accountPass = '';
+    const passwordsVisible = this.passwordService.checkIfPasswordsAreVisible();
+    if (!this.passwordService.checkIfPasswordsAreVisible()) {
+      this.accountPass = '';
+      this.isAccountPasswordOverlayVisible = true;
+    } else {
+      this.makePasswordVisible();
+      this.isAccountPasswordOverlayVisible = false;
+    }
+  }
+
+  private makePasswordVisible(): void {
+    this.passwords.find((p: Password) => {
+      if (p._id === this.passwordIdToShow) {
+        p.visible = true;
+      }
+    });
+
   }
 
   public getNewPasswordVisibility(): string {
@@ -253,19 +279,6 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   public toggleNewPasswordVisibility(): void {
     this.newPasswordVisible = !this.newPasswordVisible;
-  }
-
-  public checkAccountPassword(): void {
-    // TODO: terminar esto
-    if (this.accountPass === '123456') {
-      this.showPassword = true;
-    }
-    this.passwords.forEach((p) => {
-      if (p._id === this.passwordIdToShow) {
-        p.visible = true;
-      }
-    });
-    this.toggleAccountPasswordOverlay();
   }
 
   private saveSelectedPassword(password: Password): void {
@@ -300,5 +313,6 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy() {
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this.passwordService.setPasswordsNotVisible();
   }
 }

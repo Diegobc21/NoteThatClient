@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
-import { User } from '../../../interfaces/user.interface';
-import * as CryptoJS from 'crypto-js';
-import { NavigationService } from '../navigation/navigation.service';
+import {Injectable} from '@angular/core';
+import {environment} from '../../../../environments/environment';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {catchError, EMPTY, map, Observable, tap} from 'rxjs';
+import {User} from '../../../interfaces/user.interface';
+import {NavigationService} from '../navigation/navigation.service';
+import {UtilsService} from "../utils/utils.service";
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +15,10 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private navigatorService: NavigationService
-  ) {}
+    private navigatorService: NavigationService,
+    private utilsService: UtilsService
+  ) {
+  }
 
   get sessionExpired(): boolean {
     return this._sessionExpired;
@@ -45,25 +47,26 @@ export class AuthService {
   }
 
   public register(user: User): Observable<User> {
-    user.password = this.encrypt(user.password);
+    user.password = this.utilsService.encryptMd5(user.password);
     return this.http.post<User>(this.endpoint + '/register', user);
   }
 
   public login(user: User): Observable<any> {
-    user.password = this.encrypt(user.password);
+    user.password = this.utilsService.encryptMd5(user.password);
     return this.http.post<User>(this.endpoint + '/login', user).pipe(
-      tap(
-        (res: any) => this.saveLocalStorage(res.token, res.email),
-        (err: any) => console.error(err)
+      tap({
+          next: (res: any) => this.saveLocalStorage(res.token, res.email),
+          error: (err: any) => console.error(err)
+        }
       )
     );
   }
 
   public logout(): void {
-    this.emptyLocalStorage();
+    this.clearLocalStorage();
+    this.clearSessionStorage();
     this.navigatorService
-      .navigateToLogin()
-      .finally(() => console.log('Logged out'));
+      .navigateToLogin().then(() => null);
   }
 
   public getHeaders(): HttpHeaders {
@@ -75,9 +78,13 @@ export class AuthService {
     localStorage.setItem('email', email ?? '');
   }
 
-  private emptyLocalStorage(): void {
+  private clearLocalStorage(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
+  }
+
+  private clearSessionStorage(): void {
+    sessionStorage.removeItem('passwords-visible');
   }
 
   public checkConnection(data: Observable<any>): Observable<any> {
@@ -97,9 +104,5 @@ export class AuthService {
         return EMPTY;
       })
     );
-  }
-
-  private encrypt(input: string): string {
-    return CryptoJS.SHA256(input).toString();
   }
 }

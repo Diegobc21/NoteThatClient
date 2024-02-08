@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import * as CryptoJS from "crypto-js";
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
-  public copyToClipboard(): void {
-    console.log('copied to clipboard!')
+
+  public encryptMd5(input: string): string {
+    return CryptoJS.SHA256(input).toString();
   }
 }

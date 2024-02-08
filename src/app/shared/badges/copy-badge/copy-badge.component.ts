@@ -1,6 +1,7 @@
-import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, Output, ViewChild} from '@angular/core';
 import {ClipboardService} from "../../../core/services/clipboard/clipboard.service";
 import {Subscription} from "rxjs";
+import {PopupComponent} from "../../popup/popup.component";
 
 @Component({
   selector: 'app-copy-badge',
@@ -8,6 +9,7 @@ import {Subscription} from "rxjs";
   styleUrl: './copy-badge.component.scss'
 })
 export class CopyBadgeComponent implements OnDestroy {
+  @ViewChild('appPopup') public appPopup: PopupComponent | undefined;
 
   @Output() onCopy: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -19,6 +21,10 @@ export class CopyBadgeComponent implements OnDestroy {
   constructor(private clipboardService: ClipboardService) {
     this.onCopySubscription = this.onCopy.subscribe((copied: boolean) => {
       if (copied) {
+        if (this.appPopup) {
+          this.appPopup.open();
+          this.appPopup.message = 'Copiado al portapapeles';
+        }
         const previousIcon: string = this.icon;
         this.icon = 'check';
         setTimeout(() => {
@@ -32,7 +38,7 @@ export class CopyBadgeComponent implements OnDestroy {
     this.onCopy.emit(this.clipboardService.copyToClipboard(this.text));
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy(): void {
     this.onCopySubscription.unsubscribe();
   }
 }

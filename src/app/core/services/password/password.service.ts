@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
-import { environment } from '../../../../environments/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {AuthService} from '../auth/auth.service';
+import {environment} from '../../../../environments/environment';
+import {UtilsService} from "../utils/utils.service";
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +11,14 @@ import { environment } from '../../../../environments/environment';
 export class PasswordService {
   private apiUrl: string = environment.apiUrl + '/password';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private utilsService: UtilsService
+  ) {
+  }
 
-  public getAllPasswords(): Observable<any> {
+  private getAllPasswords(): Observable<any> {
     return this.http.get(`${this.apiUrl}`, {
       headers: this.authService.getHeaders(),
     });
@@ -40,8 +46,8 @@ export class PasswordService {
     const user = this.authService.email;
     return this.http.post(
       `${this.apiUrl}/`,
-      { section, password, title, user, username },
-      { headers: this.authService.getHeaders() }
+      {section, password, title, user, username},
+      {headers: this.authService.getHeaders()}
     );
   }
 
@@ -61,8 +67,29 @@ export class PasswordService {
     const user: string = this.authService.email;
     return this.http.post(
       `${this.apiUrl}/section`,
-      { user, title },
-      { headers: this.authService.getHeaders() }
+      {user, title},
+      {headers: this.authService.getHeaders()}
     );
+  }
+
+  public checkAccountPassword(pass: string): Observable<any> {
+    const email: string = this.authService.email;
+    return this.http.post(
+      `${this.apiUrl}/make-visible`,
+      {email, password: this.utilsService.encryptMd5(pass)},
+      {headers: this.authService.getHeaders()}
+    );
+  }
+
+  public setPasswordsVisible(): void {
+    sessionStorage.setItem('passwords-visible', 'true');
+  }
+
+  public checkIfPasswordsAreVisible(): boolean {
+    return sessionStorage.getItem('passwords-visible') === 'true';
+  }
+
+  public setPasswordsNotVisible(): void {
+    sessionStorage.removeItem('passwords-visible');
   }
 }

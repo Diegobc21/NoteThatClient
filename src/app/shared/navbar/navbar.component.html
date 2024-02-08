@@ -70,7 +70,7 @@
     </div>
 
     <div class="flex items-center">
-<!--      <app-dark-mode-button></app-dark-mode-button>-->
+      <!--      <app-dark-mode-button></app-dark-mode-button>-->
 
       <!-- User menu-->
       <div class="relative ml-3">
@@ -84,12 +84,16 @@
             aria-haspopup="true"
           >
             <span class="sr-only">Open user menu</span>
-            <lucide-icon [strokeWidth]="1" name="circle-user-round" size="36"></lucide-icon>
+            <lucide-icon
+              [strokeWidth]="1"
+              name="circle-user-round"
+              size="36"
+            ></lucide-icon>
           </button>
         </div>
         <div
           *ngIf="isOpenUserMenu"
-          class="absolute transition-colors duration-100 right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          class="absolute transition-colors duration-100 right-0 z-10 mt-2 w-fit origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="user-menu-button"
@@ -102,24 +106,42 @@
               routerLinkActive="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white"
               class="flex items-center gap-2 rounded-lg bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100"
             >
-              <lucide-icon name="user" size="20" [strokeWidth]="2"></lucide-icon>
+              <lucide-icon
+                name="user"
+                size="20"
+                [strokeWidth]="2"
+              ></lucide-icon>
               <span class="text-sm font-medium"> Perfil </span>
             </a>
 
             <!-- Notifications option-->
-            <a role="button"
-               routerLink="/user/login"
-               routerLinkActive="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white"
-               class="flex items-center gap-2 rounded-lg bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100"
+            <a
+              role="button"
+              routerLink="/user/login"
+              routerLinkActive="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white"
+              class="flex items-center gap-2 rounded-lg bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100"
             >
               <div class="flex items-center gap-2">
-                <lucide-icon name="bell-ring" size="20" [strokeWidth]="2"></lucide-icon>
+                <lucide-icon
+                  name="bell-ring"
+                  size="20"
+                  [strokeWidth]="2"
+                ></lucide-icon>
                 <span class="text-sm font-medium"> Notificaciones </span>
               </div>
 
-              <span
-                class="shrink-0 rounded-full bg-gray-200 dark:bg-gray-700 py-0.5 px-3 text-xs text-gray-600 dark:text-gray-100 group-hover:bg-gray-200 group-hover:text-gray-700"
-              > 3</span>
+              <span class="relative flex h-3 w-3">
+                  <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"
+                  ></span>
+                  <span
+                    class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"
+                  ></span>
+                </span>
+              <!--              <span-->
+              <!--                class="shrink-0 rounded-full bg-gray-200 dark:bg-gray-700 py-0.5 px-3 text-xs text-gray-600 dark:text-gray-100 group-hover:bg-gray-200 group-hover:text-gray-700"-->
+              <!--                >3-->
+              <!--              </span>-->
             </a>
 
             <!-- User settings button-->
@@ -129,14 +151,23 @@
               routerLinkActive="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-white"
               class="flex items-center gap-2 rounded-lg bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 px-4 py-2 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100"
             >
-              <lucide-icon name="settings" size="20" [strokeWidth]="2"></lucide-icon>
+              <lucide-icon
+                name="settings"
+                size="20"
+                [strokeWidth]="2"
+              ></lucide-icon>
               <span class="text-sm font-medium"> Ajustes </span>
             </a>
-            <a (click)="logout()"
-               role="button"
-               class="flex items-center gap-2 rounded-lg px-4 py-2 bg-transparent hover:bg-red-700 text-gray-500 dark:text-gray-200 hover:text-white"
+            <a
+              (click)="logout()"
+              role="button"
+              class="flex items-center gap-2 rounded-lg px-4 py-2 bg-transparent hover:bg-red-700 text-gray-500 dark:text-gray-200 hover:text-white"
             >
-              <lucide-icon name="log-out" size="20" [strokeWidth]="2"></lucide-icon>
+              <lucide-icon
+                name="log-out"
+                size="20"
+                [strokeWidth]="2"
+              ></lucide-icon>
               <span class="text-sm font-medium"> Cerrar sesión </span>
             </a>
           </div>

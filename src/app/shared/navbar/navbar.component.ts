@@ -1,13 +1,7 @@
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { optionList } from '../../options/option-list';
+import {Component, ElementRef, OnDestroy, Renderer2, ViewChild,} from '@angular/core';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {optionList} from '../../options/option-list';
 import {ScreenSizeService} from "../../core/services/screen-size/screen-size.service";
 import {AuthService} from "../../core/services/auth/auth.service";
 import {NavigationService} from "../../core/services/navigation/navigation.service";
