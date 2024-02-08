@@ -18,7 +18,7 @@
     <div
       class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-sm mt-4 is-note"
     >
-      <div class="rounded-[10px] bg-gray-50 dark:bg-gray-950 p-4 sm:p-6">
+      <div class="rounded-[10px] bg-white dark:bg-gray-950 p-4 sm:p-6">
         <time class="block text-xs opacity-80">
           {{ getNoteDate(selectedNote!.creationDate) }}
         </time>
@@ -50,11 +50,11 @@
     <div
       class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-sm transition mt-4"
     >
-      <div class="rounded-[10px] bg-gray-950 p-4 sm:p-6">
+      <div class="rounded-[10px] bg-white dark:bg-gray-950 p-4 sm:p-6">
         <form (ngSubmit)="submitEditing()">
           <input
             #editingTitle
-            class="bg-gray-950 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-4 w-full focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
+            class="dark:bg-gray-950 placeholder-gray-400 px-4 py-2 rounded-md mb-4 w-full focus:outline-none dark:focus:bg-gray-700 bg-gray-50 hover:bg-transparent dark:hover:bg-gray-700"
             type="text"
             placeholder="Título (obligatorio)*"
             [(ngModel)]="editingNote.title"
@@ -64,7 +64,7 @@
           <div class="flex flex-col">
             <textarea
               #editingContent
-              class="bg-gray-950 text-white placeholder-gray-400 px-4 py-2 rounded-md mb-2 focus:outline-none focus:bg-gray-700 hover:bg-gray-700"
+              class="dark:bg-gray-950 placeholder-gray-400 px-4 py-2 rounded-md mb-2 focus:outline-none dark:focus:bg-gray-700 bg-gray-50 hover:bg-transparent dark:hover:bg-gray-700"
               rows="3"
               placeholder="Contenido"
               [value]="editingNote.content"
@@ -164,11 +164,11 @@
             ></div>
           }
           <div
-            (click)="enablePopup(note, $event)"
+            (click)="openPopup(note, $event)"
             id="note"
             class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-md transition-shadow hover:shadow-sm mt-2 is-note cursor-pointer"
           >
-            <div class="rounded-[10px] bg-gray-100 dark:bg-gray-950 p-2 sm:py-2 sm:px-4">
+            <div class="rounded-[10px] bg-white dark:bg-gray-950  p-2 sm:py-2 sm:px-4">
               <time
                 class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
               >

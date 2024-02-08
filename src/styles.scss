@@ -2,22 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-$gray-300: #374151;
-$gray-800: #030712;
-$gray-700: #22304e;
-
 .neon-text {
   text-shadow: 0 0 5px #e600e6, 0 0 10px #e600e6, 0 0 20px #e600e6, 0 0 40px #e600e6;
 }
 
 // @at-root {
-  // :hover {
-  //   @apply transition-all duration-150;
-  // }
+// :hover {
+//   @apply transition-all duration-150;
+// }
 
-  // :focus {
-  //   @apply transition-all duration-150;
-  // }
+// :focus {
+//   @apply transition-all duration-150;
+// }
 
 // }
 
@@ -29,17 +25,17 @@ $gray-700: #22304e;
 
   /* Track */
   ::-webkit-scrollbar-track {
-    background: $gray-800;
+    background: transparent;
   }
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: $gray-700;
+    @apply bg-gray-300 dark:bg-gray-800;
     border-radius: 5px;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: $gray-300;
+    @apply bg-gray-400 dark:bg-gray-600;
   }
 }

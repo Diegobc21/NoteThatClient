@@ -1,8 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription, take} from 'rxjs';
-import {PasswordService} from "../../core/services/password/password.service";
-import {DeviceService} from "../../core/services/device/device.service";
-import {ScreenSizeService} from "../../core/services/screen-size/screen-size.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription, take } from 'rxjs';
+import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
+import { DeviceService } from "../../core/services/device/device.service";
+import { PasswordService } from "../../core/services/password/password.service";
+import { ScreenSizeService } from "../../core/services/screen-size/screen-size.service";
 
 interface Password {
   _id: string;
@@ -64,7 +65,8 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   constructor(
     private passwordService: PasswordService,
     private deviceService: DeviceService,
-    private screenSizeService: ScreenSizeService
+    private screenSizeService: ScreenSizeService,
+    private spinnerService: SpinnerService
   ) {
   }
 
@@ -74,6 +76,10 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   get isAnySection(): boolean {
     return this.sectionList.length > 0;
+  }
+
+  get loadingContent(): Observable<boolean> {
+    return this.spinnerService.spinnerVisible$;
   }
 
   public triggerVisibility(passwordId: string): void {

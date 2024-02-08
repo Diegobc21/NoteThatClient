@@ -1,10 +1,6 @@
-import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {SharedModule} from '../shared/shared.module';
-import {MainComponent} from './main/main.component';
-import {ProfileComponent} from './profile/profile.component';
-import {OptionsModule} from '../options/options.module';
-import {FormsModule} from "@angular/forms";
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {
   BellRing,
   Check,
@@ -16,21 +12,35 @@ import {
   Mail,
   Settings,
   Trash,
-  User
-} from "lucide-angular";
-import {SettingsComponent} from './settings/settings.component';
+  User,
+} from 'lucide-angular';
+import { OptionsModule } from '../options/options.module';
+import { SharedModule } from '../shared/shared.module';
+import { MainComponent } from './main/main.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
-  declarations: [
-    MainComponent,
-    ProfileComponent,
-    SettingsComponent
-  ],
-  imports: [CommonModule, NgOptimizedImage, SharedModule, OptionsModule, FormsModule,
+  declarations: [MainComponent, ProfileComponent, SettingsComponent],
+  imports: [
+    CommonModule,
+    NgOptimizedImage,
+    SharedModule,
+    OptionsModule,
+    FormsModule,
     LucideAngularModule.pick({
-      BellRing, Copy, Check, Trash, Eye, EyeOff, Mail, User, Settings, LogOut
-    })],
+      BellRing,
+      Copy,
+      Check,
+      Trash,
+      Eye,
+      EyeOff,
+      Mail,
+      User,
+      Settings,
+      LogOut,
+    }),
+  ],
   exports: [],
 })
-export class PagesModule {
-}
+export class PagesModule {}
