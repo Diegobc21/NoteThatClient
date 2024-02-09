@@ -15,26 +15,7 @@
     (onAcceptEvent)="deleteNote(selectedNote!)"
   >
     <h1 class="text-center font-bold">¿Seguro que deseas eliminar esta nota?</h1>
-    <div
-      class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-sm mt-4 is-note"
-    >
-      <div class="rounded-[10px] bg-white dark:bg-gray-950 p-4 sm:p-6">
-        <time class="block text-xs opacity-80">
-          {{ getNoteDate(selectedNote!.creationDate) }}
-        </time>
-        <div class="flex flex-row justify-between">
-          <div>
-            <h3 class="mt-0.5 text-lg font-bold">
-              {{ selectedNote!.title }}
-            </h3>
-
-            <h4 class="mt-0.5 text-sm font-medium">
-              {{ selectedNote!.content }}
-            </h4>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-note-default [note]="selectedNote!"></app-note-default>
   </app-overlay>
 }
 
