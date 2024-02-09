@@ -90,9 +90,12 @@ export class NavbarComponent implements OnDestroy {
   }
 
   private startSubscriptions(): void {
+    this._mobileScreen = window.innerWidth < 1024;
     this._subscriptions.push(
-      this._screenSizeService.screenWidth?.subscribe({
-        next: (value: number) => (this._mobileScreen = value < 640),
+      this._screenSizeService.screenWidth$?.subscribe({
+        next: (value: number) => {
+          this._mobileScreen = value < 1024;
+        },
       })
     );
   }

@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../auth/auth.service";
 import {Note} from "../../../interfaces/note.interface";
+import {months_ES} from "../../../utils/months_ES";
 
 @Injectable({
   providedIn: 'root'
@@ -43,4 +44,14 @@ export class NoteService {
       )
     );
   }
+
+  public getNoteDate(date: Date): string {
+    const newDate = new Date(date);
+    const dayOfMonth = newDate.getUTCDate();
+    const monthIndex = newDate.getUTCMonth();
+    const year = newDate.getUTCFullYear();
+
+    return `${dayOfMonth} de ${months_ES[monthIndex].toLowerCase()} ${year}`;
+  }
+
 }

@@ -1,53 +1,37 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {BehaviorSubject, debounceTime, fromEvent, Observable, Subject, takeUntil} from "rxjs";
+import {Observable, ReplaySubject, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScreenSizeService implements OnDestroy {
 
-  public screenWidth: BehaviorSubject<number> = new BehaviorSubject(0);
-  public screenHeight: BehaviorSubject<number> = new BehaviorSubject(0);
+  public screenWidth$: Observable<number> = new Observable();
+  public screenHeight$: Observable<number> = new Observable();
 
-
-  private _unsubscriber$: Subject<any> = new Subject();
+  private screenWidth: Subject<number> = new ReplaySubject<number>();
+  private screenHeight: Subject<number> = new ReplaySubject<number>();
 
   constructor() {
-    this.init();
+    this.screenWidth$ = this.screenWidth.asObservable();
+    this.screenHeight$ = this.screenHeight.asObservable();
+    window.addEventListener('resize', this.init.bind(this));
   }
 
-  private init(): void {
-    this._setScreenWidth(window.innerWidth);
-    this._setScreenHeight(window.innerHeight);
-    window.addEventListener('resize', this.handleResize.bind(this));
-    fromEvent(window, 'resize')
-      .pipe(
-        debounceTime(1000),
-        takeUntil(this._unsubscriber$)
-      )
-      .subscribe({
-        next: (event: any) => {
-          this._setScreenWidth(event.target.innerWidth)
-          this._setScreenHeight(event.target.innerHeight)
-        }
-      });
+  private init(event: Event): void {
+    this._setScreenWidth(event);
+    this._setScreenHeight(event);
   }
 
-  private handleResize(event: Event): void {
+  private _setScreenWidth(event: Event): void {
     this.screenWidth.next(window.innerWidth);
   }
 
-  private _setScreenWidth(width: number): void {
-    this.screenHeight.next(width);
-  }
-
-  private _setScreenHeight(height: number): void {
-    this.screenHeight.next(height);
+  private _setScreenHeight(event: Event): void {
+    this.screenWidth.next(window.innerHeight);
   }
 
   public ngOnDestroy(): void {
-    window.removeEventListener('resize', this.handleResize.bind(this));
-    this._unsubscriber$.next(null);
-    this._unsubscriber$.complete();
+    window.removeEventListener('resize', this._setScreenWidth.bind(this));
   }
 }

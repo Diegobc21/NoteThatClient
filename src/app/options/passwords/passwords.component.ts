@@ -4,7 +4,6 @@ import {SpinnerService} from 'src/app/core/services/spinner/spinner.service';
 import {DeviceService} from "../../core/services/device/device.service";
 import {PasswordService} from "../../core/services/password/password.service";
 import {ScreenSizeService} from "../../core/services/screen-size/screen-size.service";
-import {environment} from "../../../environments/environment";
 
 interface Password {
   _id: string;
@@ -303,9 +302,9 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   private _startSubscriptions(): void {
     this.getSections();
-    this.isOpenSectionMenu = !this.deviceService.isMobile();
+    this.isOpenSectionMenu = window.innerWidth > 640;
     this.subscriptions.push(
-      this.screenSizeService.screenWidth.subscribe((width: number) => {
+      this.screenSizeService.screenWidth$.subscribe((width: number) => {
         this.isOpenSectionMenu = width >= 640;
       }));
   }

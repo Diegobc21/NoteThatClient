@@ -304,12 +304,7 @@ export class NoteComponent implements OnDestroy {
   }
 
   public getNoteDate(date: Date): string {
-    const newDate = new Date(date);
-    const dayOfMonth = newDate.getUTCDate();
-    const monthIndex = newDate.getUTCMonth();
-    const year = newDate.getUTCFullYear();
-
-    return `${dayOfMonth} de ${months_ES[monthIndex].toLowerCase()} ${year}`;
+    return this.noteService.getNoteDate(date);
   }
 
   public ngOnDestroy(): void {

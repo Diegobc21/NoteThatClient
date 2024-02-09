@@ -3,10 +3,10 @@ import {Note} from "../../../interfaces/note.interface";
 import {NoteService} from "../../../core/services/note/note.service";
 
 @Component({
-  selector: 'app-note-edit',
-  templateUrl: './note-edit.component.html',
+  selector: 'app-note-default',
+  templateUrl: './note-default.component.html',
 })
-export class NoteEditComponent {
+export class NoteDefaultComponent {
   @Input() public note: Note | undefined;
 
   constructor(private noteService: NoteService) {
