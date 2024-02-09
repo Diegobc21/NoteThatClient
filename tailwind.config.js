@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
+const {environment} = require("./src/environments/environment");
 module.exports = {
   content: [
     "./src/**/*.{html,ts}",
@@ -21,5 +22,6 @@ module.exports = {
   },
   darkMode: 'class',
   mode: 'jit',
-  plugins: []
+  plugins: [],
+  ...(environment.production ? { cssnano: {} } : {})
 }

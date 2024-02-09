@@ -4,6 +4,7 @@ import {SpinnerService} from 'src/app/core/services/spinner/spinner.service';
 import {DeviceService} from "../../core/services/device/device.service";
 import {PasswordService} from "../../core/services/password/password.service";
 import {ScreenSizeService} from "../../core/services/screen-size/screen-size.service";
+import {environment} from "../../../environments/environment";
 
 interface Password {
   _id: string;
@@ -37,9 +38,9 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   public savedPassword: Password | undefined;
   public savedSection: Section | undefined;
   public showPassword: boolean = false;
-  public passwordIdToShow: string = '';
   public newPasswordVisible: boolean = false;
   public isOpenSectionMenu: boolean = true;
+  public passwordIdToShow: string = '';
 
   public form: Password = {
     _id: '',
@@ -254,7 +255,6 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   }
 
   public toggleAccountPasswordOverlay(): void {
-    const passwordsVisible = this.passwordService.checkIfPasswordsAreVisible();
     if (!this.passwordService.checkIfPasswordsAreVisible()) {
       this.accountPass = '';
       this.isAccountPasswordOverlayVisible = true;
@@ -270,7 +270,6 @@ export class PasswordsComponent implements OnInit, OnDestroy {
         p.visible = true;
       }
     });
-
   }
 
   public getNewPasswordVisibility(): string {
