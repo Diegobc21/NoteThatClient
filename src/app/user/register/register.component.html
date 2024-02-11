@@ -1,4 +1,4 @@
-<div class="mt-6 flex flex-col">
+<div class="flex flex-col mt-6">
   <div
     class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
   >
@@ -10,45 +10,43 @@
       height="200"
     />
     <form
-      class="bg-gray-800 px-6 py-8 rounded shadow-xl text-black w-full mt-8"
+      class="dark:bg-gray-800 bg-white px-6 py-8 rounded shadow-xl dark:text-gray-300 w-full mt-8"
       (ngSubmit)="register($event)"
     >
-      <h1 class="mb-8 text-cyan-50 text-2xl text-center">Crea tu cuenta</h1>
+      <h1 class="mb-8 text-cyan-600 dark:text-cyan-50 text-2xl text-center">Crea tu cuenta</h1>
 
-      <input
-        required
+
+      <app-input
+        (valueChange)="onFullNameChange($event)"
+        [ngModel]="form.fullname"
+        [required]="true"
+        placeholder="Nombre de usuario"
         type="text"
-        [(ngModel)]="form.fullname"
-        (keyup)="removeAlert($event)"
-        class="block text-white bg-gray-700 hover:bg-gray-800 focus:bg-gray-800 w-full p-3 rounded mb-4"
-        placeholder="Nombre completo"
-      />
+      ></app-input>
 
-      <input
-        required
-        type="email"
-        [(ngModel)]="form.email"
-        (keyup)="removeAlert($event)"
-        class="block text-white bg-gray-700 hover:bg-gray-800 focus:bg-gray-800 w-full p-3 rounded mb-4"
+      <app-input
+        (valueChange)="onEmailChange($event)"
+        [ngModel]="form.email"
+        [required]="true"
         placeholder="Email"
-      />
+        type="email"
+      ></app-input>
 
-      <input
-        required
-        type="password"
-        [(ngModel)]="form.password"
-        (keyup)="removeAlert($event)"
-        class="block text-white bg-gray-700 hover:bg-gray-800 focus:bg-gray-800 w-full p-3 rounded mb-4"
+      <app-input
+        (valueChange)="onPasswordChange($event)"
+        [ngModel]="form.password"
+        [required]="true"
         placeholder="Contraseña"
-      />
-      <input
-        required
         type="password"
-        [(ngModel)]="repeatPassword"
-        (keyup)="removeAlert($event)"
-        class="block text-white bg-gray-700 hover:bg-gray-800 focus:bg-gray-800 w-full p-3 rounded mb-4"
+      ></app-input>
+
+      <app-input
+        (valueChange)="onConfirmPasswordChange($event)"
+        [ngModel]="confirmPassword"
+        [required]="true"
         placeholder="Confirmar contraseña"
-      />
+        type="password"
+      ></app-input>
 
       <div *ngIf="showAlert" class="mb-4">
         <app-alert
@@ -63,14 +61,15 @@
         type="submit"
         class="w-full text-center font-medium py-3 rounded text-purple-50 bg-purple-700 hover:bg-purple-500 my-1"
       >
-        <app-spinner></app-spinner>Crear cuenta
+        <app-spinner></app-spinner>
+        <span>Crear cuenta</span>
       </button>
     </form>
 
-    <div class="text-gray-300 mt-6">
+    <div class="text-gray-400 dark:text-gray-300 mt-6">
       Ya tienes cuenta?
       <a
-        class="cursor-pointer text-purple-400 hover:text-purple-500"
+        class="cursor-pointer text-purple-500 hover:text-purple-500"
         (click)="navigateToLogin()"
       >
         Inicia sesión

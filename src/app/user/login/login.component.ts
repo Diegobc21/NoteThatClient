@@ -1,7 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { User } from '../../interfaces/user.interface';
-import { AlertType } from '../../shared/alert/alert-type';
+import {Component, OnDestroy} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {User} from '../../interfaces/user.interface';
+import {AlertType} from '../../shared/alert/alert-type';
 import {AuthService} from "../../core/services/auth/auth.service";
 import {NavigationService} from "../../core/services/navigation/navigation.service";
 
@@ -32,11 +32,18 @@ export class LoginComponent implements OnDestroy {
     }
   }
 
-  public removeAlert(event: KeyboardEvent): void {
-    if (event.key !== 'Enter') {
-      event.preventDefault();
-      this.showAlert = false;
-    }
+  onEmailChange(event: any): void {
+    this.removeAlert();
+    this.form.email = event;
+  }
+
+  onPasswordChange(event: any): void {
+    this.removeAlert();
+    this.form.password = event;
+  }
+
+  public removeAlert(): void {
+    this.showAlert = false;
   }
 
   public modalClosed(isClosed: boolean): void {
@@ -48,11 +55,9 @@ export class LoginComponent implements OnDestroy {
   }
 
   public login(event: SubmitEvent | MouseEvent): void {
-    event.preventDefault();
-
-    this.showAlert = this.formInvalid();
-
+    console.log(this.form)
     if (!this.formInvalid()) {
+      event.preventDefault();
       this._subscriptions.push(
         this.authService
           .login({
@@ -75,14 +80,7 @@ export class LoginComponent implements OnDestroy {
       this.setMessageAsAuthError();
       this.enableAlert();
     }
-  }
-
-  private resetForm(): void {
-    this.form = {
-      fullname: '',
-      email: '',
-      password: '',
-    };
+    this.showAlert = this.formInvalid();
   }
 
   private formInvalid(): boolean {

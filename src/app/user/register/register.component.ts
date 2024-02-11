@@ -1,7 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { User } from '../../interfaces/user.interface';
-import { AlertType } from '../../shared/alert/alert-type';
+import {Component, OnDestroy} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {User} from '../../interfaces/user.interface';
+import {AlertType} from '../../shared/alert/alert-type';
 import {NavigationService} from "../../core/services/navigation/navigation.service";
 import {AuthService} from "../../core/services/auth/auth.service";
 
@@ -16,7 +16,7 @@ export class RegisterComponent implements OnDestroy {
     email: '',
     password: '',
   };
-  public repeatPassword = '';
+  public confirmPassword = '';
 
   public showAlert: boolean = false;
   public errorMessage: string = '';
@@ -34,12 +34,33 @@ export class RegisterComponent implements OnDestroy {
     }
   }
 
-  public register(event: SubmitEvent | MouseEvent): void {
-    event.preventDefault();
+  public onFullNameChange(event: any): void {
+    this.removeAlert();
+    this.form.fullname = event;
+  }
 
-    if (this.form.password !== this.repeatPassword) {
+  public onEmailChange(event: any): void {
+    this.removeAlert();
+    this.form.email = event;
+  }
+
+  public onPasswordChange(event: any): void {
+    this.removeAlert();
+    this.form.password = event;
+  }
+
+  public onConfirmPasswordChange(event: any): void {
+    this.removeAlert();
+    this.confirmPassword = event;
+  }
+
+  public register(event: SubmitEvent | MouseEvent): void {
+    if (this.form.password !== this.confirmPassword) {
+      event.preventDefault();
       this.setMessageAsNotMatchingPasswords();
       this.enableAlert();
+    } else if (this.formInvalid()) {
+      this.setMessageAsAuthError();
     } else {
       this.showAlert = this.formInvalid();
       if (!this.formInvalid()) {
@@ -53,7 +74,8 @@ export class RegisterComponent implements OnDestroy {
                 this.setMessageAsAuthError();
               }
               this.enableAlert();
-            }})
+            }
+          })
         );
       }
     }
@@ -67,11 +89,8 @@ export class RegisterComponent implements OnDestroy {
     );
   }
 
-  public removeAlert(event: KeyboardEvent): void {
-    if (event.key !== 'Enter') {
-      event.preventDefault();
-      this.showAlert = false;
-    }
+  public removeAlert(): void {
+    this.showAlert = false;
   }
 
   public modalClosed(isClosed: boolean): void {

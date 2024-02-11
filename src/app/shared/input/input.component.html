@@ -1,0 +1,8 @@
+<input
+  [attr.required]="required"
+  [type]="type"
+  [(ngModel)]="model"
+  (ngModelChange)="valueChanges($event)"
+  [placeholder]="placeholder"
+  class="transition-all duration-100 block dark:text-white text-gray-700 dark:bg-gray-700 bg-slate-100 hover:bg-white dark:hover:bg-gray-800 w-full p-3 rounded mb-4"
+/>

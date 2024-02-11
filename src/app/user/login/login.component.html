@@ -10,31 +10,26 @@
       height="200"
     />
     <form
-      autocomplete="on"
-      class="bg-gray-800 px-6 py-8 rounded shadow-xl text-black w-full mt-8"
+      class="dark:bg-gray-800 bg-white px-6 py-8 rounded shadow-xl dark:text-gray-300 w-full mt-8"
       (ngSubmit)="login($event)"
     >
-      <h1 class="mb-8 text-cyan-50 text-2xl text-center">Inicia sesión</h1>
+      <h1 class="mb-8 text-cyan-600 dark:text-cyan-50 text-2xl text-center">Inicia sesión</h1>
 
-      <input
-        required
-        email
-        autocomplete="on"
-        [(ngModel)]="form.email"
-        (keyup)="removeAlert($event)"
-        type="email"
-        class="block text-white bg-gray-700 hover:bg-gray-800 focus:bg-gray-800 w-full p-3 rounded mb-4"
+      <app-input
+        (valueChange)="onEmailChange($event)"
+        [ngModel]="form.email"
+        [required]="true"
         placeholder="Email"
-      />
+        type="email"
+      ></app-input>
 
-      <input
-        required
-        [(ngModel)]="form.password"
-        (keyup)="removeAlert($event)"
-        type="password"
-        class="block text-white bg-gray-700 hover:bg-gray-800 focus:bg-gray-800 w-full p-3 rounded mb-4"
+      <app-input
+        (valueChange)="onPasswordChange($event)"
+        [ngModel]="form.password"
+        [required]="true"
         placeholder="Contraseña"
-      />
+        type="password"
+      ></app-input>
 
       <div *ngIf="showAlert" class="mb-4">
         <app-alert
@@ -49,15 +44,15 @@
         type="submit"
         class="w-full text-center font-medium py-3 rounded text-purple-50 bg-purple-700 hover:bg-purple-500 my-1"
       >
-        <app-spinner></app-spinner><span>Iniciar sesión</span>
+        <app-spinner></app-spinner>
+        <span>Iniciar sesión</span>
       </button>
-      <!-- <app-spinner></app-spinner> -->
     </form>
 
-    <div class="text-gray-300 mt-6">
+    <div class="text-gray-400 dark:text-gray-300 mt-6">
       No tienes cuenta?
       <a
-        class="cursor-pointer text-purple-400 hover:text-purple-500"
+        class="cursor-pointer text-purple-500 hover:text-purple-500"
         (click)="navigateToRegister()"
       >
         Regístrate

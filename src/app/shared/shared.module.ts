@@ -31,6 +31,7 @@ import {
   Trash,
   X
 } from "lucide-angular";
+import {InputComponent} from "./input/input.component";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {
     DarkModeButtonComponent,
     ColorSelectorComponent,
     OverlayComponent,
-    CopyBadgeComponent
+    CopyBadgeComponent,
+    InputComponent
   ],
   imports: [
     CommonModule,
@@ -73,7 +75,8 @@ import {
     DarkModeButtonComponent,
     ColorSelectorComponent,
     OverlayComponent,
-    CopyBadgeComponent
+    CopyBadgeComponent,
+    InputComponent
   ],
 })
 export class SharedModule {
