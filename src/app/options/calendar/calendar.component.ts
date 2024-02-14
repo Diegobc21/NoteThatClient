@@ -68,6 +68,16 @@ export class CalendarComponent implements OnInit {
     this.updateCalendar(this.referenceDate);
   }
 
+  getCalendarClasses(day: Date): object {
+    return {
+      'p-2 text-center cursor-pointer border border-slate-200 dark:border-slate-700 hover:bg-cyan-100 dark:hover:bg-cyan-200 dark:hover:text-gray-950 h-24': true,
+      'bg-slate-100 dark:bg-slate-800 text-gray-800 dark:text-gray-100': this.isSameMonth(day) && !this.isToday(day),
+      'dark:text-slate-400 dark:hover:text-gray-100': !this.isSameMonth(day),
+      'font-bold': this.isSameMonth(day),
+      'bg-cyan-200 text-gray-900': this.isToday(day)
+    }
+  }
+
   isSameMonth(day: Date): boolean {
     return isSameMonth(day, this.endOfMonth);
   }

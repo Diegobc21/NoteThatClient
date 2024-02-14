@@ -60,17 +60,17 @@
     <div class="hidden lg:ml-6 lg:block sm:flex-1 sm:text-center">
       <div class="flex space-x-4">
         <div *ngFor="let option of optionList">
-          <app-regular-button
+          <app-navigation-button
             (click)="navigateTo(option.route)"
             [text]="option.type"
             [activeRoute]="isActiveRoute(option.route)"
-          ></app-regular-button>
+          ></app-navigation-button>
         </div>
       </div>
     </div>
 
     <div class="flex items-center">
-      <!--      <app-dark-mode-button></app-dark-mode-button>-->
+      <app-dark-mode-button *ngIf="!environment.production" class="mr-2"></app-dark-mode-button>
 
       <!-- User menu-->
       <div class="relative">
@@ -176,11 +176,11 @@
   <div *ngIf="showMobileMenu" class="bg-white lg:hidden" id="mobile-menu">
     <div class="dark:bg-gray-950 space-y-1 px-2 pb-3 pt-2">
       <div *ngFor="let option of optionList" class="w-full">
-        <app-regular-button
+        <app-navigation-button
           (click)="navigateTo(option.route)"
           [text]="option.type"
           [activeRoute]="isActiveRoute(option.route)"
-        ></app-regular-button>
+        ></app-navigation-button>
       </div>
     </div>
   </div>

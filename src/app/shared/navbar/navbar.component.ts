@@ -5,6 +5,7 @@ import {optionList} from '../../options/option-list';
 import {ScreenSizeService} from "../../core/services/screen-size/screen-size.service";
 import {AuthService} from "../../core/services/auth/auth.service";
 import {NavigationService} from "../../core/services/navigation/navigation.service";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-navbar',
@@ -105,4 +106,6 @@ export class NavbarComponent implements OnDestroy {
       subscription.unsubscribe()
     );
   }
+
+  protected readonly environment = environment;
 }

@@ -4,7 +4,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {AlertComponent} from './alert/alert.component';
 import {DarkModeButtonComponent} from './buttons/dark-mode-button/dark-mode-button.component';
-import {RegularButtonComponent} from './buttons/regular-button/regular-button.component';
 import {CardComponent} from './card/card.component';
 import {ColorSelectorComponent} from './color-selector/color-selector.component';
 import {FooterComponent} from './footer/footer.component';
@@ -32,6 +31,8 @@ import {
   X
 } from "lucide-angular";
 import {InputComponent} from "./input/input.component";
+import {RegularButtonComponent} from "./buttons/regular-button/regular-button.component";
+import {NavigationButtonComponent} from "./buttons/navigation-button/navigation-button.component";
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import {InputComponent} from "./input/input.component";
     NgOptimizedImage,
     FormsModule,
     RegularButtonComponent,
+    NavigationButtonComponent,
     LucideAngularModule.pick({
       Copy, CircleUserRound, Check, Trash, Eye, EyeOff, ChevronDown, ChevronUp, Mail, KeyRound, Loader2, X
     })
