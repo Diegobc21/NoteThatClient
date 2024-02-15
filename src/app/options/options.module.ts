@@ -18,6 +18,7 @@ import {
   EyeOff,
   Lock,
   LucideAngularModule,
+  Plus,
   Trash
 } from "lucide-angular";
 import {PasswordsComponent} from "./passwords/passwords.component";
@@ -47,7 +48,7 @@ import {NavigationButtonComponent} from "../shared/buttons/navigation-button/nav
     RegularButtonComponent,
     NavigationButtonComponent,
     LucideAngularModule.pick({
-      Copy, Check, Trash, Eye, EyeOff, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Lock
+      Copy, Check, Trash, Eye, EyeOff, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Lock, Plus
     }),
   ],
   exports: [],
