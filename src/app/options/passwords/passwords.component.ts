@@ -256,11 +256,10 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   public toggleAccountPasswordOverlay(): void {
     if (!this.passwordService.checkIfPasswordsAreVisible()) {
       this.accountPass = '';
-      this.isAccountPasswordOverlayVisible = true;
     } else {
       this.makePasswordVisible();
-      this.isAccountPasswordOverlayVisible = false;
     }
+    this.isAccountPasswordOverlayVisible = !this.isAccountPasswordOverlayVisible;
   }
 
   private makePasswordVisible(): void {

@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-regular-button',
@@ -9,11 +9,15 @@ import { Component, Input } from '@angular/core';
   styleUrl: './regular-button.component.scss',
 })
 export class RegularButtonComponent {
+  @Output() public onClick: EventEmitter<any> = new EventEmitter<any>();
+
   @Input() public withButton: boolean = false;
   @Input() public activeRoute: boolean = true;
   @Input() public text: string = '';
+  @Input() public type: string = 'normal'
+  @Input() public disabled: boolean = false;
 
-  get buttonClasses(): string {
-    return this.activeRoute ? 'active' : 'inactive';
+  public onClickEmit(event: any): void {
+    this.onClick.emit(event);
   }
 }

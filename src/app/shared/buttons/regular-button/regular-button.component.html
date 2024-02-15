@@ -1,1 +1,20 @@
-<a [ngClass]="buttonClasses" class="block">{{ text }} </a>
+<button *ngIf="type === 'normal'"
+        [disabled]="disabled"
+        (click)="onClickEmit($event)"
+        class="inline-block bg-transparent focus:border-slate-300 hover:bg-slate-100 dark:bg-transparent dark:hover:bg-slate-800 dark:focus:bg-slate-700 items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary h-10 px-4 py-2 w-full text-purple-600 dark:text-purple-300"
+        type="button"
+>{{ text }}</button>
+
+<button *ngIf="type === 'outline'"
+        [disabled]="disabled"
+        (click)="onClickEmit($event)"
+        class="inline-block border-[1px] font-bold border-slate-400 hover:bg-slate-100 dark:bg-transparent dark:hover:bg-slate-800 dark:focus:bg-slate-700 items-center justify-center rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary h-10 px-4 py-2 w-full text-purple-600 dark:text-purple-300"
+        type="button"
+>{{ text }}</button>
+
+<button *ngIf="type === 'fill'"
+  (click)="onClickEmit($event)"
+  [disabled]="disabled"
+  class="inline-flex bg-slate-100 focus:border-slate-300 hover:bg-transparent dark:bg-slate-700 dark:hover:bg-transparent dark:focus:bg-transparent items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 w-full text-purple-600 dark:text-purple-300"
+  type="button"
+>{{ text }}</button>

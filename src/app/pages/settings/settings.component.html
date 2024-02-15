@@ -3,9 +3,9 @@
 >
   <div class="text-center">
     <h1 class="mb-4 font-bold text-xl">Ajustes</h1>
-    <div class="flex items-center gap-2">
-      <app-dark-mode-button></app-dark-mode-button>
-      <h2>Modo {{ !isDarkModeEnabled ? "oscuro" : "claro" }}</h2>
+    <div (click)="trigger()" class="cursor-pointer w-fit mx-auto hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg p-2 flex justify-center items-center gap-2">
+      <app-dark-mode-button [cancelAction]="true" #darkModeButtonComponent></app-dark-mode-button>
+      <h2 class="font-bold">Modo {{ !isDarkModeEnabled ? "oscuro" : "claro" }}</h2>
     </div>
   </div>
 </div>

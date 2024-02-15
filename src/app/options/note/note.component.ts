@@ -12,13 +12,13 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { Observable, Subject, Subscription, takeUntil } from 'rxjs';
-import { months_ES } from 'src/app/utils/months_ES';
-import { Note } from '../../interfaces/note.interface';
-import { AlertType } from '../../shared/alert/alert-type';
-import { SpinnerService } from '../../core/services/spinner/spinner.service';
-import { AuthService } from '../../core/services/auth/auth.service';
-import { NoteService } from '../../core/services/note/note.service';
+import {Observable, Subject, Subscription, takeUntil} from 'rxjs';
+import {months_ES} from 'src/app/utils/months_ES';
+import {Note} from '../../interfaces/note.interface';
+import {AlertType} from '../../shared/alert/alert-type';
+import {SpinnerService} from '../../core/services/spinner/spinner.service';
+import {AuthService} from '../../core/services/auth/auth.service';
+import {NoteService} from '../../core/services/note/note.service';
 
 @Component({
   selector: 'app-note',
@@ -26,18 +26,18 @@ import { NoteService } from '../../core/services/note/note.service';
   styleUrls: ['./note.component.scss'],
   animations: [
     trigger('slideDown', [
-      state('hidden', style({ height: '0', opacity: '0', overflow: 'hidden' })),
+      state('hidden', style({height: '0', opacity: '0', overflow: 'hidden'})),
       state(
         'visible',
-        style({ height: '*', opacity: '1', overflow: 'hidden' })
+        style({height: '*', opacity: '1', overflow: 'hidden'})
       ),
       transition('hidden <=> visible', animate('200ms ease-in-out')),
     ]),
     trigger('slideUp', [
-      state('hidden', style({ height: '0', opacity: '0', overflow: 'hidden' })),
+      state('hidden', style({height: '0', opacity: '0', overflow: 'hidden'})),
       state(
         'visible',
-        style({ height: '*', opacity: '1', overflow: 'hidden' })
+        style({height: '*', opacity: '1', overflow: 'hidden'})
       ),
       transition('visible => hidden', animate('200ms ease-in-out')),
     ]),
@@ -59,17 +59,17 @@ export class NoteComponent implements OnDestroy {
   // TODO: Finish
   @HostListener('click', ['$event'])
   onClick(event: MouseEvent): void {
-    // if (
-    //   !this.popupMenuTemplate?.nativeElement?.contains(event.target) &&
-    //   this.popupEnabled
-    // ) {
-    //   this.disablePopup();
-    // }
-   }
+    if (
+      this.popupMenuTemplate?.nativeElement?.contains(event.target) &&
+      this.popupEnabled
+    ) {
+      this.disablePopup();
+    }
+  }
 
-  @ViewChild('editingTitle', { static: false }) editingTitle!: ElementRef;
-  @ViewChild('editingContent', { static: false }) editingContent!: ElementRef;
-  @ViewChild('popupMenuTemplate', { read: ElementRef }) popupMenuTemplate:
+  @ViewChild('editingTitle', {static: false}) editingTitle!: ElementRef;
+  @ViewChild('editingContent', {static: false}) editingContent!: ElementRef;
+  @ViewChild('popupMenuTemplate', {read: ElementRef}) popupMenuTemplate:
     | ElementRef
     | undefined;
 
@@ -183,14 +183,9 @@ export class NoteComponent implements OnDestroy {
 
   public submitEditing(): void {
     if (this.editingNote.title !== '') {
+      console.log(this.editingNote)
       this.noteService
-        .editNote({
-          _id: this.editingNote._id,
-          title: this.editingTitle?.nativeElement.value,
-          content: this.editingContent?.nativeElement.value,
-          user: this.authService.email,
-          creationDate: this.editingNote.creationDate,
-        })
+        .editNote(this.editingNote)
         .pipe(takeUntil(this._unsubscribe$))
         .subscribe({
           complete: (): void => {
@@ -217,7 +212,7 @@ export class NoteComponent implements OnDestroy {
     } else if (this.popupOptions[1] === event) {
       this.toggleDeleteOverlay();
     }
-    // this.disablePopup();
+    this.disablePopup();
   }
 
   public openPopup(note: Note, event?: MouseEvent): void {

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {DarkModeService} from "../../../core/services/dark-mode/dark-mode.service";
 
 @Component({
@@ -7,13 +7,16 @@ import {DarkModeService} from "../../../core/services/dark-mode/dark-mode.servic
   styleUrls: ['./dark-mode-button.component.scss']
 })
 export class DarkModeButtonComponent {
-  public isDarkMode: boolean = true;
+  @Input() cancelAction: boolean = false;
 
   constructor(private darkModeService: DarkModeService) {
   }
 
-  public toggleDarkMode(): void {
-    this.isDarkMode = this.darkModeService.toggleDarkMode();
+  get isEnabled(): boolean {
+    return this.darkModeService.darkMode();
   }
 
+  public toggleDarkMode(): void {
+    this.darkModeService.toggleDarkMode();
+  }
 }

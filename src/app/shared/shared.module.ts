@@ -16,6 +16,7 @@ import {SpinnerComponent} from './spinner/spinner.component';
 import {TagComponent} from './tag/tag.component';
 import {CopyBadgeComponent} from "./badges/copy-badge/copy-badge.component";
 import {
+  LucideAngularModule,
   Check,
   ChevronDown,
   ChevronUp,
@@ -23,9 +24,10 @@ import {
   Copy,
   Eye,
   EyeOff,
+  Lightbulb,
+  LightbulbOff,
   KeyRound,
   Loader2,
-  LucideAngularModule,
   Mail,
   Trash,
   X
@@ -61,7 +63,20 @@ import {NavigationButtonComponent} from "./buttons/navigation-button/navigation-
     RegularButtonComponent,
     NavigationButtonComponent,
     LucideAngularModule.pick({
-      Copy, CircleUserRound, Check, Trash, Eye, EyeOff, ChevronDown, ChevronUp, Mail, KeyRound, Loader2, X
+      Copy,
+      CircleUserRound,
+      Check,
+      Trash,
+      Eye,
+      EyeOff,
+      ChevronDown,
+      Lightbulb,
+      LightbulbOff,
+      ChevronUp,
+      Mail,
+      KeyRound,
+      Loader2,
+      X
     })
   ],
   exports: [

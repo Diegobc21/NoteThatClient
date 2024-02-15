@@ -34,12 +34,12 @@ export class LoginComponent implements OnDestroy {
 
   onEmailChange(event: any): void {
     this.removeAlert();
-    this.form.email = event;
+    this.form.email = event || '';
   }
 
   onPasswordChange(event: any): void {
     this.removeAlert();
-    this.form.password = event;
+    this.form.password = event || '';
   }
 
   public removeAlert(): void {
@@ -55,7 +55,6 @@ export class LoginComponent implements OnDestroy {
   }
 
   public login(event: SubmitEvent | MouseEvent): void {
-    console.log(this.form)
     if (!this.formInvalid()) {
       event.preventDefault();
       this._subscriptions.push(

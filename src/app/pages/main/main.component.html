@@ -6,13 +6,10 @@
       alt="Logo de la aplicación"
     />
   </div>
-  <a
-    (click)="navigateToProfile()"
-    class="cursor-pointer border-gray-400 border-[1.7px] hover:bg-white dark:hover:bg-gray-700 py-2 p-4 rounded-lg transition-colors duration-200 flex items-center"
-  >
-    <app-spinner></app-spinner>
-    <h1 class="text-md font-bold">{{ fullName }}</h1>
-  </a>
+  <app-regular-button (click)="navigateToProfile()"
+                      type="outline"
+                      [text]="fullName">
+  </app-regular-button>
 </div>
 <div class="mt-10">
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

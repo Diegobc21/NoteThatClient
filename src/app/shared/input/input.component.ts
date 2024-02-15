@@ -6,7 +6,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   styleUrl: './input.component.scss'
 })
 export class InputComponent {
-  @Input() model: string | undefined;
+  @Input() model: any;
   @Input() type: string = 'text';
   @Input() placeholder: string | undefined;
   @Input() required: boolean = false;

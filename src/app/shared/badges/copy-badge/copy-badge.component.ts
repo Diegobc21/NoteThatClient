@@ -25,17 +25,21 @@ export class CopyBadgeComponent implements OnDestroy {
           this.appPopup.open();
           this.appPopup.message = 'Copiado al portapapeles';
         }
-        const previousIcon: string = this.icon;
-        this.icon = 'check';
-        setTimeout(() => {
-          this.icon = previousIcon;
-        }, 1500)
+        this.toggleIcon();
       }
     })
   }
 
   public copy(): void {
     this.onCopy.emit(this.clipboardService.copyToClipboard(this.text));
+  }
+
+  private toggleIcon(): void {
+    const previousIcon: string = this.icon;
+    this.icon = 'check';
+    setTimeout(() => {
+      this.icon = previousIcon;
+    }, 1500)
   }
 
   public ngOnDestroy(): void {

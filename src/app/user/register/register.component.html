@@ -15,10 +15,9 @@
     >
       <h1 class="mb-8 text-cyan-600 dark:text-cyan-50 text-2xl text-center">Crea tu cuenta</h1>
 
-
       <app-input
         (valueChange)="onFullNameChange($event)"
-        [ngModel]="form.fullname"
+        [model]="form.fullname"
         [required]="true"
         placeholder="Nombre de usuario"
         type="text"
@@ -26,7 +25,7 @@
 
       <app-input
         (valueChange)="onEmailChange($event)"
-        [ngModel]="form.email"
+        [model]="form.email"
         [required]="true"
         placeholder="Email"
         type="email"
@@ -34,7 +33,7 @@
 
       <app-input
         (valueChange)="onPasswordChange($event)"
-        [ngModel]="form.password"
+        [model]="form.password"
         [required]="true"
         placeholder="Contraseña"
         type="password"
@@ -42,7 +41,7 @@
 
       <app-input
         (valueChange)="onConfirmPasswordChange($event)"
-        [ngModel]="confirmPassword"
+        [model]="confirmPassword"
         [required]="true"
         placeholder="Confirmar contraseña"
         type="password"

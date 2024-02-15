@@ -12,6 +12,18 @@ export class NoteEditComponent {
   constructor(private noteService: NoteService) {
   }
 
+  onTitleChange(event: any): void {
+    if (this.note) {
+      this.note.title = event || '';
+    }
+  }
+
+  onContentChange(event: any): void {
+    if (this.note) {
+      this.note.content = event || '';
+    }
+  }
+
   public getNoteDate(date: Date): string {
     return this.noteService.getNoteDate(date);
   }

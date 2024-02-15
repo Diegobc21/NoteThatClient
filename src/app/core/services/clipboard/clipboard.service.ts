@@ -6,6 +6,10 @@ import {Injectable} from '@angular/core';
 export class ClipboardService {
 
   copyToClipboard(text: string): boolean {
+
+    if(!document.queryCommandSupported('copy')) {
+      return false;
+    }
     const textArea = document.createElement('textarea');
     textArea.value = text;
 

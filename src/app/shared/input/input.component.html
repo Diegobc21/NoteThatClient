@@ -1,8 +1,16 @@
-<input
-  [attr.required]="required"
-  [type]="type"
-  [(ngModel)]="model"
-  (ngModelChange)="valueChanges($event)"
-  [placeholder]="placeholder"
-  class="transition-all duration-100 block dark:text-white text-gray-700 dark:bg-gray-700 bg-slate-100 hover:bg-white dark:hover:bg-gray-800 w-full p-3 rounded mb-4"
+<input *ngIf="type !== 'textarea'"
+       [attr.required]="required"
+       [type]="type"
+       [(ngModel)]="model"
+       (ngModelChange)="valueChanges($event)"
+       [placeholder]="placeholder"
+       class="block transition-colors duration-75 outline-slate-400 dark:outline-transparent white placeholder-slate-400 focus:bg-transparent dark:focus:bg-transparent bg-slate-100 hover:bg-transparent dark:hover:bg-transparent dark:bg-slate-800 w-full p-2 mb-2 rounded"
 />
+
+<textarea *ngIf="type === 'textarea'"
+          [attr.required]="required"
+          [(ngModel)]="model"
+          (ngModelChange)="valueChanges($event)"
+          [placeholder]="placeholder"
+          rows="4"
+          class="block whitespace-pre-line  transition-colors duration-75 outline-slate-400 dark:outline-transparent white placeholder-slate-400 focus:bg-transparent dark:focus:bg-transparent bg-slate-100 hover:bg-transparent dark:hover:bg-transparent dark:bg-slate-800 w-full p-2 mb-2 rounded"></textarea>
