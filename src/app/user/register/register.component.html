@@ -10,7 +10,7 @@
       height="200"
     />
     <form
-      class="dark:bg-gray-800 bg-white px-6 py-8 rounded shadow-xl dark:text-gray-300 w-full mt-8"
+      class="dark:bg-slate-900 bg-white px-6 py-8 rounded shadow-xl dark:text-gray-300 w-full mt-8"
       (ngSubmit)="register($event)"
     >
       <h1 class="mb-8 text-cyan-600 dark:text-cyan-50 text-2xl text-center">Crea tu cuenta</h1>
@@ -47,7 +47,7 @@
         type="password"
       ></app-input>
 
-      <div *ngIf="showAlert" class="mb-4">
+      <div *ngIf="showAlert">
         <app-alert
           (onClose)="modalClosed($event)"
           [message]="errorMessage"
@@ -55,14 +55,13 @@
         ></app-alert>
       </div>
 
-      <button
-        (click)="register($event)"
-        type="submit"
-        class="w-full text-center font-medium py-3 rounded text-purple-50 bg-purple-700 hover:bg-purple-500 my-1"
-      >
-        <app-spinner></app-spinner>
-        <span>Crear cuenta</span>
-      </button>
+      <app-regular-button class="w-full mt-2"
+                          [disabled]="formInvalid()"
+                          [showSpinner]="true"
+                          (onClick)="register($event)"
+                          text="Crear cuenta"
+                          type="submit">
+      </app-regular-button>
     </form>
 
     <div class="text-gray-400 dark:text-gray-300 mt-6">

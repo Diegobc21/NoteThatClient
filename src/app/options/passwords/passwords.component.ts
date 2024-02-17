@@ -142,7 +142,7 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createPassword(event?: SubmitEvent | MouseEvent): void {
+  public createPassword(event?: any): void {
     if (this._formValid()) {
       event?.preventDefault();
       this.subscriptions.push(

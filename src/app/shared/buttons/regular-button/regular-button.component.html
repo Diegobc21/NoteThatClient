@@ -2,7 +2,7 @@
         (click)="onClickEmit($event)"
         [title]="title"
         [class]="buttonStyle"
-        type="button"
+        [type]="type"
 ><span class="inline-block align-sub">
       <lucide-icon
         *ngIf="showSpinner && (loading$ | async)"

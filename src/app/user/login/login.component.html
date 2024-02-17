@@ -31,7 +31,7 @@
         type="password"
       ></app-input>
 
-      <div *ngIf="showAlert" class="mb-4">
+      <div *ngIf="showAlert">
         <app-alert
           (onClose)="modalClosed($event)"
           [message]="errorMessage"
@@ -39,14 +39,13 @@
         ></app-alert>
       </div>
 
-      <button
-        (click)="login($event)"
-        type="submit"
-        class="w-full text-center font-medium py-3 rounded text-purple-50 bg-purple-700 hover:bg-purple-500 my-1"
-      >
-        <app-spinner></app-spinner>
-        <span>Iniciar sesión</span>
-      </button>
+      <app-regular-button class="w-full mt-2"
+                          [disabled]="formInvalid()"
+                          [showSpinner]="true"
+                          (onClick)="login($event)"
+                          text="Iniciar sesión"
+                          type="submit">
+      </app-regular-button>
     </form>
 
     <div class="text-gray-400 dark:text-gray-300 mt-6">

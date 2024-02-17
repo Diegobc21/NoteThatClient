@@ -81,11 +81,12 @@ export class RegisterComponent implements OnDestroy {
     }
   }
 
-  private formInvalid(): boolean {
+  public formInvalid(): boolean {
     return (
       this.form.fullname === '' ||
       this.form.email === '' ||
-      this.form.password.length < 5
+      this.form.password.length < 5 ||
+      this.form.password !== this.confirmPassword
     );
   }
 

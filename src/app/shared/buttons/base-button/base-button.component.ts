@@ -13,6 +13,7 @@ export class BaseButtonComponent {
 
   @Input() public activeRoute: boolean = true;
   @Input() public text: string = '';
+  @Input() public type: string = 'button';
   @Input() public title: string = '';
   @Input() public buttonStyle: string = 'normal'
   @Input() public disabled: boolean = false;

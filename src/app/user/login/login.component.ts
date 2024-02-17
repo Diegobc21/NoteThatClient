@@ -54,6 +54,10 @@ export class LoginComponent implements OnDestroy {
     this.navigationService.navigateToRegister().then();
   }
 
+  public formInvalid(): boolean {
+    return this.form.email === '' || this.form.password.length < 5;
+  }
+
   public login(event: SubmitEvent | MouseEvent): void {
     if (!this.formInvalid()) {
       event.preventDefault();
@@ -80,10 +84,6 @@ export class LoginComponent implements OnDestroy {
       this.enableAlert();
     }
     this.showAlert = this.formInvalid();
-  }
-
-  private formInvalid(): boolean {
-    return this.form.email === '' || this.form.password.length < 5;
   }
 
   public ngOnDestroy(): void {
