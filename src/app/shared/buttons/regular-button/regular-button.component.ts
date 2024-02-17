@@ -10,6 +10,6 @@ import {LucideAngularModule} from "lucide-angular";
   templateUrl: './regular-button.component.html',
   styleUrl: './regular-button.component.scss',
 })
-export class RegularButtonComponent  extends BaseButtonComponent{
+export class RegularButtonComponent extends BaseButtonComponent {
 
 }

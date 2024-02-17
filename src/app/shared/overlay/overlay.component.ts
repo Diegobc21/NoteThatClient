@@ -9,7 +9,7 @@ import {BodyManagerService} from '../../core/services/body-manager/body-manager.
 export class OverlayComponent implements OnDestroy {
   @ViewChild('overlayTemplate') public overlayTemplate!: ElementRef;
 
-  @HostListener('click', ['$event'])
+  @HostListener('mousedown', ['$event'])
   public onClick(event: MouseEvent): void {
     if (!this.overlayTemplate.nativeElement.contains(event.target)) {
       this.toggleModal();

@@ -36,6 +36,7 @@ import {InputComponent} from "./input/input.component";
 import {RegularButtonComponent} from "./buttons/regular-button/regular-button.component";
 import {NavigationButtonComponent} from "./buttons/navigation-button/navigation-button.component";
 import {BaseButtonComponent} from "./buttons/base-button/base-button.component";
+import {BaseBadgeComponent} from "./badges/base-badge/base-badge.component";
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {BaseButtonComponent} from "./buttons/base-button/base-button.component";
     OverlayComponent,
     CopyBadgeComponent,
     InputComponent,
-    BaseButtonComponent
+    BaseButtonComponent,
+    BaseBadgeComponent
   ],
   imports: [
     CommonModule,
