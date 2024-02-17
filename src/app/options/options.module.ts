@@ -27,6 +27,8 @@ import {NoteDefaultComponent} from "./note/note-default/note-default.component";
 import {NoteEditComponent} from "./note/note-edit/note-edit.component";
 import {RegularButtonComponent} from "../shared/buttons/regular-button/regular-button.component";
 import {NavigationButtonComponent} from "../shared/buttons/navigation-button/navigation-button.component";
+import {ShowPasswordButtonComponent} from "../shared/buttons/show-password-button/show-password-button.component";
+import {DeleteButtonComponent} from "../shared/buttons/delete-button/delete-button.component";
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import {NavigationButtonComponent} from "../shared/buttons/navigation-button/nav
     NgOptimizedImage,
     RegularButtonComponent,
     NavigationButtonComponent,
+    ShowPasswordButtonComponent,
+    DeleteButtonComponent,
     LucideAngularModule.pick({
       Copy, Check, Trash, Eye, EyeOff, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Lock, Plus
     }),

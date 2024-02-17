@@ -7,7 +7,7 @@ import {DarkModeService} from "../../../core/services/dark-mode/dark-mode.servic
   styleUrls: ['./dark-mode-button.component.scss']
 })
 export class DarkModeButtonComponent {
-  @Input() cancelAction: boolean = false;
+  @Input() preventAction: boolean = false;
 
   constructor(private darkModeService: DarkModeService) {
   }

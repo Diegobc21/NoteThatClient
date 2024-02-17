@@ -143,16 +143,18 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   }
 
   public createPassword(event?: SubmitEvent | MouseEvent): void {
-    event?.preventDefault();
 
     if (this._formValid()) {
+      event?.preventDefault();
       this.subscriptions.push(
         this.passwordService
-          .addPassword(
-            this.currentSection,
-            this.form.password,
-            this.form.title,
-            this.form.username ?? undefined
+          .addPassword({
+              section: this.currentSection,
+              password: this.form.password,
+              title: this.form.title,
+              email: this.form.email,
+              username: this.form.username
+            }
           )
           .subscribe({
             next: () => {

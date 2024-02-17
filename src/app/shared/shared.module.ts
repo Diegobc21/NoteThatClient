@@ -16,7 +16,6 @@ import {SpinnerComponent} from './spinner/spinner.component';
 import {TagComponent} from './tag/tag.component';
 import {CopyBadgeComponent} from "./badges/copy-badge/copy-badge.component";
 import {
-  LucideAngularModule,
   Check,
   ChevronDown,
   ChevronUp,
@@ -24,10 +23,11 @@ import {
   Copy,
   Eye,
   EyeOff,
+  KeyRound,
   Lightbulb,
   LightbulbOff,
-  KeyRound,
   Loader2,
+  LucideAngularModule,
   Mail,
   Trash,
   X
@@ -35,6 +35,7 @@ import {
 import {InputComponent} from "./input/input.component";
 import {RegularButtonComponent} from "./buttons/regular-button/regular-button.component";
 import {NavigationButtonComponent} from "./buttons/navigation-button/navigation-button.component";
+import {BaseButtonComponent} from "./buttons/base-button/base-button.component";
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {NavigationButtonComponent} from "./buttons/navigation-button/navigation-
     ColorSelectorComponent,
     OverlayComponent,
     CopyBadgeComponent,
-    InputComponent
+    InputComponent,
+    BaseButtonComponent
   ],
   imports: [
     CommonModule,

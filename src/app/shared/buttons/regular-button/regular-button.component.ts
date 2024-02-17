@@ -1,23 +1,15 @@
 import {CommonModule} from '@angular/common';
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component} from '@angular/core';
+import {BaseButtonComponent} from "../base-button/base-button.component";
+import {LucideAngularModule} from "lucide-angular";
 
 @Component({
   selector: 'app-regular-button',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './regular-button.component.html',
   styleUrl: './regular-button.component.scss',
 })
-export class RegularButtonComponent {
-  @Output() public onClick: EventEmitter<any> = new EventEmitter<any>();
+export class RegularButtonComponent  extends BaseButtonComponent{
 
-  @Input() public withButton: boolean = false;
-  @Input() public activeRoute: boolean = true;
-  @Input() public text: string = '';
-  @Input() public type: string = 'normal'
-  @Input() public disabled: boolean = false;
-
-  public onClickEmit(event: any): void {
-    this.onClick.emit(event);
-  }
 }

@@ -37,16 +37,11 @@ export class PasswordService {
     });
   }
 
-  public addPassword(
-    section: string,
-    password: string,
-    title: string,
-    username?: string
-  ): Observable<any> {
+  public addPassword(password: any): Observable<any> {
     const user = this.authService.email;
     return this.http.post(
       `${this.apiUrl}/`,
-      {section, password, title, user, username},
+      {...password, user},
       {headers: this.authService.getHeaders()}
     );
   }

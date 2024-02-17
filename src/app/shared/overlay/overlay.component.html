@@ -1,13 +1,27 @@
 <div
-  class="fixed mx:auto inset-0 z-50 flex items-center justify-center backdrop-brightness-75 bg-gray-500 bg-opacity-50 sm:p-3"
+  class="fixed h-full w-full mx:auto inset-0 z-50 flex items-center justify-center backdrop-brightness-75 bg-gray-500 bg-opacity-50"
 >
   <div
     #overlayTemplate
-    class="bg-white mb-0 mt-auto md:mb-auto w-full md:max-w-md p-6 border-cyan-400 dark:bg-gray-900 rounded-md"
+    class="relative bg-white mb-0 mt-auto md:mb-auto w-full md:max-w-md p-6 border-cyan-400 dark:bg-gray-900 rounded-md"
   >
+    <!-- Close button -->
+    <button
+      (click)="toggleModal()"
+      title="Cerrar"
+      type="button"
+      class="p-1 absolute right-2 top-2 hover:bg-slate-200 focus:ring-gray-700 inline-flex items-center dark:hover:bg-slate-700 justify-center rounded-md ring-offset-background dark:hover:bg-accent"
+    >
+      <lucide-icon
+        (click)="toggleModal()"
+        name="x"
+        size="18"
+      ></lucide-icon>
+    </button>
     <div class="mb-4">
       <ng-content></ng-content>
     </div>
+
     <!-- Buttons -->
     <div class="flex justify-around sm:justify-end">
       <button

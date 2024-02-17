@@ -14,7 +14,7 @@
     (onCloseEvent)="toggleDeleteOverlay()"
     (onAcceptEvent)="deleteNote(selectedNote!)"
   >
-    <h1 class="text-center font-bold">¿Seguro que deseas eliminar esta nota?</h1>
+    <h1 class="text-center font-bold mb-2">¿Seguro que deseas eliminar esta nota?</h1>
     <app-note-default [note]="selectedNote!"></app-note-default>
   </app-overlay>
 }
@@ -32,9 +32,7 @@
   </div>
 </app-overlay>
 
-<div
-  class="relative max-h-[calc(80svh)] overflow-auto"
->
+<div class="relative h-full overflow-auto">
   <div *ngIf="!(showSpinner | async)" class="sticky top-0 z-10 w-full pb-2 bg-gray-50 dark:bg-gray-950">
     <div class="flex flex-row justify-center relative">
       <button
