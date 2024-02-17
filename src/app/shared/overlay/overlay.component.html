@@ -3,7 +3,7 @@
 >
   <div
     #overlayTemplate
-    class="relative bg-white mb-0 mt-auto md:mb-auto w-full md:max-w-md p-6 border-cyan-400 dark:bg-gray-900 rounded-md"
+    class="relative shadow-md bg-white mb-0 mt-auto md:mb-auto w-full md:max-w-md p-6 border-cyan-400 dark:bg-gray-900 rounded-md"
   >
     <!-- Close button -->
     <button
@@ -28,13 +28,15 @@
         *ngIf="useCancelButton"
         buttonStyle="normal"
         text="Cancelar"
+        class="w-full"
         (onClick)="toggleModal()">
       </app-regular-button>
 
       <app-regular-button
-        *ngIf="useCancelButton"
-        buttonStyle="outline"
+        *ngIf="useActionButton"
+        buttonStyle="fill"
         text="Aceptar"
+        class="w-full"
         [showSpinner]="true"
         [disabled]="disableAccept"
         (onClick)="accept()">

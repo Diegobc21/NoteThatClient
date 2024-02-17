@@ -1,14 +1,13 @@
 <div *ngIf="visible$ | async"
-     class="fixed top-5 z-50 flex items-center transition-shadow duration-100 text-gray-700 dark:text-gray-200 justify-center gap-4 shadow-md shadow-gray-500 hover:shadow-gray-800 dark:hover:shadow-gray-200 ring-2 ring-slate-300 dark:ring-gray-400 rounded-lg bg-white dark:bg-gray-700 px-5 py-3"
+     class="fixed top-5 z-50 flex items-center transition-shadow duration-100 text-gray-700 dark:text-purple-300 justify-center gap-4 shadow-md hover:shadow-gray-800 dark:hover:shadow-gray-300 ring-2 ring-slate-300 dark:ring-gray-500 rounded-lg bg-white dark:bg-slate-700 px-5 py-3"
 >
   <h1
-    class="text-sm font-medium hover:opacity-75"
-  >
-    <lucide-icon class="inline-block" size="18" name="check"></lucide-icon>
-    {{ message }}
-  </h1>
+    class="text-sm font-medium"
+  ><lucide-icon class="inline-block" size="18" name="check"></lucide-icon> {{ message }}</h1>
 
-  <button class="rounded p-0.5 transition-colors duration-100 bg-slate-100 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-900" (click)="close()">
+  <button
+    class="rounded p-0.5 transition-colors duration-100 bg-slate-100 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-900"
+    (click)="close()">
     <span class="sr-only">Close</span>
     <lucide-icon size="18" name="x"></lucide-icon>
   </button>

@@ -89,7 +89,7 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createSection(event?: SubmitEvent | MouseEvent): void {
+  public createSection(event?: any): void {
     if (this.sectionForm.title?.length > 0) {
       event?.preventDefault();
       this.subscriptions.push(
@@ -143,7 +143,6 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   }
 
   public createPassword(event?: SubmitEvent | MouseEvent): void {
-
     if (this._formValid()) {
       event?.preventDefault();
       this.subscriptions.push(
@@ -158,14 +157,13 @@ export class PasswordsComponent implements OnInit, OnDestroy {
           )
           .subscribe({
             next: () => {
-              this.getPasswords();
-              this._resetPasswordForm();
+              this.getPasswords()
+              this.toggleCreate();
             },
             error: (error) =>
               console.error('Error al añadir contraseña: ', error),
           })
       );
-      this.toggleCreate();
     }
   }
 
@@ -189,6 +187,7 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   }
 
   public toggleCreate(): void {
+    this._resetPasswordForm();
     this.isCreatingPassword = !this.isCreatingPassword;
   }
 
