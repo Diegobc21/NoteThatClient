@@ -29,6 +29,7 @@ import {
   Loader2,
   LucideAngularModule,
   Mail,
+  Quote,
   Trash,
   X
 } from "lucide-angular";
@@ -37,6 +38,7 @@ import {RegularButtonComponent} from "./buttons/regular-button/regular-button.co
 import {NavigationButtonComponent} from "./buttons/navigation-button/navigation-button.component";
 import {BaseButtonComponent} from "./buttons/base-button/base-button.component";
 import {BaseBadgeComponent} from "./badges/base-badge/base-badge.component";
+import {QuoteComponent} from "./quote/quote.component";
 
 @NgModule({
   declarations: [
@@ -55,7 +57,8 @@ import {BaseBadgeComponent} from "./badges/base-badge/base-badge.component";
     CopyBadgeComponent,
     InputComponent,
     BaseButtonComponent,
-    BaseBadgeComponent
+    BaseBadgeComponent,
+    QuoteComponent
   ],
   imports: [
     CommonModule,
@@ -78,6 +81,7 @@ import {BaseBadgeComponent} from "./badges/base-badge/base-badge.component";
       LightbulbOff,
       ChevronUp,
       Mail,
+      Quote,
       KeyRound,
       Loader2,
       X
@@ -97,7 +101,8 @@ import {BaseBadgeComponent} from "./badges/base-badge/base-badge.component";
     ColorSelectorComponent,
     OverlayComponent,
     CopyBadgeComponent,
-    InputComponent
+    InputComponent,
+    QuoteComponent
   ],
 })
 export class SharedModule {

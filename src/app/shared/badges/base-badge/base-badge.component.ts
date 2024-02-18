@@ -8,6 +8,7 @@ import {Component, Input} from '@angular/core';
 })
 export class BaseBadgeComponent {
   @Input('text') text: string = '';
+  @Input('showText') showText: boolean = true;
   @Input('icon') icon: string = 'copy';
 
   public toggleIcon(toggleIcon: string): void {

@@ -1,0 +1,24 @@
+<div class="my-4">
+  @if (quote$ | async) {
+    <blockquote class="relative flex gap-4 py-2 px-4 dark:bg-slate-800 bg-white rounded-md border-slate-400 border-1 shadow-md">
+      <lucide-icon name="quote" size="24"
+                   class="text-purple-400"></lucide-icon>
+
+      <div>
+
+        <div class="relative z-10">
+          <p class=""><em>
+            {{ phrase }}
+          </em></p>
+        </div>
+
+        <footer class="mt-2">
+          <div class="text-base font-semibold text-gray-400 dark:text-slate-400">{{ author }}</div>
+        </footer>
+        <app-copy-badge class="absolute right-2 bottom-2" [showText]="false" [text]="phrase + ' ' + author"></app-copy-badge>
+      </div>
+    </blockquote>
+  } @else if (!(quote$ | async)) {
+    <app-spinner></app-spinner>
+  }
+</div>
