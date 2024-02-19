@@ -1,20 +1,7 @@
-import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterLink, RouterLinkActive} from '@angular/router';
-import {AlertComponent} from './alert/alert.component';
-import {DarkModeButtonComponent} from './buttons/dark-mode-button/dark-mode-button.component';
-import {CardComponent} from './card/card.component';
-import {ColorSelectorComponent} from './color-selector/color-selector.component';
-import {FooterComponent} from './footer/footer.component';
-import {NavbarComponent} from './navbar/navbar.component';
-import {OverlayComponent} from './overlay/overlay.component';
-import {PopupMenuComponent} from './popup-menu/popup-menu.component';
-import {PopupComponent} from './popup/popup.component';
-import {SearchInputComponent} from './search-input/search-input.component';
-import {SpinnerComponent} from './spinner/spinner.component';
-import {TagComponent} from './tag/tag.component';
-import {CopyBadgeComponent} from "./badges/copy-badge/copy-badge.component";
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   Check,
   ChevronDown,
@@ -29,16 +16,30 @@ import {
   Loader2,
   LucideAngularModule,
   Mail,
+  Menu,
   Quote,
   Trash,
-  X
-} from "lucide-angular";
-import {InputComponent} from "./input/input.component";
-import {RegularButtonComponent} from "./buttons/regular-button/regular-button.component";
-import {NavigationButtonComponent} from "./buttons/navigation-button/navigation-button.component";
-import {BaseButtonComponent} from "./buttons/base-button/base-button.component";
-import {BaseBadgeComponent} from "./badges/base-badge/base-badge.component";
-import {QuoteComponent} from "./quote/quote.component";
+  X,
+} from 'lucide-angular';
+import { AlertComponent } from './alert/alert.component';
+import { BaseBadgeComponent } from './badges/base-badge/base-badge.component';
+import { CopyBadgeComponent } from './badges/copy-badge/copy-badge.component';
+import { BaseButtonComponent } from './buttons/base-button/base-button.component';
+import { DarkModeButtonComponent } from './buttons/dark-mode-button/dark-mode-button.component';
+import { NavigationButtonComponent } from './buttons/navigation-button/navigation-button.component';
+import { RegularButtonComponent } from './buttons/regular-button/regular-button.component';
+import { CardComponent } from './card/card.component';
+import { ColorSelectorComponent } from './color-selector/color-selector.component';
+import { FooterComponent } from './footer/footer.component';
+import { InputComponent } from './input/input.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { OverlayComponent } from './overlay/overlay.component';
+import { PopupMenuComponent } from './popup-menu/popup-menu.component';
+import { PopupComponent } from './popup/popup.component';
+import { QuoteComponent } from './quote/quote.component';
+import { SearchInputComponent } from './search-input/search-input.component';
+import { SpinnerComponent } from './spinner/spinner.component';
+import { TagComponent } from './tag/tag.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,7 @@ import {QuoteComponent} from "./quote/quote.component";
     InputComponent,
     BaseButtonComponent,
     BaseBadgeComponent,
-    QuoteComponent
+    QuoteComponent,
   ],
   imports: [
     CommonModule,
@@ -81,11 +82,12 @@ import {QuoteComponent} from "./quote/quote.component";
       LightbulbOff,
       ChevronUp,
       Mail,
+      Menu,
       Quote,
       KeyRound,
       Loader2,
-      X
-    })
+      X,
+    }),
   ],
   exports: [
     NavbarComponent,
@@ -102,8 +104,7 @@ import {QuoteComponent} from "./quote/quote.component";
     OverlayComponent,
     CopyBadgeComponent,
     InputComponent,
-    QuoteComponent
+    QuoteComponent,
   ],
 })
-export class SharedModule {
-}
+export class SharedModule {}

@@ -17,7 +17,7 @@ export class PopupComponent {
     return this.visibleSubject.asObservable();
   }
 
-  public hide(event: MouseEvent): void {
+  public hide(event?: MouseEvent): void {
     this.open();
     this.mouseOver = false;
   }
@@ -28,6 +28,7 @@ export class PopupComponent {
   }
 
   public close(): void {
+    this.mouseOver = false;
     this.visibleSubject.next(false);
   }
 

@@ -3,46 +3,17 @@
 >
   <!-- Desktop menu-->
   <div class="h-16 flex flex-row justify-between items-center">
-    <!--        Mobile menu button-->
+    <!-- Mobile menu button-->
     <div class="lg:hidden">
       <button
         type="button"
         #menuButton
-        class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 dark:hover:bg-slate-700 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-400 dark:focus:ring-white"
+        class="inline-flex items-center justify-center rounded-md p-2 bg-transparent text-slate-400 hover:text-slate-500 dark:hover:bg-slate-700 hover:bg-slate-100 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-slate-400 dark:focus:ring-white"
         aria-controls="mobile-menu"
         aria-expanded="false"
       >
         <span class="sr-only">Open main menu</span>
-
-        <svg
-          class="block h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-          />
-        </svg>
-
-        <svg
-          class="hidden h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
+        <lucide-icon name="menu"></lucide-icon>
       </button>
     </div>
 
@@ -173,8 +144,8 @@
   </div>
 
   <!--  Mobile menu-->
-  <div *ngIf="showMobileMenu" class="bg-white lg:hidden" id="mobile-menu">
-    <div class="dark:bg-slate-950 space-y-1 px-2 pb-3 pt-2">
+  <div *ngIf="showMobileMenu" class="bg-white dark:bg-slate-900 lg:hidden" id="mobile-menu">
+    <div class="space-y-1 px-2 pb-3 pt-2">
       <div *ngFor="let option of optionList" class="w-full">
         <app-navigation-button
           (click)="navigateTo(option.route)"
