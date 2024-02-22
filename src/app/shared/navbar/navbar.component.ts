@@ -7,7 +7,7 @@ import {AuthService} from "../../core/services/auth/auth.service";
 import {NavigationService} from "../../core/services/navigation/navigation.service";
 import {environment} from "../../../environments/environment";
 import {softFade} from "../../utils/animations/soft-fade";
-import {NavbarAction, NavbarConfig, Option} from "./navbar-config";
+import {UserAction, NavbarConfig, UserOption} from "./navbar-config";
 
 @Component({
   selector: 'app-navbar',
@@ -51,10 +51,10 @@ export class NavbarComponent implements OnDestroy {
     return this._isOpenMenu;
   }
 
-  public executeAction(option: Option, event?: MouseEvent): void {
+  public executeAction(option: UserOption, event?: MouseEvent): void {
     if (option.action !== undefined) {
       switch (option.action) {
-        case NavbarAction.LOGOUT:
+        case UserAction.LOGOUT:
           this.logout();
       }
     } else if (option.routerLink) {
@@ -80,7 +80,7 @@ export class NavbarComponent implements OnDestroy {
     }
   }
 
-  public getOptionClasses(option: Option): string {
+  public getOptionClasses(option: UserOption): string {
     let classes;
     classes = option.hoverColor ? `hover:bg-${option.hoverColor}` : 'hover:bg-slate-100 dark:hover:bg-slate-700';
     classes += option.hoverText ? ` hover:text-${option.hoverText}` : ` hover:text-gray-700 dark:hover:text-gray-100`;

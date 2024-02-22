@@ -123,7 +123,7 @@ export class NoteComponent implements OnDestroy {
     this._showAlert = value;
   }
 
-  get addingFormIsEmpty(): boolean {
+  get createNoteFormIsEmpty(): boolean {
     if (this.newNote.content === '') {
       return this.newNote.title === '';
     }
@@ -151,7 +151,7 @@ export class NoteComponent implements OnDestroy {
   }
 
   public submitNote(): void {
-    if (!this.addingFormIsEmpty) {
+    if (!this.createNoteFormIsEmpty) {
       const newNote = {
         title: this.newNote.title,
         content: this.newNote.content,

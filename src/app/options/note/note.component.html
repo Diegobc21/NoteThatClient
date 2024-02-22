@@ -76,8 +76,11 @@
               ></app-input>
               <div class="flex flex-row justify-end space-x-2">
                 <!--              <app-color-selector></app-color-selector>-->
-                <app-regular-button text="Crear" [disabled]="addingFormIsEmpty"
-                                    [showSpinner]="true"></app-regular-button>
+                <app-regular-button text="Crear"
+                                    (onClick)="submitNote()"
+                                    [disabled]="createNoteFormIsEmpty"
+                                    [showSpinner]="true"
+                ></app-regular-button>
               </div>
             </div>
           </form>
