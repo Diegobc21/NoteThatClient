@@ -1,19 +1,71 @@
-import {Component, Input} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, Output, Renderer2, ViewChild} from '@angular/core';
 import {Note} from "../../../interfaces/note.interface";
 import {NoteService} from "../../../core/services/note/note.service";
+import {softFade} from "../../../utils/animations/soft-fade";
 
 @Component({
   selector: 'app-note-default',
   templateUrl: './note-default.component.html',
+  animations: [softFade]
 })
 export class NoteDefaultComponent {
-  @Input() public note: Note | undefined;
+  @ViewChild('popupButton') private popupButton: ElementRef | undefined;
 
-  constructor(private noteService: NoteService) {
+  @Input() public note: Note | undefined;
+  @Input() public alwaysHideMenu: boolean = false;
+
+  @Output() public onEditNote: EventEmitter<Note> = new EventEmitter<Note>();
+  @Output() public onDeleteNote: EventEmitter<Note> = new EventEmitter<Note>();
+
+  public popupOptions: string[] = ['Editar', 'Eliminar'];
+  public showMenu: boolean = false;
+
+  private _mobileScreen!: boolean;
+
+  private _showPopup: boolean = false;
+
+  constructor(
+    private noteService: NoteService,
+    private _renderer: Renderer2,
+  ) {
+    this.enableListeners();
+  }
+
+  public get showPopup(): boolean {
+    return this._showPopup;
   }
 
   public getNoteDate(date: Date): string {
     return this.noteService.getNoteDate(date);
+  }
+
+  public menuButtonVisible(): boolean {
+    return this._mobileScreen ? !this.alwaysHideMenu : this.showMenu && !this.alwaysHideMenu;
+  }
+
+  public togglePopup(): void {
+    this._showPopup = !this._showPopup;
+  }
+
+  public handlePopupOption(event: string): void {
+    if (this.popupOptions[0] === event) {
+      this.onEditNote.emit(this.note);
+    } else if (this.popupOptions[1] === event) {
+      this.onDeleteNote.emit(this.note);
+    }
+  }
+
+  private enableListeners(): void {
+    this._renderer.listen('document', 'click', (e: Event): void => {
+      if (this.popupButton?.nativeElement.contains(e.target) || this.showPopup) {
+        this.togglePopup();
+      }
+    });
+
+    this._mobileScreen = window.innerWidth < 1024;
+    this._renderer.listen('window', 'resize', (e: any): void => {
+      this._mobileScreen = e.target?.innerWidth < 1024;
+    });
   }
 
 }

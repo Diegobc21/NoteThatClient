@@ -1,22 +1,15 @@
 <div
-  [style]="popupPosition"
-  class="absolute right-4 top-2 h-auto z-10 mt-2 w-28 origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-  role="menu"
-  aria-orientation="vertical"
-  aria-labelledby="user-menu-button"
-  tabindex="-1"
+  class="absolute transition-colors duration-100 right-10 z-20 mt-2 w-fit text-nowrap origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 >
-  <div
-    *ngFor="let option of options"
-    aria-label="Main Nav"
-    class="flex flex-col space-y-1"
+  <div *ngFor="let option of options"
+       class="flex flex-col space-y-1"
   >
     <a
-      role="button"
       (click)="emitClick(option)"
+      role="button"
       class="flex items-center gap-2 rounded-lg px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-200 hover:text-gray-700"
     >
-      <span class="text-sm font-medium">{{ option }} </span>
+      <span class="text-sm font-medium"> {{ option }} </span>
     </a>
   </div>
 </div>

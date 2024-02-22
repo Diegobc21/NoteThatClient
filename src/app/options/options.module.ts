@@ -15,7 +15,8 @@ import {
   ChevronUp,
   Lock,
   LucideAngularModule,
-  Plus
+  Plus,
+  MoreVertical
 } from "lucide-angular";
 import {PasswordsComponent} from "./passwords/passwords.component";
 import {SpotifyComponent} from "./spotify/spotify.component";
@@ -48,7 +49,7 @@ import {DeleteButtonComponent} from "../shared/buttons/delete-button/delete-butt
     ShowPasswordButtonComponent,
     DeleteButtonComponent,
     LucideAngularModule.pick({
-      Check, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Lock, Plus
+      Check, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Lock, Plus, MoreVertical
     }),
   ],
   exports: [],

@@ -6,13 +6,19 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   styleUrls: ['./popup-menu.component.scss']
 })
 export class PopupMenuComponent {
-
-  @Input() popupPosition: {} = {};
   @Input() options: string[] = [];
+  @Input() isOpen: boolean = false;
 
-  @Output() emittedOption: EventEmitter<string>= new EventEmitter<string>()
+  @Output() onCloseEvent: EventEmitter<null> = new EventEmitter<null>();
+  @Output() emittedOption: EventEmitter<string> = new EventEmitter<string>()
 
   public emitClick(clickedOption: string): void {
     this.emittedOption.emit(clickedOption);
+    this.hide();
   }
+
+  public hide(): void {
+    this.onCloseEvent.emit();
+  }
+
 }

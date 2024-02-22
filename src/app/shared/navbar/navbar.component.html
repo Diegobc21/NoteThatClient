@@ -1,8 +1,8 @@
 <nav
-  class="bg-white dark:bg-slate-900 mx-auto max-w-full px-2 :px-6 lg:px-8 fixed top-0 left-0 right-0 z-50 border-b-2 border-b-purple-800"
+  class="mx-auto max-w-full px-2 :px-6 lg:px-8 z-50 border-b-[1.5px] border-b-purple-800"
 >
   <!-- Desktop menu-->
-  <div class="h-16 flex flex-row justify-between items-center">
+  <div class="h-min flex flex-row justify-between items-center">
     <!-- Mobile menu button-->
     <div class="lg:hidden">
       <button
@@ -21,15 +21,15 @@
       <img
         alt="NoteThat"
         (click)="navigateTo('home')"
-        class="block h-12 w-auto cursor-pointer"
-        src="./assets/img/NoteThatLetters.png"
+        class="block h-12 object-cover w-auto cursor-pointer"
+        ngSrc="./assets/img/NoteThatLetters.png"
         height="100"
         width="250"
       />
     </div>
 
     <div class="hidden lg:ml-6 lg:block sm:flex-1 sm:text-center">
-      <div class="flex space-x-4">
+      <div class="flex space-x-2">
         <div *ngFor="let option of optionList">
           <app-navigation-button
             (click)="navigateTo(option.route)"
@@ -56,23 +56,22 @@
           >
             <span class="sr-only">Open user menu</span>
             <lucide-icon
-              [strokeWidth]="1"
+              strokeWidth="1"
               name="circle-user-round"
               size="36"
             ></lucide-icon>
           </button>
         </div>
-        <div
-          [@softFade]="isOpenUserMenu ? 'visible' : 'hidden'"
-          class="absolute transition-colors duration-100 right-0 z-10 mt-2 w-fit origin-top-right rounded-md bg-white dark:bg-slate-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-          role="menu"
-          aria-orientation="vertical"
-          aria-labelledby="user-menu-button"
-          tabindex="-1"
+        <div [@softFade]="isOpenUserMenu ? 'visible' : 'hidden'"
+             class="absolute transition-colors duration-100 right-0 z-20 mt-2 w-fit origin-top-right rounded-md bg-white dark:bg-slate-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+             role="menu"
+             aria-orientation="vertical"
+             aria-labelledby="user-menu-button"
+             tabindex="-1"
         >
           <div aria-label="User Menu" class="flex flex-col space-y-1">
             <a *ngFor="let option of NavbarConfig.optionButtons"
-               (click)="executeAction(option, $event)"
+               (click)="executeAction(option)"
                [ngClass]="getOptionClasses(option)"
                class="flex items-center gap-2 rounded-lg px-4 py-2"
                routerLinkActive=""
@@ -83,7 +82,7 @@
                 size="20"
                 strokeWidth="2"
               ></lucide-icon>
-            <span class="text-sm font-medium text-nowrap"> {{ option.title }} </span>
+              <span class="text-sm font-medium text-nowrap"> {{ option.title }} </span>
               <span *ngIf="option.hasSpan" class="relative flex h-3 w-3">
                   <span
                     class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"

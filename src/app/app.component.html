@@ -1,7 +1,6 @@
 <div class="bg-gray-50 text-slate-600 dark:bg-slate-950 dark:text-white">
-  <app-popup
-    *ngIf="sessionExpired"
-    [message]="sessionExpiredMessage"
+  <app-popup *ngIf="sessionExpired"
+             [message]="sessionExpiredMessage"
   ></app-popup>
   <app-navbar *ngIf="show"></app-navbar>
   <div

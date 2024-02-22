@@ -188,6 +188,7 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   public toggleCreate(): void {
     this._resetPasswordForm();
+    this.newPasswordVisible = false;
     this.isCreatingPassword = !this.isCreatingPassword;
   }
 

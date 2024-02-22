@@ -1,14 +1,14 @@
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 export const softFade = trigger('softFade', [
   state('hidden', style({
-    opacity: 0,
-    height: 0,
+    opacity: '0',
+    height: '0',
     transform: 'translateY(-10px)',
     overflow: 'hidden'
   })),
   state('visible', style({
-    opacity: 1,
+    opacity: '1',
     height: '*',
     transform: 'translateY(0)',
     overflow: 'hidden'
