@@ -6,11 +6,16 @@ import {ScreenSizeService} from "../../core/services/screen-size/screen-size.ser
 import {AuthService} from "../../core/services/auth/auth.service";
 import {NavigationService} from "../../core/services/navigation/navigation.service";
 import {environment} from "../../../environments/environment";
+import {softFade} from "../../utils/animations/soft-fade";
+import {NavbarAction, NavbarConfig, Option} from "./navbar-config";
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
+  animations: [
+    softFade
+  ]
 })
 export class NavbarComponent implements OnDestroy {
   @ViewChild('menuButton') private menuButton: ElementRef | undefined;
@@ -23,6 +28,9 @@ export class NavbarComponent implements OnDestroy {
   private _isOpenUserMenu: boolean = false;
   private _isOpenMenu: boolean = false;
   private _mobileScreen!: boolean;
+
+  protected readonly environment = environment;
+  protected readonly NavbarConfig = NavbarConfig;
 
   constructor(
     private _renderer: Renderer2,
@@ -43,6 +51,21 @@ export class NavbarComponent implements OnDestroy {
     return this._isOpenMenu;
   }
 
+  public executeAction(option: Option, event?: MouseEvent): void {
+    if (option.action !== undefined) {
+      switch (option.action) {
+        case NavbarAction.LOGOUT:
+          this.logout();
+      }
+    } else if (option.routerLink) {
+      this.navigateTo(option.routerLink);
+    }
+  }
+
+  public isActiveRoute(route: string): boolean {
+    return this._router.url === route;
+  }
+
   public navigateTo(route: string): void {
     this._navigationService.navigateByUrl(route).finally(() => {
       if (this._isOpenMenu) {
@@ -51,14 +74,28 @@ export class NavbarComponent implements OnDestroy {
     });
   }
 
-  public logout(): void {
-    this._authService.logout();
-  }
-
   public toggleMenu(): void {
     if (this._mobileScreen) {
       this._isOpenMenu = !this._isOpenMenu;
     }
+  }
+
+  public getOptionClasses(option: Option): string {
+    let classes;
+    classes = option.hoverColor ? `hover:bg-${option.hoverColor}` : 'hover:bg-slate-100 dark:hover:bg-slate-700';
+    classes += option.hoverText ? ` hover:text-${option.hoverText}` : ` hover:text-gray-700 dark:hover:text-gray-100`;
+
+    if (option.routerLink && this.isActiveRoute(option.routerLink)) {
+      classes += ' bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-white';
+    } else {
+      classes += ' bg-transparent text-gray-500 dark:text-gray-300';
+    }
+
+    return classes;
+  }
+
+  private logout(): void {
+    this._authService.logout();
   }
 
   private enableClickListener(): void {
@@ -76,10 +113,6 @@ export class NavbarComponent implements OnDestroy {
         this.toggleMenu();
       }
     });
-  }
-
-  public isActiveRoute(route: string): boolean {
-    return this._router.url === route;
   }
 
   private toggleUserMenu(): void {
@@ -107,5 +140,4 @@ export class NavbarComponent implements OnDestroy {
     );
   }
 
-  protected readonly environment = environment;
 }

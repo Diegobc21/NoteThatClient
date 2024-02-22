@@ -8,16 +8,15 @@ export class SpinnerService {
 
   private spinnerVisible: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  public get spinnerVisible$(): Observable<boolean> {
+    return this.spinnerVisible.asObservable();
+  }
+
   show(): void {
     this.spinnerVisible.next(true);
   }
 
   hide(): void {
-    setTimeout(() => this.spinnerVisible.next(false), 800)
-
-  }
-
-  public get spinnerVisible$(): Observable<boolean> {
-    return this.spinnerVisible.asObservable();
+    this.spinnerVisible.next(false);
   }
 }
