@@ -1,9 +1,9 @@
 <button [disabled]="disabled"
         [title]="title"
         [class]="buttonStyle"
-        class="text-nowrap"
         [type]="type"
         (click)="onClickEmit($event)"
+        class="text-nowrap text-sm font-medium inline-block rounded-md"
 ><span class="inline-block align-sub">
       <lucide-icon
         *ngIf="showSpinner && (loading$ | async)"
