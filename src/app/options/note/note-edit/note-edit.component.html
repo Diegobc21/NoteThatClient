@@ -11,7 +11,7 @@
         (valueChange)="onTitleChange($event)"
         [model]="note?.title"
         [required]="true"
-        placeholder="*Título"
+        placeholder="*Título (requerido)"
         type="text"
       ></app-input>
 
@@ -19,7 +19,7 @@
         (valueChange)="onContentChange($event)"
         [model]="note?.content"
         [required]="true"
-        placeholder="*Título"
+        placeholder="Contenido"
         type="textarea"
       ></app-input>
     </div>

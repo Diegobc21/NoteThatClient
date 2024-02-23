@@ -1,22 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@tailwind variants;
 
 .neon-text {
   text-shadow: 0 0 5px #e600e6, 0 0 10px #e600e6, 0 0 20px #e600e6, 0 0 40px #e600e6;
 }
 
-// @at-root {
-// :hover {
-//   @apply transition-all duration-150;
-// }
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('./assets/fonts/geist/geist-mono/GeistMono-Variable.woff2') format('woff2')
+}
 
-// :focus {
-//   @apply transition-all duration-150;
-// }
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('./assets/fonts/geist/geist-sans/Geist-Variable.woff2') format('woff2')
+}
 
-// }
+body {
+  font-family: 'Geist Sans', sans-serif;
+}
+
+.mono {
+  font-family: 'Geist Mono', monospace;
+}
 
 // Scroll bar settings
 @media(min-width: 1024px) {

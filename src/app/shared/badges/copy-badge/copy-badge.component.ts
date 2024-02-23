@@ -3,14 +3,18 @@ import {ClipboardService} from "../../../core/services/clipboard/clipboard.servi
 import {Subscription} from "rxjs";
 import {PopupComponent} from "../../popup/popup.component";
 import {BaseBadgeComponent} from "../base-badge/base-badge.component";
+import {softFade} from "../../../utils/animations/soft-fade";
 
 @Component({
   selector: 'app-copy-badge',
   templateUrl: './copy-badge.component.html',
-  styleUrl: './copy-badge.component.scss'
+  styleUrl: './copy-badge.component.scss',
+  animations: [softFade]
 })
 export class CopyBadgeComponent extends BaseBadgeComponent implements OnDestroy {
   @ViewChild('appPopup') public appPopup: PopupComponent | undefined;
+
+  @Input() public showPopup: boolean = true;
 
   @Output() onCopy: EventEmitter<boolean> = new EventEmitter<boolean>();
 

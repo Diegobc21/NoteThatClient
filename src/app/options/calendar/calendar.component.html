@@ -18,6 +18,7 @@
   <div class="grid grid-cols-7 gap-0 mt-6">
     <div *ngFor="let day of daysOfWeek" class="text-white text-center">{{ day }}</div>
     <div *ngFor="let day of daysInMonth"
+         class="p-2 text-center cursor-pointer border border-slate-200 dark:border-slate-700 hover:border-cyan-300 dark:hover:border-cyan-100 h-24 transition-all"
          [ngClass]="getCalendarClasses(day)"
          (click)="selectDay(day)"
     >

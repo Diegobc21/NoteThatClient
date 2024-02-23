@@ -17,12 +17,10 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
     <div *ngFor="let option of optionList">
       <app-card (click)="goToOption(option.route)">
-        <ng-container>
           <div class="text-lg font-bold mb-2 hover:text-cyan-800">
             {{ option.type }}
           </div>
           <p>{{ option.description }}</p>
-        </ng-container>
       </app-card>
     </div>
   </div>

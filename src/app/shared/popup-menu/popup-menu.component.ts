@@ -1,9 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {softFade} from "../../utils/animations/soft-fade";
 
 @Component({
   selector: 'app-popup-menu',
   templateUrl: './popup-menu.component.html',
-  styleUrls: ['./popup-menu.component.scss']
+  styleUrls: ['./popup-menu.component.scss'],
+  animations: [softFade]
 })
 export class PopupMenuComponent {
   @Input() options: string[] = [];
