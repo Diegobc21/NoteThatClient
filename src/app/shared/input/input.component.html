@@ -1,16 +1,21 @@
-<input *ngIf="type !== 'textarea'"
-       [attr.required]="required"
-       [type]="type"
-       [(ngModel)]="model"
-       (ngModelChange)="valueChanges($event)"
-       [placeholder]="placeholder"
-       class="block transition-colors duration-75 outline-slate-400 dark:outline-transparent white placeholder-slate-400 focus:bg-transparent dark:focus:bg-transparent bg-slate-100 hover:bg-transparent dark:hover:bg-transparent dark:bg-slate-800 w-full p-2 mb-2 rounded"
+<input
+  *ngIf="type !== 'textarea'"
+  [attr.required]="required"
+  [type]="type"
+  [(ngModel)]="model"
+  (ngModelChange)="valueChanges($event)"
+  [placeholder]="placeholder"
+  aria-label="input"
+  class="block caret-cyan-600 focus:text-cyan-500 dark:focus:text-cyan-300 focus:outline-cyan-300 dark:focus:outline-cyan-600 outline-offset-0 ring-transparent outline-none transition-colors duration-75 white placeholder-slate-400 focus:bg-transparent dark:focus:bg-transparent bg-slate-100 hover:bg-transparent dark:hover:bg-transparent dark:bg-slate-800 w-full p-2 mb-2 rounded"
 />
 
-<textarea *ngIf="type === 'textarea'"
-          [attr.required]="required"
-          [(ngModel)]="model"
-          (ngModelChange)="valueChanges($event)"
-          [placeholder]="placeholder"
-          rows="4"
-          class="block whitespace-pre-line  transition-colors duration-75 outline-slate-400 dark:outline-transparent white placeholder-slate-400 focus:bg-transparent dark:focus:bg-transparent bg-slate-100 hover:bg-transparent dark:hover:bg-transparent dark:bg-slate-800 w-full p-2 mb-2 rounded"></textarea>
+<textarea
+  *ngIf="type === 'textarea'"
+  [attr.required]="required"
+  [(ngModel)]="model"
+  (ngModelChange)="valueChanges($event)"
+  [placeholder]="placeholder"
+  aria-label="textarea"
+  rows="4"
+  class="block whitespace-pre-line caret-cyan-600 focus:text-cyan-500 dark:focus:text-cyan-300 focus:outline-cyan-300 dark:focus:outline-cyan-600 outline-offset-0 ring-transparent outline-none transition-colors duration-75 white placeholder-slate-400 focus:bg-transparent dark:focus:bg-transparent bg-slate-100 hover:bg-transparent dark:hover:bg-transparent dark:bg-slate-800 w-full p-2 mb-2 rounded"
+></textarea>

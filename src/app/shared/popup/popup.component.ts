@@ -1,13 +1,16 @@
 import {Component, Input} from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
+import { fadeInOut } from 'src/app/utils/animations/fade-in-out';
 
 @Component({
   selector: 'app-popup',
   templateUrl: './popup.component.html',
-  styleUrls: ['./popup.component.scss']
+  styleUrls: ['./popup.component.scss'],
+  animations: [fadeInOut],
 })
 export class PopupComponent {
   @Input('message') public message: string = 'Texto copiado al portapapeles';
+  @Input('visible') public visible: boolean = false;
 
   public mouseOver: boolean = false;
 

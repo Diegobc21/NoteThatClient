@@ -1,9 +1,9 @@
-<div [@softFade]="isOpen ? 'visible': 'hidden'"
+<div
+  *ngIf="isOpen"
+  [@softFade]
   class="absolute transition-colors duration-100 right-10 z-20 w-fit h-min text-nowrap origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 >
-  <div *ngFor="let option of options"
-       class="flex flex-col space-y-1"
-  >
+  <div *ngFor="let option of options" class="flex flex-col space-y-1">
     <a
       (click)="emitClick(option)"
       role="button"

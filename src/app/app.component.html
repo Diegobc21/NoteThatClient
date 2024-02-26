@@ -1,13 +1,13 @@
-<div class="bg-gray-50 text-slate-600 dark:bg-slate-950 dark:text-white">
+<div class="transition-colors bg-gray-50 dark:bg-slate-950 text-slate-600 dark:text-white">
   <app-popup *ngIf="sessionExpired"
              [message]="sessionExpiredMessage"
   ></app-popup>
   <app-navbar *ngIf="show"></app-navbar>
-  <div
+  <main
     [ngClass]="getContentClasses()"
-    class="max-w-screen-2xl mx-auto p-3 overflow-y-auto"
+    class="max-w-screen-2xl pt-16 mx-auto p-3 overflow-y-auto"
   >
     <router-outlet></router-outlet>
-  </div>
+  </main>
   <!--<app-footer *ngIf="show"></app-footer>-->
 </div>

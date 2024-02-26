@@ -61,7 +61,7 @@ export class AppComponent implements OnDestroy {
     return this.authService.sessionExpired;
   }
   public getContentClasses(): string {
-    return this.show ? 'h-[calc(100vh-1.5px-3rem)]' : 'h-[calc(100vh)]';
+    return 'h-[calc(100vh)]';
   }
 
   public ngOnDestroy(): void {

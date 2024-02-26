@@ -1,21 +1,26 @@
-import {Component, ElementRef, OnDestroy, Renderer2, ViewChild,} from '@angular/core';
-import {Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {optionList} from '../../options/option-list';
-import {ScreenSizeService} from "../../core/services/screen-size/screen-size.service";
-import {AuthService} from "../../core/services/auth/auth.service";
-import {NavigationService} from "../../core/services/navigation/navigation.service";
-import {environment} from "../../../environments/environment";
-import {softFade} from "../../utils/animations/soft-fade";
-import {NavbarConfig, UserAction, UserOption} from "./navbar-config";
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { optionList } from '../../options/option-list';
+import { ScreenSizeService } from '../../core/services/screen-size/screen-size.service';
+import { AuthService } from '../../core/services/auth/auth.service';
+import { NavigationService } from '../../core/services/navigation/navigation.service';
+import { environment } from '../../../environments/environment';
+import { softFade } from '../../utils/animations/soft-fade';
+import { NavbarConfig, UserAction, UserOption } from './navbar-config';
+import { fadeInOut } from 'src/app/utils/animations/fade-in-out';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  animations: [
-    softFade
-  ]
+  animations: [softFade, fadeInOut],
 })
 export class NavbarComponent implements OnDestroy {
   @ViewChild('menuButton') private menuButton: ElementRef | undefined;
@@ -82,8 +87,12 @@ export class NavbarComponent implements OnDestroy {
 
   public getOptionClasses(option: UserOption): string {
     let classes;
-    classes = option.hoverColor ? `hover:bg-${option.hoverColor}` : 'hover:bg-slate-100 dark:hover:bg-slate-700';
-    classes += option.hoverText ? ` hover:text-${option.hoverText}` : ` hover:text-gray-700 dark:hover:text-gray-100`;
+    classes = option.hoverColor
+      ? `hover:bg-${option.hoverColor}`
+      : 'hover:bg-slate-100 dark:hover:bg-slate-700';
+    classes += option.hoverText
+      ? ` hover:text-${option.hoverText}`
+      : ` hover:text-gray-700 dark:hover:text-gray-100`;
 
     if (option.routerLink && this.isActiveRoute(option.routerLink)) {
       classes += ' bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-white';
@@ -139,5 +148,4 @@ export class NavbarComponent implements OnDestroy {
       subscription.unsubscribe()
     );
   }
-
 }

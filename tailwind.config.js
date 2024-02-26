@@ -1,18 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 
 const {environment} = require("./src/environments/environment");
+import animations from '@midudev/tailwind-animations'
+
 module.exports = {
   content: [
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    fontFamily: {
-      // 'sans': ['Geist-Variable'],
-      // 'serif': ['ui-serif', 'Georgia'],
-      // 'mono': ['ui-monospace', 'SFMono-Regular'],
-      // 'display': ['Oswald'],
-      // 'body': ['"Open Sans"'],
-    },
     extend: {
       fontSize: {
         'body-lg': '1rem',
@@ -22,6 +17,6 @@ module.exports = {
   },
   darkMode: 'class',
   mode: 'jit',
-  plugins: [],
+  plugins: [animations],
   ...(environment.production ? { cssnano: {} } : {})
 }

@@ -1,5 +1,5 @@
 .button {
-  @apply rounded-lg px-3 py-2 text-sm font-medium transition-all duration-100;
+  @apply border border-slate-400 dark:border-slate-500 md:border-transparent dark:md:border-transparent rounded-lg px-3 py-2 text-sm font-medium transition-all duration-100;
 
   &.active {
     @apply cursor-default bg-slate-200 dark:bg-slate-800 text-gray-700 dark:text-white;
@@ -9,13 +9,15 @@
     @apply cursor-pointer dark:text-gray-300 px-3 py-2 text-sm font-medium;
   }
 
-  &.inactive, &.active {
+  &.inactive,
+  &.active {
+
     &:focus {
       @apply bg-slate-200 dark:bg-slate-800;
     }
 
     &:hover {
-      @apply bg-slate-200 dark:bg-slate-800;
+      @apply bg-slate-200 dark:bg-slate-800 dark:border-slate-500 border-slate-400;
     }
   }
 

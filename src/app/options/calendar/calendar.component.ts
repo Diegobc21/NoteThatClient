@@ -26,9 +26,10 @@ export class CalendarComponent implements OnInit {
   daysInMonth: Date[] = [];
   referenceDate: Date = new Date();
   endOfMonth: Date = new Date();
+  triggeredRightButton: boolean = true;
 
   ngOnInit() {
-    this.referenceDate = new Date(); // Inicializar con la fecha actual
+    this.referenceDate = new Date();
     this.updateCalendar(this.referenceDate);
   }
 
@@ -59,17 +60,21 @@ export class CalendarComponent implements OnInit {
   }
 
   previousMonth() {
+    this.triggeredRightButton = false;
     this.referenceDate = subMonths(this.referenceDate, 1);
     this.updateCalendar(this.referenceDate);
   }
 
   nextMonth() {
+    this.triggeredRightButton = true;
     this.referenceDate = addMonths(this.referenceDate, 1);
     this.updateCalendar(this.referenceDate);
   }
 
   getCalendarClasses(day: Date): object {
     return {
+      'animate-fade-in-right': this.triggeredRightButton,
+      'animate-fade-in-left': !this.triggeredRightButton,
       'bg-slate-100 dark:bg-slate-800 text-gray-800 dark:text-gray-100': this.isSameMonth(day) && !this.isToday(day),
       'dark:text-slate-400 dark:hover:text-gray-100': !this.isSameMonth(day),
       'font-bold': this.isSameMonth(day),

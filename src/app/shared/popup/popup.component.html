@@ -1,10 +1,18 @@
-<div *ngIf="(visible$ | async) || mouseOver" (mouseover)="mouseOver = true" (mouseleave)="hide($event)"
-     class="fixed w-fit top-5 z-50 flex items-center transition-shadow duration-100 text-gray-700 dark:text-purple-300 justify-center gap-4 shadow-md hover:shadow-gray-800 dark:hover:shadow-gray-300 ring-2 ring-slate-300 dark:ring-gray-500 rounded-lg bg-white dark:bg-slate-800 px-5 py-3"
-><h1 class="text-sm font-medium"
-  ><lucide-icon class="inline-block" size="18" name="check"></lucide-icon> {{ message }}</h1>
+<div
+  [@fadeInOut]
+  *ngIf="(visible$ | async) || mouseOver"
+  (mouseover)="mouseOver = true"
+  (mouseleave)="hide($event)"
+  class="fixed w-fit top-4 z-50 transition-opacity flex items-center duration-100 text-gray-700 dark:text-purple-300 justify-center gap-4 shadow-md bg-opacity-75 hover:bg-opacity-100 dark:bg-opacity-75 dark:hover:bg-opacity-100 border-2 border-slate-300 dark:border-gray-500 rounded-lg bg-white dark:bg-slate-800 px-5 py-3"
+>
+  <h1 class="text-sm font-medium">
+    <lucide-icon class="inline-block" size="18" name="check"></lucide-icon>
+    {{ message }}
+  </h1>
   <button
     class="rounded p-0.5 transition-colors duration-100 bg-slate-100 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-900"
-    (click)="close()">
+    (click)="close()"
+  >
     <span class="sr-only">Close</span>
     <lucide-icon size="18" name="x"></lucide-icon>
   </button>
