@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Component, Input} from '@angular/core';
+import {Observable} from 'rxjs';
 import {SpinnerService} from "../../core/services/spinner/spinner.service";
 import {AuthService} from "../../core/services/auth/auth.service";
 
@@ -10,11 +10,13 @@ import {AuthService} from "../../core/services/auth/auth.service";
 })
 export class SpinnerComponent {
   @Input() size: number = 20;
+  @Input() show: Observable<boolean> = new Observable<boolean>();
 
   constructor(
     private spinnerService: SpinnerService,
     private authService: AuthService
-  ) {}
+  ) {
+  }
 
   public get spinnerVisible(): Observable<boolean> {
     return this.spinnerService.spinnerVisible$;

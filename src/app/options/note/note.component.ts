@@ -71,7 +71,7 @@ export class NoteComponent implements OnDestroy {
   }
 
   get editingFormIsEmpty(): boolean {
-    return this._editingFormIsEmpty;
+    return this.editingNote.title?.length === 0;
   }
 
   public getTimeLineDate(date: Date): string {

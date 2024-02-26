@@ -1,7 +1,8 @@
-<div
+<div [@fadeInOut]
+     *ngIf="showOverlay"
   class="fixed h-full w-full mx:auto inset-0 z-50 flex items-center justify-center backdrop-brightness-75 bg-gray-500 bg-opacity-50"
 >
-  <div
+  <div [@softFade]
     #overlayTemplate
     class="relative shadow-md bg-white mb-0 mt-auto md:mb-auto w-full md:max-w-md p-6 border-cyan-400 dark:bg-gray-900 rounded-md"
   >
@@ -26,20 +27,22 @@
     <div class="flex justify-around sm:justify-end gap-2">
       <app-regular-button
         *ngIf="useCancelButton"
-        buttonStyle="normal"
+        (onClick)="toggleModal()"
         text="Cancelar"
+        buttonStyle="normal"
         class="w-full"
-        (onClick)="toggleModal()">
+      >
       </app-regular-button>
 
       <app-regular-button
         *ngIf="useActionButton"
-        buttonStyle="fill"
-        text="Aceptar"
-        class="w-full"
         [showSpinner]="true"
         [disabled]="disableAccept"
-        (onClick)="accept()">
+        (onClick)="accept()"
+        text="Aceptar"
+        buttonStyle="fill"
+        class="w-full"
+      >
       </app-regular-button>
     </div>
   </div>
