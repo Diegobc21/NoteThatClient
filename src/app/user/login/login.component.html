@@ -1,6 +1,6 @@
 <div class="flex flex-col mt-6">
   <div
-    class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
+    class="container animate-fade-in-down max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2"
   >
     <img
       ngSrc="assets/img/NoteThatFull.png"
@@ -50,12 +50,10 @@
 
     <div class="text-gray-400 dark:text-gray-300 mt-6">
       ¿No tienes cuenta?
-      <a
-        class="cursor-pointer text-purple-500 hover:text-purple-500"
-        (click)="navigateToRegister()"
-      >
-        Regístrate
-      </a>
+      <app-link-button
+        (onClick)="navigateToRegister()"
+        text="Regístrate"
+      ></app-link-button>
     </div>
   </div>
 </div>

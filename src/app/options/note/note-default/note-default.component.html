@@ -1,7 +1,7 @@
 <div
   (mouseover)="showMenu = true"
   (mouseleave)="showMenu = false"
-  class="rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-sm is-note"
+  class="rounded-xl bg-gradient-to-r from-teal-500 via-blue-500 to-cyan-600 p-0.5 shadow-sm"
 >
   <div class="rounded-[10px] bg-white dark:bg-slate-900 p-2 sm:p-3">
     <!-- Popup toggle button -->
@@ -38,7 +38,6 @@
         </h3>
         <app-copy-badge
           class="bottom-2"
-          [showPopup]="showCopyBadge || mobileScreen"
           [showText]="false"
           [text]="note?.title || ''"
         ></app-copy-badge>

@@ -1,10 +1,9 @@
-<div [@fadeInOut]
-     *ngIf="showOverlay"
-  class="fixed h-full w-full mx:auto inset-0 z-50 flex items-center justify-center backdrop-brightness-75 bg-gray-500 bg-opacity-50"
+<div *ngIf="showOverlay"
+     [@fadeInOut]
+     class="fixed h-full w-full mx:auto inset-0 z-50 flex items-center justify-center backdrop-brightness-75 bg-gray-500 bg-opacity-50"
 >
-  <div [@softFade]
-    #overlayTemplate
-    class="relative shadow-md bg-white mb-0 mt-auto md:mb-auto w-full md:max-w-md p-6 border-cyan-400 dark:bg-gray-900 rounded-md"
+  <div #overlayTemplate
+       class="relative shadow-md bg-white mb-0 mt-auto md:mb-auto w-full md:max-w-md p-6 border-cyan-400 dark:bg-gray-900 rounded-md"
   >
     <!-- Close button -->
     <button

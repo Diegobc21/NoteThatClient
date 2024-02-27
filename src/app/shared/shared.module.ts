@@ -58,6 +58,7 @@ import { TagComponent } from './tag/tag.component';
     CopyBadgeComponent,
     InputComponent,
     BaseButtonComponent,
+
     BaseBadgeComponent,
     QuoteComponent,
   ],

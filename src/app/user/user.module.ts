@@ -6,6 +6,7 @@ import {RouterLink} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import {RegularButtonComponent} from "../shared/buttons/regular-button/regular-button.component";
+import {LinkButtonComponent} from "../shared/buttons/link-button/link-button.component";
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {RegularButtonComponent} from "../shared/buttons/regular-button/regular-b
         SharedModule,
         ReactiveFormsModule,
         NgOptimizedImage,
-        RegularButtonComponent
+        RegularButtonComponent,
+        LinkButtonComponent
     ],
   exports: [
     LoginComponent,

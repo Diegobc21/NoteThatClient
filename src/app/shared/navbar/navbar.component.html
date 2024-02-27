@@ -1,6 +1,6 @@
 <header>
   <nav
-    class="fixed top-0 right-0 left-0 animate-blurred-fade-in mx-auto w-full px-2 :px-6 lg:px-8 z-50 border-b-[1.5px] border-b-purple-800"
+    class="fixed bg-white dark:bg-slate-900 top-0 right-0 left-0 animate-blurred-fade-in mx-auto w-full px-2 :px-6 lg:px-8 z-50 border-b-[1.5px] border-b-purple-800"
   >
     <!-- Desktop menu-->
     <div class="flex flex-row justify-between items-center">
@@ -19,9 +19,17 @@
       </div>
 
       <div>
+<!--        <img-->
+<!--          (click)="navigateTo('home')"-->
+<!--          alt="NoteThat"-->
+<!--          class="block h-12 object-cover w-auto cursor-pointer"-->
+<!--          ngSrc="./assets/img/logo-light.webp"-->
+<!--          height="1000"-->
+<!--          width="1000"-->
+<!--        />-->
         <img
-          alt="NoteThat"
           (click)="navigateTo('home')"
+          alt="NoteThat"
           class="block h-12 object-cover w-auto cursor-pointer"
           ngSrc="./assets/img/NoteThatLetters.png"
           height="100"
@@ -76,13 +84,12 @@
             tabindex="-1"
           >
             <div aria-label="User Menu" class="flex flex-col space-y-1">
-              <a
-                *ngFor="let option of NavbarConfig.optionButtons"
-                (click)="executeAction(option)"
-                [ngClass]="getOptionClasses(option)"
-                class="flex items-center gap-2 rounded-lg px-4 py-2"
-                routerLinkActive=""
-                role="button"
+              <a *ngFor="let option of NavbarConfig.optionButtons"
+                 (click)="executeAction(option)"
+                 [ngClass]="getOptionClasses(option)"
+                 class="flex items-center gap-2 rounded-lg px-4 py-2"
+                 routerLinkActive=""
+                 role="button"
               >
                 <lucide-icon
                   [name]="option.iconName"
@@ -108,11 +115,13 @@
     </div>
 
     <!--  Mobile menu-->
-    <div *ngIf="showMobileMenu" [@fadeInOut] class="lg:hidden" id="mobile-menu">
+    <div *ngIf="showMobileMenu"
+         [@softFade]
+         class="lg:hidden" id="mobile-menu">
       <div class="space-y-1 px-2 pb-3 pt-2">
         <div *ngFor="let option of optionList" class="w-full">
           <app-navigation-button
-          class=""
+            class=""
             (click)="navigateTo(option.route)"
             [text]="option.type"
             [activeRoute]="isActiveRoute(option.route)"

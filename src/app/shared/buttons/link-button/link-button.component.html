@@ -1,0 +1,11 @@
+<a [class.disabled]="disabled"
+   [title]="title"
+   [type]="type"
+   (click)="onClickEmit($event)"
+   class="link"
+><span class="inline-block align-sub"><lucide-icon
+  *ngIf="showSpinner && (loading$ | async)"
+  size="18"
+  class="animate-spin"
+  name="loader-2"
+></lucide-icon></span>{{ text }}</a>

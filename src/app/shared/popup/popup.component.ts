@@ -9,12 +9,12 @@ import { fadeInOut } from 'src/app/utils/animations/fade-in-out';
   animations: [fadeInOut],
 })
 export class PopupComponent {
-  @Input('message') public message: string = 'Texto copiado al portapapeles';
-  @Input('visible') public visible: boolean = false;
-
+  @Input() public message: string = 'Texto copiado al portapapeles';
+  @Input() public visible: boolean = false;
+  
   public mouseOver: boolean = false;
 
-  private visibleSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public visibleSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   public get visible$(): Observable<boolean> {
     return this.visibleSubject.asObservable();

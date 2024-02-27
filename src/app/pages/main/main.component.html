@@ -1,5 +1,5 @@
 <div class="animate-fade-in-down">
-  <div class="flex flex-col gap-3 md:flex-row justify-between items-center">
+  <div class="gap-3 flex flex-col md:flex-row justify-between items-center">
     <div class="mb-6 ml-4 md:mb-0 order-0">
       <img
         class="object-contain w-full h-20"
@@ -7,15 +7,18 @@
         alt="NoteThat"
         width="1000" height="1000"/>
     </div>
-    <app-quote class="md:order-1 order-2"></app-quote>
-    <app-regular-button
-      (click)="navigateToProfile()"
-      [showSpinner]="true"
-      [text]="fullName"
-      buttonStyle="outline"
-      class="order-1 md:order-2"
-    >
-    </app-regular-button>
+    <div class="md:order-1 order-2 ">
+      <app-quote class="w-fit"></app-quote>
+    </div>
+    <div class="order-1 md:order-2">
+      <app-regular-button
+        (click)="navigateToProfile()"
+        [showSpinner]="true"
+        [text]="fullName"
+        buttonStyle="outline"
+      >
+      </app-regular-button>
+    </div>
   </div>
   <div class="mt-3">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

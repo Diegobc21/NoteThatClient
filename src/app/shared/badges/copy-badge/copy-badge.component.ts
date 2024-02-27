@@ -13,8 +13,8 @@ import {softFade} from "../../../utils/animations/soft-fade";
 })
 export class CopyBadgeComponent extends BaseBadgeComponent implements OnDestroy {
   @ViewChild('appPopup') public appPopup: PopupComponent | undefined;
-
-  @Input() public showPopup: boolean = true;
+  @Input() override icon: string = 'copy';
+  @Input() public showPopup: boolean = false;
 
   @Output() onCopy: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -22,19 +22,34 @@ export class CopyBadgeComponent extends BaseBadgeComponent implements OnDestroy 
 
   constructor(private clipboardService: ClipboardService) {
     super();
-    this.onCopySubscription = this.onCopy.subscribe((copied: boolean) => {
-      if (copied) {
-        if (this.appPopup) {
-          this.appPopup.open();
-          this.appPopup.message = 'Copiado al portapapeles';
+    this.onCopySubscription = this.onCopy.subscribe(
+      {
+        next: (copied: boolean) => {
+          if (copied) {
+            if (this.showPopup && this.appPopup) {
+              this.appPopup.open();
+              this.appPopup.message = 'Copiado al portapapeles';
+            }
+            this.toggleIcon('check');
+          }
         }
-        this.toggleIcon('check');
-      }
-    })
+      })
   }
 
   public copy(): void {
-    this.onCopy.emit(this.clipboardService.copyToClipboard(this.text));
+    if (this.icon !== 'check' && this.text) {
+      this.onCopy.emit(this.clipboardService.copyToClipboard(this.text));
+    }
+  }
+
+  private toggleIcon(toggleIcon: string): void {
+    this.triggerSecondaryIcon = true;
+    const originalIcon = this.icon;
+    this.icon = toggleIcon;
+    setTimeout(() => {
+      this.icon = originalIcon;
+      this.triggerSecondaryIcon = false;
+    }, 1500);
   }
 
   public ngOnDestroy(): void {

@@ -1,26 +1,19 @@
-import {
-  Component,
-  ElementRef,
-  OnDestroy,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { optionList } from '../../options/option-list';
-import { ScreenSizeService } from '../../core/services/screen-size/screen-size.service';
-import { AuthService } from '../../core/services/auth/auth.service';
-import { NavigationService } from '../../core/services/navigation/navigation.service';
-import { environment } from '../../../environments/environment';
-import { softFade } from '../../utils/animations/soft-fade';
-import { NavbarConfig, UserAction, UserOption } from './navbar-config';
-import { fadeInOut } from 'src/app/utils/animations/fade-in-out';
+import {Component, ElementRef, OnDestroy, Renderer2, ViewChild,} from '@angular/core';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {optionList} from '../../options/option-list';
+import {ScreenSizeService} from '../../core/services/screen-size/screen-size.service';
+import {AuthService} from '../../core/services/auth/auth.service';
+import {NavigationService} from '../../core/services/navigation/navigation.service';
+import {environment} from '../../../environments/environment';
+import {softFade} from '../../utils/animations/soft-fade';
+import {NavbarConfig, UserAction, UserOption} from './navbar-config';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  animations: [softFade, fadeInOut],
+  animations: [softFade],
 })
 export class NavbarComponent implements OnDestroy {
   @ViewChild('menuButton') private menuButton: ElementRef | undefined;

@@ -7,20 +7,13 @@ import {Component, Input} from '@angular/core';
   `
 })
 export class BaseBadgeComponent {
-  @Input('text') text: string = '';
+  @Input('text') text: string | undefined;
   @Input('showText') showText: boolean = true;
-  @Input('icon') icon: string = 'copy';
+  @Input('icon') icon: string | undefined;
 
   protected triggerSecondaryIcon: boolean = false;
 
-  public toggleIcon(toggleIcon: string): void {
-    const previousIcon: string = this.icon;
-    this.triggerSecondaryIcon = true;
-    this.icon = toggleIcon;
-    setTimeout(() => {
-      this.icon = previousIcon;
-      this.triggerSecondaryIcon = false;
-    }, 1500)
+  constructor() {
   }
 
 }
