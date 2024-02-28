@@ -84,7 +84,7 @@ export class AuthService {
   }
 
   private clearSessionStorage(): void {
-    sessionStorage.removeItem('passwords-visible');
+    sessionStorage.clear();
   }
 
   public checkConnection(data: Observable<any>): Observable<any> {
@@ -99,7 +99,7 @@ export class AuthService {
         }
       }),
       catchError((err: any) => {
-        console.error(err)
+        console.error('ServerError: ', err)
         this.logout();
         return EMPTY;
       })

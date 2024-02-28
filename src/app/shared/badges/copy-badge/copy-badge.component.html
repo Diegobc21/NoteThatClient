@@ -1,7 +1,11 @@
-<app-popup [visible]="showPopup" #appPopup></app-popup>
-<div *ngIf="text || icon"
-  (click)="copy()"
-  class="animate-pulse-fade-in animate-duration-fast hover:animate-tilt h-7 cursor-pointer w-fit flex items-center flex-row justify-center gap-2 px-2 text-slate-700 dark:text-slate-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700"
+<app-popup
+  #appPopup
+  [visible]="showPopup"
+></app-popup
+>
+<div *ngIf="show && (text || icon)"
+     (click)="copy()"
+     class="animate-pulse-fade-in animate-duration-fast hover:animate-tilt h-7 cursor-pointer w-fit flex items-center flex-row justify-center gap-2 px-2 text-slate-700 dark:text-slate-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700"
 >
   <lucide-icon *ngIf="icon"
                [name]="icon"

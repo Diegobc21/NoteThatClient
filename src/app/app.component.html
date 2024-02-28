@@ -1,13 +1,8 @@
-<div class="transition-colors bg-gray-50 dark:bg-slate-950 text-slate-600 dark:text-white">
-  <app-popup *ngIf="sessionExpired"
-             [message]="sessionExpiredMessage"
-  ></app-popup>
+<div class="transition-colors h-dvh w-full bg-gray-50 dark:bg-slate-950 text-slate-600 dark:text-white">
   <app-navbar *ngIf="show"></app-navbar>
-  <main
-    [ngClass]="getContentClasses()"
-    class="max-w-screen-2xl pt-16 mx-auto p-3 overflow-y-auto"
+  <main style="height: calc(100% - 3rem - 1.5px);"
+    class="h-full max-w-screen-xl mx-auto p-2 overflow-y-auto"
   >
     <router-outlet></router-outlet>
   </main>
-  <!--<app-footer *ngIf="show"></app-footer>-->
 </div>

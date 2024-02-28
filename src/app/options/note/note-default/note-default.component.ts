@@ -67,4 +67,5 @@ export class NoteDefaultComponent {
     });
   }
 
+  protected readonly onmouseover = onmouseover;
 }

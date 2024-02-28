@@ -40,6 +40,7 @@ import { QuoteComponent } from './quote/quote.component';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { TagComponent } from './tag/tag.component';
+import {CloseButtonComponent} from "./buttons/close-button/close-button.component";
 
 @NgModule({
   declarations: [
@@ -62,34 +63,35 @@ import { TagComponent } from './tag/tag.component';
     BaseBadgeComponent,
     QuoteComponent,
   ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterLink,
-    RouterLinkActive,
-    NgOptimizedImage,
-    FormsModule,
-    RegularButtonComponent,
-    NavigationButtonComponent,
-    LucideAngularModule.pick({
-      Copy,
-      CircleUserRound,
-      Check,
-      Trash,
-      Eye,
-      EyeOff,
-      ChevronDown,
-      Lightbulb,
-      LightbulbOff,
-      ChevronUp,
-      Mail,
-      Menu,
-      Quote,
-      KeyRound,
-      Loader2,
-      X,
-    }),
-  ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        RouterLink,
+        RouterLinkActive,
+        NgOptimizedImage,
+        FormsModule,
+        RegularButtonComponent,
+        NavigationButtonComponent,
+        LucideAngularModule.pick({
+            Copy,
+            CircleUserRound,
+            Check,
+            Trash,
+            Eye,
+            EyeOff,
+            ChevronDown,
+            Lightbulb,
+            LightbulbOff,
+            ChevronUp,
+            Mail,
+            Menu,
+            Quote,
+            KeyRound,
+            Loader2,
+            X,
+        }),
+        CloseButtonComponent,
+    ],
   exports: [
     NavbarComponent,
     FooterComponent,

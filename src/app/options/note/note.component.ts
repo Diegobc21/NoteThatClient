@@ -101,7 +101,7 @@ export class NoteComponent implements OnDestroy {
           complete: (): void => {
             this.toggleIsAddingNote();
             this.noteService
-              .getNotes()
+              .getUserNotes()
               .pipe(takeUntil(this._unsubscribe$))
               .subscribe({
                 next: (notes: Note[]) => {
@@ -127,7 +127,7 @@ export class NoteComponent implements OnDestroy {
           complete: (): void => {
             this.toggleIsAddingNote();
             this.noteService
-              .getNotes()
+              .getUserNotes()
               .pipe(takeUntil(this._unsubscribe$))
               .subscribe({
                 next: (notes: Note[]) => {
@@ -228,7 +228,7 @@ export class NoteComponent implements OnDestroy {
   private _startSubscriptions(): void {
     this._subscriptions.push(
       this.noteService
-        .getNotes()
+        .getUserNotes()
         .pipe(takeUntil(this._unsubscribe$))
         .subscribe({
           next: (notes: Note[]): void => {

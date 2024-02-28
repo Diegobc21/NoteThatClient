@@ -14,6 +14,7 @@ import {softFade} from "../../../utils/animations/soft-fade";
 export class CopyBadgeComponent extends BaseBadgeComponent implements OnDestroy {
   @ViewChild('appPopup') public appPopup: PopupComponent | undefined;
   @Input() override icon: string = 'copy';
+  @Input() public show: boolean = true;
   @Input() public showPopup: boolean = false;
 
   @Output() onCopy: EventEmitter<boolean> = new EventEmitter<boolean>();

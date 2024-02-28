@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {User} from "../../interfaces/user.interface";
 import {Subscription} from "rxjs";
-import {optionList} from "../../options/option-list";
+import {optionList} from "../option/option-list";
 import {UserService} from "../../core/services/user/user.service";
 import {NavigationService} from "../../core/services/navigation/navigation.service";
 

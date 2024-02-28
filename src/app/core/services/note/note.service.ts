@@ -36,7 +36,7 @@ export class NoteService {
     }));
   }
 
-  public getNotes(): Observable<any> {
+  public getUserNotes(): Observable<any> {
     return this.authService.checkConnection(
       this.http.get(`${this.endpoint}?email=${this.authService.email}`, {
           headers: this.authService.getHeaders()
@@ -46,12 +46,12 @@ export class NoteService {
   }
 
   public getNoteDate(date: Date): string {
-    const newDate = new Date(date);
-    const dayOfMonth = newDate.getUTCDate();
-    const monthIndex = newDate.getUTCMonth();
-    const year = newDate.getUTCFullYear();
+    const newDate: Date = new Date(date);
+    const day: number = newDate.getUTCDate();
+    const monthIndex: number = newDate.getUTCMonth();
+    const year: number = newDate.getUTCFullYear();
 
-    return `${dayOfMonth} de ${months_ES[monthIndex].toLowerCase()} ${year}`;
+    return `${day} de ${months_ES[monthIndex]?.toLowerCase()} ${year}`;
   }
 
 }

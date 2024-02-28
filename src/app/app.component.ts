@@ -1,16 +1,9 @@
-import {
-  Component,
-  HostBinding,
-  HostListener,
-  Inject,
-  OnDestroy
-} from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { Subscription, filter } from 'rxjs';
-import { AuthService } from './core/services/auth/auth.service';
-import { DarkModeService } from './core/services/dark-mode/dark-mode.service';
-import { MediaCheckService } from './core/services/media-check/media-check.service';
-import { SubscriptionService } from './core/services/subscription/subscription.service';
+import {Component, HostBinding, HostListener, Inject, OnDestroy} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
+import {filter, Subscription} from 'rxjs';
+import {DarkModeService} from './core/services/dark-mode/dark-mode.service';
+import {MediaCheckService} from './core/services/media-check/media-check.service';
+import {SubscriptionService} from './core/services/subscription/subscription.service';
 
 @Component({
   selector: 'app-root',
@@ -32,13 +25,12 @@ export class AppComponent implements OnDestroy {
   public title: string = 'NoteThat';
   public show: boolean = false;
 
-  private routerSubscription: Subscription;
+  private readonly routerSubscription: Subscription;
   private currentUrlPath: string = '';
 
   constructor(
     private router: Router,
     private mediaCheckService: MediaCheckService,
-    private authService: AuthService,
     private darkModeService: DarkModeService
   ) {
     this.routerSubscription = this.router.events
@@ -51,17 +43,6 @@ export class AppComponent implements OnDestroy {
             this.currentUrlPath !== '/user/login';
         },
       });
-  }
-
-  get sessionExpiredMessage(): string {
-    return 'Tu sesión ha expirado';
-  }
-
-  get sessionExpired(): boolean {
-    return this.authService.sessionExpired;
-  }
-  public getContentClasses(): string {
-    return 'h-[calc(100vh)]';
   }
 
   public ngOnDestroy(): void {

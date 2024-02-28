@@ -38,6 +38,8 @@
         </h3>
         <app-copy-badge
           class="bottom-2"
+          [show]="showCopyBadge || mobileScreen"
+          [showPopup]="true"
           [showText]="false"
           [text]="note?.title || ''"
         ></app-copy-badge>

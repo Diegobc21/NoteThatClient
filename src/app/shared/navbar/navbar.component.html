@@ -1,14 +1,13 @@
-<header>
-  <nav
-    class="fixed bg-white dark:bg-slate-900 top-0 right-0 left-0 animate-blurred-fade-in mx-auto w-full px-2 :px-6 lg:px-8 z-50 border-b-[1.5px] border-b-purple-800"
-  >
+<header
+  class="sticky min-h-12 animate-blurred-fade-in px-2 :px-6 lg:px-8 z-40 mx-auto w-full bg-white dark:bg-slate-900 border-b-[1.5px] border-b-cyan-600 dark:border-b-cyan-800">
+  <nav>
     <!-- Desktop menu-->
     <div class="flex flex-row justify-between items-center">
       <!-- Mobile menu button-->
       <div class="lg:hidden">
         <button
-          type="button"
           #menuButton
+          type="button"
           class="inline-flex items-center justify-center rounded-md p-2 bg-transparent text-slate-400 hover:text-slate-500 dark:hover:bg-slate-700 hover:bg-slate-100 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-slate-400 dark:focus:ring-white"
           aria-controls="mobile-menu"
           aria-expanded="false"
@@ -19,14 +18,14 @@
       </div>
 
       <div>
-<!--        <img-->
-<!--          (click)="navigateTo('home')"-->
-<!--          alt="NoteThat"-->
-<!--          class="block h-12 object-cover w-auto cursor-pointer"-->
-<!--          ngSrc="./assets/img/logo-light.webp"-->
-<!--          height="1000"-->
-<!--          width="1000"-->
-<!--        />-->
+        <!--        <img-->
+        <!--          (click)="navigateTo('home')"-->
+        <!--          alt="NoteThat"-->
+        <!--          class="block h-12 object-cover w-auto cursor-pointer"-->
+        <!--          ngSrc="./assets/img/logo-light.webp"-->
+        <!--          height="1000"-->
+        <!--          width="1000"-->
+        <!--        />-->
         <img
           (click)="navigateTo('home')"
           alt="NoteThat"
