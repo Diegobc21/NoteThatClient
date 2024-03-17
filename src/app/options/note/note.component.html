@@ -3,61 +3,61 @@
     <app-spinner></app-spinner>
   </div>
 } @else {
-  <div class="animate-fade-in-down">
-    <div class="backdrop-blur-md z-[10] py-2 flex flex-row justify-center">
-      <button
-        (click)="toggleIsAddingNote()"
-        class="shadow-slate-300 dark:shadow-slate-700 shadow-md hover:shadow-lg transition-shadow bg-gradient-to-r from-teal-500 via-blue-500 to-cyan-600 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded block sm:inline-block"
-      >
-        @if (isAddingNote) {
-          Cancelar
-        } @else {
-          <lucide-icon name="plus"></lucide-icon>
-        }
-      </button>
-    </div>
+  <div class="relative animate-fade-in-down">
+    <div>
+      <div class="sticky h-min top-0 right-0 left-0 backdrop-blur-md z-[10] py-2 flex flex-row justify-center">
+        <button
+          (click)="toggleIsAddingNote()"
+          class="shadow-slate-300 dark:shadow-slate-700 shadow-md hover:shadow-lg transition-shadow bg-gradient-to-r from-teal-500 via-blue-500 to-cyan-600 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded block sm:inline-block"
+        >
+          @if (isAddingNote) {
+            Cancelar
+          } @else {
+            <lucide-icon name="plus"></lucide-icon>
+          }
+        </button>
+      </div>
 
-    <div *ngIf="isAddingNote"
-         [@slideUpDown]
-         class="mx-auto max-w-md">
-      <div
-        class="shadow-md shadow-slate-400 mt-2 mb-4 rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 transition"
-      >
-        <div class="rounded-[10px] bg-white dark:bg-slate-900 p-2 sm:p-3">
-          <h1 class="text-2xl font-bold mb-2">Nueva nota</h1>
-          <form (ngSubmit)="submitNote()">
-            <app-input
-              (valueChange)="newNote.title = $event"
-              [model]="newNote.title"
-              [required]="true"
-              placeholder="*Título (requerido)"
-              type="text"
-            ></app-input>
-
-            <div class="flex flex-col">
+      <div *ngIf="isAddingNote"
+           [@slideUpDown]
+           class="mx-auto max-w-md">
+        <div
+          class="shadow-md shadow-slate-400 mt-2 mb-4 rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 transition"
+        >
+          <div class="rounded-[10px] bg-white dark:bg-slate-900 p-2 sm:p-3">
+            <h1 class="text-2xl font-bold mb-2">Nueva nota</h1>
+            <form (ngSubmit)="submitNote()">
               <app-input
-                (valueChange)="newNote.content = $event"
-                [model]="newNote.content"
+                (valueChange)="newNote.title = $event"
+                [model]="newNote.title"
                 [required]="true"
-                placeholder="Contenido"
-                type="textarea"
+                placeholder="*Título (requerido)"
+                type="text"
               ></app-input>
-              <div class="flex flex-row justify-end space-x-2">
-                <!--              <app-color-selector></app-color-selector>-->
-                <app-regular-button
-                  text="Crear"
-                  (onClick)="submitNote()"
-                  [disabled]="createNoteFormIsEmpty"
-                  [showSpinner]="true"
-                ></app-regular-button>
+
+              <div class="flex flex-col">
+                <app-input
+                  (valueChange)="newNote.content = $event"
+                  [model]="newNote.content"
+                  [required]="true"
+                  placeholder="Contenido"
+                  type="textarea"
+                ></app-input>
+                <div class="flex flex-row justify-end space-x-2">
+                  <!--              <app-color-selector></app-color-selector>-->
+                  <app-regular-button
+                    text="Crear"
+                    (onClick)="submitNote()"
+                    [disabled]="createNoteFormIsEmpty"
+                    [showSpinner]="true"
+                  ></app-regular-button>
+                </div>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="animate-fade-in-down">
     <div class="max-w-xl pl-2 mx-auto">
       <ol class="relative border-s border-gray-200 dark:border-gray-700">
         @for (note of noteList; let i = $index; track note) {

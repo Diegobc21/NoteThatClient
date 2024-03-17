@@ -26,6 +26,7 @@ import {RegularButtonComponent} from "../shared/buttons/regular-button/regular-b
 import {NavigationButtonComponent} from "../shared/buttons/navigation-button/navigation-button.component";
 import {ShowPasswordButtonComponent} from "../shared/buttons/show-password-button/show-password-button.component";
 import {DeleteButtonComponent} from "../shared/buttons/delete-button/delete-button.component";
+import { UtilitiesComponent } from './utilities/utilities.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {DeleteButtonComponent} from "../shared/buttons/delete-button/delete-butt
     CalendarComponent,
     NoteLoadingComponent,
     NoteEditComponent,
-    NoteDefaultComponent
+    NoteDefaultComponent,
+    UtilitiesComponent
   ],
   imports: [
     CommonModule,

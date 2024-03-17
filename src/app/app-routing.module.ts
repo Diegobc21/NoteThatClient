@@ -12,6 +12,7 @@ import { ProfileComponent } from "./pages/profile/profile.component";
 import { SettingsComponent } from './pages/settings/settings.component';
 import { LoginComponent } from "./user/login/login.component";
 import { RegisterComponent } from "./user/register/register.component";
+import { UtilitiesComponent } from './options/utilities/utilities.component';
 
 const routes: Routes = [
   {
@@ -38,7 +39,7 @@ const routes: Routes = [
             path: 'search',
             component: FriendSearchComponent,
           },
-        ],
+        ]
       },
       {
         path: 'spotify',
@@ -52,7 +53,11 @@ const routes: Routes = [
         path: 'passwords',
         component: PasswordsComponent,
       },
-    ],
+      {
+        path: 'utilities',
+        component: UtilitiesComponent,
+      }
+    ]
   },
   {
     path: 'user',

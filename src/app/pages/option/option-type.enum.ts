@@ -3,5 +3,6 @@ export enum OptionType {
   Friends = 'Amigos',
   Spotify = "Spotify",
   Calendar = "Calendario",
-  Passwords = "Contraseñas"
+  Passwords = "Contraseñas",
+  Utilities = "Utilidades"
 }

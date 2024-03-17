@@ -1,0 +1,14 @@
+<form>
+  <label for="file-input" class="sr-only">Choose file</label>
+  <input
+    (change)="convertToWebP($event)"
+    type="file"
+    name="file-input"
+    id="file-input"
+    class="file-input"
+  />
+</form>
+
+<div *ngIf="convertedImage" class="mt-4 max-w-full">
+  <img [src]="convertedImage" alt="Converted Image" class="max-w-full" />
+</div>
