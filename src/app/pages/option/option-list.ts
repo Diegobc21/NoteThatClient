@@ -26,9 +26,9 @@ export let optionList: any[] = [
     type: OptionType.Passwords,
     description: 'Gestiona tus contraseñas'
   },
-  {
-    route: '/option/utilities',
-    type: OptionType.Utilities,
-    description: 'Varias utilidades'
-  }
+  // {
+  //   route: '/option/utilities',
+  //   type: OptionType.Utilities,
+  //   description: 'Varias utilidades'
+  // }
 ];
