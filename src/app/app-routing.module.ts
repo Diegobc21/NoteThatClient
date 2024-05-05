@@ -28,23 +28,23 @@ const routes: Routes = [
         path: 'note',
         component: NoteComponent,
       },
-      {
-        path: 'friends',
-        children: [
-          {
-            path: '',
-            component: FriendComponent,
-          },
-          {
-            path: 'search',
-            component: FriendSearchComponent,
-          },
-        ]
-      },
-      {
-        path: 'spotify',
-        component: SpotifyComponent,
-      },
+      // {
+      //   path: 'friends',
+      //   children: [
+      //     {
+      //       path: '',
+      //       component: FriendComponent,
+      //     },
+      //     {
+      //       path: 'search',
+      //       component: FriendSearchComponent,
+      //     },
+      //   ]
+      // },
+      // {
+      //   path: 'spotify',
+      //   component: SpotifyComponent,
+      // },
       {
         path: 'calendar',
         component: CalendarComponent,
@@ -53,17 +53,18 @@ const routes: Routes = [
         path: 'passwords',
         component: PasswordsComponent,
       },
-      {
-        path: 'utilities',
-        component: UtilitiesComponent,
-      }
-    ]
+      // {
+      //   path: 'utilities',
+      //   component: UtilitiesComponent,
+      // }
+    ],
   },
   {
     path: 'user',
     children: [
       {
         path: 'profile',
+        canActivate: [AuthGuard],
         component: ProfileComponent,
       },
       {
