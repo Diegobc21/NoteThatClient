@@ -17,7 +17,7 @@ import { UtilitiesComponent } from './options/utilities/utilities.component';
 const routes: Routes = [
   {
     path: 'home',
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     component: MainComponent,
   },
   {
@@ -64,7 +64,7 @@ const routes: Routes = [
     children: [
       {
         path: 'profile',
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         component: ProfileComponent,
       },
       {

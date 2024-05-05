@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Proyecto": {
+    "notethat": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -87,10 +87,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Proyecto:build:production"
+              "buildTarget": "notethat:build:production"
             },
             "development": {
-              "buildTarget": "Proyecto:build:development"
+              "buildTarget": "notethat:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -98,7 +98,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "Proyecto:build"
+            "buildTarget": "notethat:build"
           }
         },
         "test": {
