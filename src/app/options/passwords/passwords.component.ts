@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Observable, Subscription, take} from 'rxjs';
 import {SpinnerService} from 'src/app/core/services/spinner/spinner.service';
-import {DeviceService} from "../../core/services/device/device.service";
 import {PasswordService} from "../../core/services/password/password.service";
 import {ScreenSizeService} from "../../core/services/screen-size/screen-size.service";
 
@@ -31,6 +30,9 @@ interface Section {
 export class PasswordsComponent implements OnInit, OnDestroy {
   public isCreatingPassword: boolean = false;
   public isCreatingSection: boolean = false;
+  public isEditingSection: boolean = false;
+  public editingSection: Section | undefined;
+  public editingSectionTitle: string = '';
   public currentSection: string = '';
   public accountPass: string = '';
   public sectionList: Section[] = [];
@@ -64,7 +66,6 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   constructor(
     private passwordService: PasswordService,
-    private deviceService: DeviceService,
     private screenSizeService: ScreenSizeService,
     private spinnerService: SpinnerService
   ) {
@@ -197,6 +198,14 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     this._resetNewSection();
   }
 
+  public toggleEditSection(section: Section): void {
+    this.editingSection = section;
+    this.editingSectionTitle = section.title;
+    this.isEditingSection = true;
+    this._resetNewSection();
+  }
+
+
   public toggleOpenSectionMenu(): void {
     this.isOpenSectionMenu = !this.isOpenSectionMenu;
   }
@@ -279,6 +288,18 @@ export class PasswordsComponent implements OnInit, OnDestroy {
 
   public toggleNewPasswordVisibility(): void {
     this.newPasswordVisible = !this.newPasswordVisible;
+  }
+
+  // TODO: mejorar manejo de subscripciones
+  public updateSection(): void {
+    if (this.editingSectionTitle.length > 0) {
+      this.subscriptions.push(
+        this.passwordService.updateSection(this.editingSection, this.editingSectionTitle)
+          .subscribe((response) => {
+            this.isEditingSection = false;
+            this.getSections();
+          }));
+    }
   }
 
   private saveSelectedPassword(password: Password): void {

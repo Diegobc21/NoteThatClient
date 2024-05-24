@@ -18,12 +18,6 @@ export class PasswordService {
   ) {
   }
 
-  private getAllPasswords(): Observable<any> {
-    return this.http.get(`${this.apiUrl}`, {
-      headers: this.authService.getHeaders(),
-    });
-  }
-
   public getPasswordsBySection(section: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/${section}`, {
       headers: this.authService.getHeaders(),
@@ -63,6 +57,16 @@ export class PasswordService {
     return this.http.post(
       `${this.apiUrl}/section`,
       {user, title},
+      {headers: this.authService.getHeaders()}
+    );
+  }
+
+  public updateSection(section: any, newTitle: string): Observable<any> {
+    const user: string = this.authService.email;
+    const updatedSection = {...section, title: newTitle};
+    return this.http.put(
+      `${this.apiUrl}/section`,
+      {user, section: updatedSection},
       {headers: this.authService.getHeaders()}
     );
   }
