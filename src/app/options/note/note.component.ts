@@ -100,16 +100,8 @@ export class NoteComponent implements OnDestroy {
         .subscribe({
           complete: (): void => {
             this.toggleIsAddingNote();
-            this.noteService
-              .getUserNotes()
-              .pipe(takeUntil(this._unsubscribe$))
-              .subscribe({
-                next: (notes: Note[]) => {
-                  this._noteList.push(newNote);
-                  this._noteList = this._sortNotesByDate(notes) ?? [];
-                  this._updateAlertVisibility();
-                },
-              });
+            this.noteList.push(newNote);
+            this._noteList = this._sortNotesByDate(this._noteList);
             this._resetForm();
           },
         });
