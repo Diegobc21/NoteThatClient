@@ -27,6 +27,7 @@ import {NavigationButtonComponent} from "../shared/buttons/navigation-button/nav
 import {ShowPasswordButtonComponent} from "../shared/buttons/show-password-button/show-password-button.component";
 import {DeleteButtonComponent} from "../shared/buttons/delete-button/delete-button.component";
 import { UtilitiesComponent } from './utilities/utilities.component';
+import {EditButtonComponent} from "../shared/buttons/edit-button/edit-button.component";
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { UtilitiesComponent } from './utilities/utilities.component';
     RegularButtonComponent,
     NavigationButtonComponent,
     ShowPasswordButtonComponent,
+    EditButtonComponent,
     DeleteButtonComponent,
     LucideAngularModule.pick({
       Check, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Lock, Plus, MoreVertical

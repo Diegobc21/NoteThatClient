@@ -4,7 +4,7 @@ import {SpinnerService} from 'src/app/core/services/spinner/spinner.service';
 import {PasswordService} from "../../core/services/password/password.service";
 import {ScreenSizeService} from "../../core/services/screen-size/screen-size.service";
 
-interface Password {
+export interface Password {
   _id: string;
   password: string;
   title: string;
@@ -15,7 +15,7 @@ interface Password {
   visible?: boolean;
 }
 
-interface Section {
+export interface Section {
   _id: string;
   title: string;
   user: string;
@@ -31,6 +31,8 @@ export class PasswordsComponent implements OnInit, OnDestroy {
   public isCreatingPassword: boolean = false;
   public isCreatingSection: boolean = false;
   public isEditingSection: boolean = false;
+  public isEditingPassword: boolean = false;
+  public editingPassword: Password | undefined;
   public editingSection: Section | undefined;
   public editingSectionTitle: string = '';
   public currentSection: string = '';
@@ -68,7 +70,8 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     private passwordService: PasswordService,
     private screenSizeService: ScreenSizeService,
     private spinnerService: SpinnerService
-  ) {}
+  ) {
+  }
 
   public ngOnInit(): void {
     this._startSubscriptions();
@@ -207,6 +210,12 @@ export class PasswordsComponent implements OnInit, OnDestroy {
     this._resetNewSection();
   }
 
+  public toggleEditPassword(password: Password): void {
+    this.editingPassword = password;
+    this.form = password;
+    this.isEditingPassword = true;
+  }
+
   public toggleOpenSectionMenu(): void {
     this.isOpenSectionMenu = !this.isOpenSectionMenu;
   }
@@ -269,18 +278,22 @@ export class PasswordsComponent implements OnInit, OnDestroy {
           this.showPassword = true;
           this.isAccountPasswordOverlayVisible = false;
           this.makePasswordVisible();
+          this.toggleNewPasswordVisibility();
         }
       });
   }
 
-  public toggleAccountPasswordOverlay(): void {
+  public toggleAccountPasswordOverlay(isEditing?: boolean): void {
     if (!this.passwordService.checkIfPasswordsAreVisible()) {
       this.accountPass = '';
       this.isAccountPasswordOverlayVisible =
         !this.isAccountPasswordOverlayVisible;
     } else {
-      this.makePasswordVisible();
+      if (!isEditing) {
+        this.makePasswordVisible();
+      }
       this.isAccountPasswordOverlayVisible = false;
+      this.toggleNewPasswordVisibility();
     }
   }
 
@@ -307,13 +320,40 @@ export class PasswordsComponent implements OnInit, OnDestroy {
         this.passwordService
           .updateSection(this.editingSection, this.editingSectionTitle)
           .subscribe((section) => {
-            this.isEditingSection = false;
             this.sectionList.forEach((s) => {
               if (s._id === section._id) {
                 s.title = section.title;
               }
+              return;
             });
+            this.isEditingSection = false;
           })
+      );
+    }
+  }
+
+  // TODO: mejorar manejo de subscripciones
+  public editPassword(): void {
+    if (this.editingPassword) {
+      this.subscriptions.push(
+        this.passwordService
+          .updatePassword(this.editingPassword._id, this.editingPassword)
+          .subscribe({
+              next: (password) => {
+                this.passwords.forEach((p) => {
+                  if (p._id === password._id) {
+                    p = password;
+                  }
+                  return;
+                });
+              },
+              complete: () => {
+                this.isEditingPassword = false;
+                this.editingPassword = undefined;
+                this._resetPasswordForm();
+              }
+            }
+          )
       );
     }
   }

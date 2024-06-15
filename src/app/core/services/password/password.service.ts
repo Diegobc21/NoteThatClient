@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {environment} from '../../../../environments/environment';
 import {UtilsService} from "../utils/utils.service";
+import {Password} from "../../../options/passwords/passwords.component";
 
 @Injectable({
   providedIn: 'root',
@@ -67,6 +68,20 @@ export class PasswordService {
     return this.http.put(
       `${this.apiUrl}/section`,
       {user, section: updatedSection},
+      {headers: this.authService.getHeaders()}
+    );
+  }
+
+  public updatePassword(passwordId: any, newPassword: Password): Observable<any> {
+    const user: string = this.authService.email;
+    const updatedPassword =
+      {
+        ...newPassword,
+        _id: passwordId
+      };
+    return this.http.put(
+      `${this.apiUrl}/password`,
+      {user, password: updatedPassword},
       {headers: this.authService.getHeaders()}
     );
   }
