@@ -1,12 +1,12 @@
 import {Component, HostListener, OnDestroy,} from '@angular/core';
 import {Observable, Subject, Subscription, takeUntil} from 'rxjs';
 import {months_ES} from 'src/app/utils/months_ES';
-import {Note} from '../../interfaces/note.interface';
-import {AlertType} from '../../shared/alert/alert-type';
-import {SpinnerService} from '../../core/services/spinner/spinner.service';
-import {AuthService} from '../../core/services/auth/auth.service';
-import {NoteService} from '../../core/services/note/note.service';
-import {slideUpDown} from "../../utils/animations/slide-up-down";
+import {Note} from '../../../interfaces/note.interface';
+import {AlertType} from '../../../shared/alert/alert-type';
+import {SpinnerService} from '../../../core/services/spinner/spinner.service';
+import {AuthService} from '../../../core/services/auth/auth.service';
+import {NoteService} from '../../../core/services/note/note.service';
+import {slideUpDown} from "../../../utils/animations/slide-up-down";
 
 @Component({
   selector: 'app-note',

@@ -3,6 +3,7 @@ import {BodyManagerService} from '../../core/services/body-manager/body-manager.
 import {softFade} from "../../utils/animations/soft-fade";
 import {slideUpDown} from "../../utils/animations/slide-up-down";
 import {fadeInOut} from "../../utils/animations/fade-in-out";
+import {Section} from "../../interfaces/password.interface";
 
 @Component({
   selector: 'app-overlay',
@@ -30,7 +31,7 @@ export class OverlayComponent implements OnDestroy {
   @Input() disableAccept: boolean = false;
   @Input() useActionButton: boolean = true;
   @Input() useCancelButton: boolean = true;
-  @Input() showOverlay: boolean = true;
+  @Input() showOverlay: boolean = false;
 
   constructor(private bodyManagerService: BodyManagerService) {
     bodyManagerService.disableScroll();

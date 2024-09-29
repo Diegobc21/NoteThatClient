@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
 import {environment} from '../../../../environments/environment';
 import {UtilsService} from "../utils/utils.service";
-import {Password} from "../../../options/passwords/passwords.component";
+import {Password} from "../../../interfaces/password.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -80,7 +80,7 @@ export class PasswordService {
         _id: passwordId
       };
     return this.http.put(
-      `${this.apiUrl}/password`,
+      `${this.apiUrl}`,
       {user, password: updatedPassword},
       {headers: this.authService.getHeaders()}
     );
@@ -91,6 +91,15 @@ export class PasswordService {
     return this.http.post(
       `${this.apiUrl}/make-visible`,
       {email, password: this.utilsService.encryptMd5(pass)},
+      {headers: this.authService.getHeaders()}
+    );
+  }
+
+  public getUncensoredPassword(passwordId: string): Observable<any> {
+    const email: string = this.authService.email;
+    return this.http.post(
+      `${this.apiUrl}/uncensored/${passwordId}`,
+      {email},
       {headers: this.authService.getHeaders()}
     );
   }

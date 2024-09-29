@@ -1,23 +1,19 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from "./core/guard/auth.guard";
-import { CalendarComponent } from "./options/calendar/calendar.component";
-import { FriendSearchComponent } from "./options/friend/friend-search/friend-search.component";
-import { FriendComponent } from "./options/friend/friend.component";
-import { NoteComponent } from "./options/note/note.component";
-import { PasswordsComponent } from './options/passwords/passwords.component';
-import { SpotifyComponent } from "./options/spotify/spotify.component";
-import { MainComponent } from "./pages/main/main.component";
-import { ProfileComponent } from "./pages/profile/profile.component";
-import { SettingsComponent } from './pages/settings/settings.component';
-import { LoginComponent } from "./user/login/login.component";
-import { RegisterComponent } from "./user/register/register.component";
-import { UtilitiesComponent } from './options/utilities/utilities.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {AuthGuard} from "./core/guard/auth.guard";
+import {CalendarComponent} from "./options/calendar/calendar.component";
+import {NoteComponent} from "./options/note/note-container/note.component";
+import {MainComponent} from "./pages/main/main.component";
+import {ProfileComponent} from "./pages/profile/profile.component";
+import {SettingsComponent} from './pages/settings/settings.component';
+import {LoginComponent} from "./user/login/login.component";
+import {RegisterComponent} from "./user/register/register.component";
+import {PasswordContainerComponent} from "./options/passwords/container/password-container.component";
 
 const routes: Routes = [
   {
     path: 'home',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     component: MainComponent,
   },
   {
@@ -51,7 +47,7 @@ const routes: Routes = [
       },
       {
         path: 'passwords',
-        component: PasswordsComponent,
+        component: PasswordContainerComponent,
       },
       // {
       //   path: 'utilities',
@@ -64,7 +60,7 @@ const routes: Routes = [
     children: [
       {
         path: 'profile',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         component: ProfileComponent,
       },
       {

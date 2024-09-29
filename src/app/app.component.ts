@@ -23,7 +23,7 @@ export class AppComponent implements OnDestroy {
   }
 
   public title: string = 'NoteThat';
-  public show: boolean = false;
+  public showNavbar: boolean = false;
 
   private readonly routerSubscription: Subscription;
   private currentUrlPath: string = '';
@@ -38,7 +38,7 @@ export class AppComponent implements OnDestroy {
       .subscribe({
         next: (): void => {
           this.currentUrlPath = this.router.routerState.snapshot.url;
-          this.show =
+          this.showNavbar =
             this.currentUrlPath !== '/user/register' &&
             this.currentUrlPath !== '/user/login';
         },

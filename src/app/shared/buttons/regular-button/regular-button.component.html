@@ -7,12 +7,12 @@
   class="text-nowrap text-sm font-medium inline-block rounded-md"
 >
   <span class="inline-block align-middle">
-    <lucide-icon *ngIf="icon && !showSpinner && !(loading$ | async)" [name]="icon" [size]="iconsize"></lucide-icon>
-    <lucide-icon
+    <app-lucide-icon *ngIf="icon && !showSpinner && !(loading$ | async)" [name]="icon" [size]="iconsize"></app-lucide-icon>
+    <app-lucide-icon
       *ngIf="showSpinner && (loading$ | async)"
       size="18"
       class="animate-spin-clockwise animate-iteration-count-infinite"
       name="loader-2"
-    ></lucide-icon></span
+    ></app-lucide-icon></span
   >{{ text }}
 </button>

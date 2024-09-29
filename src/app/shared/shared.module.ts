@@ -60,7 +60,6 @@ import {CloseButtonComponent} from "./buttons/close-button/close-button.componen
     CopyBadgeComponent,
     InputComponent,
     BaseButtonComponent,
-
     BaseBadgeComponent,
     QuoteComponent,
   ],

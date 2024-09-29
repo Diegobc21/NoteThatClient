@@ -1,5 +1,5 @@
 import {Component, OnDestroy} from '@angular/core';
-import {DailyQuoteService, Quote} from "../../core/services/dailyQuote/daily-quote.service";
+import {DailyQuoteService, Quote} from "../../core/services/daily-quote/daily-quote.service";
 import {Observable, Subscription} from "rxjs";
 
 @Component({
