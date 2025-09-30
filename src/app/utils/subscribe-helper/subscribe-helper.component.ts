@@ -1,5 +1,5 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import {Component, OnDestroy} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-subscribe-helper',
@@ -9,21 +9,17 @@ import { Observable, Subscription } from 'rxjs';
   styleUrl: './subscribe-helper.component.scss',
 })
 export class SubscribeHelperComponent implements OnDestroy {
-  private subscriptions: Subscription[];
+  private subscriptions: Subscription[] = [];
 
-  constructor() {
-    this.subscriptions = [];
-  }
-
-  public subscribe<T>(
-    observable: Observable<T>,
-    next: (response: T) => void,
+  public subscribe(
+    observable: Observable<any>,
+    next: (response: any) => void,
     complete?: () => void,
     error?: (err: any) => void
   ) {
     this.subscriptions.push(
       observable.subscribe({
-        next: (response: T) => {
+        next: (response: any) => {
           if (next) {
             next(response);
           }

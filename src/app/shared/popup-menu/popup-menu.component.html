@@ -1,5 +1,5 @@
 <div
-  *ngIf="isOpen"
+  *ngIf="isOpen && options.length > 0"
   [@softFade]
   class="absolute transition-colors duration-100 right-10 z-20 w-fit h-min text-nowrap origin-top-right rounded-md bg-white dark:bg-gray-800 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 >
@@ -9,7 +9,7 @@
       role="button"
       class="flex items-center gap-2 rounded-lg px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-200 hover:text-gray-700"
     >
-      <span class="text-sm font-medium"> {{ option }} </span>
+      <span class="text-sm font-medium"> {{ option.label }} </span>
     </a>
   </div>
 </div>

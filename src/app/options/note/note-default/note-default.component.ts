@@ -2,6 +2,11 @@ import {Component, ElementRef, EventEmitter, Input, Output, Renderer2, ViewChild
 import {Note} from "../../../interfaces/note.interface";
 import {NoteService} from "../../../core/services/note/note.service";
 
+export interface PopupOption {
+  label: string,
+  action: () => void
+}
+
 @Component({
   selector: 'app-note-default',
   templateUrl: './note-default.component.html'
@@ -16,7 +21,17 @@ export class NoteDefaultComponent {
   @Output() public onEditNote: EventEmitter<Note> = new EventEmitter<Note>();
   @Output() public onDeleteNote: EventEmitter<Note> = new EventEmitter<Note>();
 
-  public popupOptions: string[] = ['Editar', 'Eliminar'];
+  public popupOptions: PopupOption[] = [
+    {
+      label: 'Editar',
+      action: () => this.onEditNote.emit(this.note)
+    },
+    {
+      label: 'Eliminar',
+      action: () => this.onDeleteNote.emit(this.note)
+    }
+  ];
+
   public showMenu: boolean = false;
 
   public mobileScreen: boolean = true;
@@ -46,14 +61,6 @@ export class NoteDefaultComponent {
     this._showPopup = !this._showPopup;
   }
 
-  public handlePopupOption(event: string): void {
-    if (this.popupOptions[0] === event) {
-      this.onEditNote.emit(this.note);
-    } else if (this.popupOptions[1] === event) {
-      this.onDeleteNote.emit(this.note);
-    }
-  }
-
   private enableListeners(): void {
     this._renderer.listen('document', 'click', (e: Event): void => {
       if (this.popupButton?.nativeElement.contains(e.target) || this.showPopup) {
@@ -66,6 +73,4 @@ export class NoteDefaultComponent {
       this.mobileScreen = e.target?.innerWidth < 1024;
     });
   }
-
-  protected readonly onmouseover = onmouseover;
 }

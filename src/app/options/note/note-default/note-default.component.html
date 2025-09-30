@@ -16,16 +16,15 @@
     </button>
     <app-popup-menu
       [isOpen]="showPopup"
-      (emittedOption)="handlePopupOption($event)"
-      (onCloseEvent)="togglePopup()"
       [options]="popupOptions"
+      (onCloseEvent)="togglePopup()"
     ></app-popup-menu>
 
     <div class="">
       <ng-content></ng-content>
     </div>
     <time class="block text-xs opacity-70 mb-1">
-      {{ note ? getNoteDate(note.creationDate) : "dd/mm/yyyy" }}
+      {{ note ? getNoteDate(note.creationDate!) : "dd/mm/yyyy" }}
     </time>
     <div class="mx-2">
       <div

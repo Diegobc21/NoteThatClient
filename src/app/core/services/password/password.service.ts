@@ -79,8 +79,8 @@ export class PasswordService {
         ...newPassword,
         _id: passwordId
       };
-    return this.http.put(
-      `${this.apiUrl}`,
+    return this.http.post(
+      `${this.apiUrl}/${passwordId}`,
       {user, password: updatedPassword},
       {headers: this.authService.getHeaders()}
     );

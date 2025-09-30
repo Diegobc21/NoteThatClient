@@ -1,8 +1,8 @@
 <div
-  class="sticky h-min top-0 right-0 left-0 backdrop-blur-md z-[10] py-2 flex flex-row justify-center"
+  class="mb-2 flex flex-row justify-center"
 >
   <button
-    (click)="toggleIsAddingNote()"
+    (click)="toggleCreate()"
     [ngClass]="isAddingNote ? 'bg-red-500' : 'bg-gradient-to-r from-teal-500 via-blue-500 to-cyan-600 hover:bg-blue-700'"
     class="shadow-slate-600 dark:shadow-slate-400 text-white font-bold py-1 px-2 rounded block sm:inline-block"
   >
@@ -63,7 +63,7 @@
               ></div>
               <time
                 class="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-400"
-              >{{ getTimeLineDate(note.creationDate) }}
+              >{{ getTimeLineDate(note.creationDate!) }}
               </time>
             } @else {
               <div
@@ -81,7 +81,7 @@
         } @empty {
           <div class="mt-4">
             <app-alert
-              *ngIf="showAlert"
+              *ngIf="isEmptyNoteList"
               [type]="AlertType.WARNING"
               (onClose)="modalClosed()"
               [message]="'Aún no tienes ninguna nota'"
@@ -92,11 +92,12 @@
       </ol>
     </div>
   </div>
+
   <!--Deleting note-->
   <app-overlay *ngIf="selectedNote"
                [showOverlay]="isDeleteOverlayVisible"
                (onCloseEvent)="toggleDeleteOverlay()"
-               (onAcceptEvent)="deleteNote(selectedNote!)"
+               (onAcceptEvent)="onDeleteNote(selectedNote!)"
   >
     <h1 class="text-center font-bold mb-2">
       ¿Seguro que deseas eliminar esta nota?
@@ -111,7 +112,7 @@
   <app-overlay
     [showOverlay]="isEditingNote"
     [disableAccept]="editingFormIsEmpty"
-    (onCloseEvent)="toggleIsEditingNote()"
+    (onCloseEvent)="toggleEdit()"
     (onAcceptEvent)="submitEditing()"
   >
     <div class="overflow-hidden">

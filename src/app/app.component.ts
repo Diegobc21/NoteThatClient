@@ -1,9 +1,8 @@
-import {Component, HostBinding, HostListener, Inject, OnDestroy} from '@angular/core';
+import {Component, HostBinding, HostListener, OnDestroy} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
 import {filter, Subscription} from 'rxjs';
 import {DarkModeService} from './core/services/dark-mode/dark-mode.service';
 import {MediaCheckService} from './core/services/media-check/media-check.service';
-import {SubscriptionService} from './core/services/subscription/subscription.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +10,6 @@ import {SubscriptionService} from './core/services/subscription/subscription.ser
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnDestroy {
-  private _subscriptionService = Inject(SubscriptionService);
 
   @HostListener('click', ['${event}'])
   public onClick(): void {
@@ -34,8 +32,8 @@ export class AppComponent implements OnDestroy {
     private darkModeService: DarkModeService
   ) {
     this.routerSubscription = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe({
+      ?.pipe(filter((event) => event instanceof NavigationEnd))
+      ?.subscribe({
         next: (): void => {
           this.currentUrlPath = this.router.routerState.snapshot.url;
           this.showNavbar =
@@ -46,6 +44,6 @@ export class AppComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this._subscriptionService.unsubscribe(this.routerSubscription);
+    this.routerSubscription?.unsubscribe();
   }
 }
