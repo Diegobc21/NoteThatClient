@@ -4,7 +4,7 @@ import {LucideIconComponent} from "../../../shared/lucide-icon/lucide-icon.compo
 import {PasswordItemComponent} from "./password-item/password-item.component";
 import {RegularButtonComponent} from "../../../shared/buttons/regular-button/regular-button.component";
 import {SharedModule} from "../../../shared/shared.module";
-import {BehaviorSubject, map, Observable} from "rxjs";
+import {BehaviorSubject, firstValueFrom, map} from "rxjs";
 import {Password, Section} from "../../../interfaces/password.interface";
 import {SharedHelperComponent} from "../../../utils/shared-helper/shared-helper.component";
 import {PasswordService} from "../../../core/services/password/password.service";
@@ -30,7 +30,7 @@ export class PasswordListComponent extends SharedHelperComponent implements OnIn
 
   @Input() public currentSection$: BehaviorSubject<Section | null> = new BehaviorSubject<Section | null>(null);
 
-  public passwords$: Observable<Password[]> = new Observable<Password[]>();
+  public passwords$: BehaviorSubject<Password[]> = new BehaviorSubject<Password[]>([]);
 
   public passwords: Password[] = [];
   public newPasswordVisible: boolean = false;
@@ -50,6 +50,9 @@ export class PasswordListComponent extends SharedHelperComponent implements OnIn
     this.subscribe(this.currentSection$.asObservable(),
       () => this.loadPasswords()
     )
+    this.subscribe(this.passwords$.asObservable(),
+      (passwords) => this.passwords = passwords
+    )
   }
 
   public openCreate(): void {
@@ -67,11 +70,12 @@ export class PasswordListComponent extends SharedHelperComponent implements OnIn
     this.newPasswordVisible = !this.newPasswordVisible;
   }
 
-  private loadPasswords(): void {
+  private async loadPasswords(): Promise<void> {
     if (this.currentSection$?.getValue()) {
-      this.passwords$ = this.passwordService
-        .getPasswordsBySection(this.currentSection$.getValue()!.title)
-        .pipe(map(passwords => this.passwords = [...passwords]));
+      const passwords = await firstValueFrom(
+        this.passwordService.getPasswordsBySection(this.currentSection$.getValue()!.title)
+      );
+      this.passwords$.next(passwords);
     }
   }
 
@@ -102,7 +106,8 @@ export class PasswordListComponent extends SharedHelperComponent implements OnIn
 
   public passwordDeleted(password: Password): void {
     if (!password) return;
-    this.loadPasswords();
+    const passwords = this.passwords$.getValue()?.filter(p => p._id !== password._id);
+    this.passwords$.next([...passwords]);
   }
 
   private passwordValid(password?: Password): boolean {
