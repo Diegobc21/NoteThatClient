@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Injector, Input, OnInit, Output} from '@angular/core';
 import {SharedModule} from "../../../../shared/shared.module";
 import {DeleteButtonComponent} from "../../../../shared/buttons/delete-button/delete-button.component";
 import {EditButtonComponent} from "../../../../shared/buttons/edit-button/edit-button.component";
@@ -7,7 +7,7 @@ import {
   ShowPasswordButtonComponent
 } from "../../../../shared/buttons/show-password-button/show-password-button.component";
 import {Password} from "../../../../interfaces/password.interface";
-import {SubscribeHelperComponent} from "../../../../utils/subscribe-helper/subscribe-helper.component";
+import {SharedHelperComponent} from "../../../../utils/shared-helper/shared-helper.component";
 import {PasswordService} from "../../../../core/services/password/password.service";
 import {FormsModule} from "@angular/forms";
 
@@ -18,10 +18,10 @@ import {FormsModule} from "@angular/forms";
   templateUrl: './password-item.component.html',
   styleUrl: './password-item.component.scss',
 })
-export class PasswordItemComponent extends SubscribeHelperComponent implements OnInit {
+export class PasswordItemComponent extends SharedHelperComponent implements OnInit {
   @Input() public password!: Password;
 
-  @Output() public passwordDeleted: EventEmitter<string> = new EventEmitter<string>();
+  @Output() public passwordDeleted: EventEmitter<Password> = new EventEmitter<Password>();
 
   public passwordForm: Password = {} as Password;
   public isEditing: boolean = false;
@@ -29,8 +29,11 @@ export class PasswordItemComponent extends SubscribeHelperComponent implements O
   public isAccountPasswordOverlayVisible: boolean = false;
   public accountPass: string = '';
 
-  constructor(private passwordService: PasswordService) {
-    super();
+  constructor(
+    private injector: Injector,
+    private passwordService: PasswordService
+  ) {
+    super(injector);
   }
 
   public ngOnInit(): void {
@@ -89,10 +92,10 @@ export class PasswordItemComponent extends SubscribeHelperComponent implements O
     if (this.formValid()) {
       this.subscribe(
         this.passwordService.deleteOne(this.passwordForm._id!),
-        (deletedPasswordId: string) => {
+        () => {
           this.toggleDelete();
+          this.passwordDeleted.emit({ ...this.passwordForm });
           this._resetPasswordForm();
-          this.passwordDeleted.emit(deletedPasswordId);
         }
       )
     }

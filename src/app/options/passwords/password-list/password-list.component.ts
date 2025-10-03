@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Injector, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {LucideIconComponent} from "../../../shared/lucide-icon/lucide-icon.component";
 import {PasswordItemComponent} from "./password-item/password-item.component";
@@ -6,7 +6,7 @@ import {RegularButtonComponent} from "../../../shared/buttons/regular-button/reg
 import {SharedModule} from "../../../shared/shared.module";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {Password, Section} from "../../../interfaces/password.interface";
-import {SubscribeHelperComponent} from "../../../utils/subscribe-helper/subscribe-helper.component";
+import {SharedHelperComponent} from "../../../utils/shared-helper/shared-helper.component";
 import {PasswordService} from "../../../core/services/password/password.service";
 import {ShowPasswordButtonComponent} from "../../../shared/buttons/show-password-button/show-password-button.component";
 
@@ -22,27 +22,28 @@ import {ShowPasswordButtonComponent} from "../../../shared/buttons/show-password
     ShowPasswordButtonComponent
   ],
   templateUrl: './password-list.component.html',
-  styleUrl: './password-list.component.scss'
+  styleUrl: './password-list.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PasswordListComponent extends SubscribeHelperComponent implements OnInit {
+export class PasswordListComponent extends SharedHelperComponent implements OnInit {
+  @ViewChild('createModal') createModal!: TemplateRef<any>;
+
   @Input() public currentSection$: BehaviorSubject<Section | null> = new BehaviorSubject<Section | null>(null);
 
   public passwords$: Observable<Password[]> = new Observable<Password[]>();
 
   public passwords: Password[] = [];
   public newPasswordVisible: boolean = false;
-  public isCreatingPassword: boolean = false;
-  public passwordForm: Password = {
+  public passwordForm: BehaviorSubject<Password> = new BehaviorSubject({
     password: '',
-    title: '',
-    username: '',
-    user: '',
-    email: '',
-    section: ''
-  };
+    title: ''
+  });
 
-  constructor(private passwordService: PasswordService) {
-    super();
+  constructor(
+    injector: Injector,
+    private passwordService: PasswordService
+  ) {
+    super(injector);
   }
 
   public ngOnInit(): void {
@@ -51,8 +52,15 @@ export class PasswordListComponent extends SubscribeHelperComponent implements O
     )
   }
 
-  public toggleCreate(): void {
-    this.isCreatingPassword = !this.isCreatingPassword;
+  public openCreate(): void {
+    this.showOverlay({
+      template: this.createModal,
+      onAccept: () => this.onCreatePassword(),
+      disableAcceptButton: this.passwordForm.asObservable().pipe(map(
+        p => !this.passwordValid(p)
+      )),
+      useCancelButton: false
+    });
   }
 
   public toggleNewPasswordVisibility(): void {
@@ -63,48 +71,53 @@ export class PasswordListComponent extends SubscribeHelperComponent implements O
     if (this.currentSection$?.getValue()) {
       this.passwords$ = this.passwordService
         .getPasswordsBySection(this.currentSection$.getValue()!.title)
-        .pipe(
-          map(passwords => this.passwords = [...passwords]),
-        )
+        .pipe(map(passwords => this.passwords = [...passwords]));
     }
   }
 
   public onCreatePassword(): void {
-    if (this.formValid()) {
+    if (this.passwordValid()) {
+      const currentPassword = this.passwordForm.getValue();
       const newPassword = {
         section: this.currentSection$.getValue()!.title,
-        password: this.passwordForm.password,
-        title: this.passwordForm.title,
-        email: this.passwordForm.email,
-        username: this.passwordForm.username
+        password: currentPassword?.password,
+        title: currentPassword?.title,
+        email: currentPassword?.email,
+        username: currentPassword?.username
       }
       this.subscribe(
         this.passwordService.addPassword(newPassword),
-        () => {
-          this.loadPasswords();
-        },
-        () => {
-          this.toggleCreate();
-          this._resetPasswordForm();
-        }
+        () => this.passwords.push(newPassword),
+        () =>this._resetPasswordForm()
       );
     }
   }
 
-  public passwordDeleted(): void {
+  public onUpdatePasswordForm(input: string, key: string): void {
+    this.passwordForm.next({
+      ...this.passwordForm.getValue(),
+      [key]: input
+    })
+  }
+
+  public passwordDeleted(password: Password): void {
+    if (!password) return;
     this.loadPasswords();
   }
 
-  private formValid(): boolean {
-    return this.passwordForm.password !== '' && this.passwordForm.title !== '';
+  private passwordValid(password?: Password): boolean {
+    const currentPassword = password ?? this.passwordForm.getValue();
+    return !!currentPassword && currentPassword.password?.length > 0 && currentPassword.title?.length > 0;
   }
 
   private _resetPasswordForm(): void {
-    this.passwordForm._id = '';
-    this.passwordForm.password = '';
-    this.passwordForm.section = '';
-    this.passwordForm.user = '';
-    this.passwordForm.username = '';
-    this.passwordForm.title = '';
+    this.passwordForm.next({
+      _id: '',
+      password: '',
+      section: '',
+      user: '',
+      username: '',
+      title: '',
+    });
   }
 }

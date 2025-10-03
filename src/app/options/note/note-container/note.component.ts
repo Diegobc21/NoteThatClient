@@ -1,4 +1,4 @@
-import {Component,} from '@angular/core';
+import {Component, Injector,} from '@angular/core';
 import {Observable, Subject, takeUntil} from 'rxjs';
 import {months_ES} from 'src/app/utils/months_ES';
 import {Note} from '../../../interfaces/note.interface';
@@ -7,7 +7,7 @@ import {SpinnerService} from '../../../core/services/spinner/spinner.service';
 import {AuthService} from '../../../core/services/auth/auth.service';
 import {NoteService} from '../../../core/services/note/note.service';
 import {slideUpDown} from "../../../utils/animations/slide-up-down";
-import {SubscribeHelperComponent} from "../../../utils/subscribe-helper/subscribe-helper.component";
+import {SharedHelperComponent} from "../../../utils/shared-helper/shared-helper.component";
 
 @Component({
   selector: 'app-note',
@@ -15,7 +15,7 @@ import {SubscribeHelperComponent} from "../../../utils/subscribe-helper/subscrib
   styleUrls: ['./note.component.scss'],
   animations: [slideUpDown]
 })
-export class NoteComponent extends SubscribeHelperComponent {
+export class NoteComponent extends SharedHelperComponent {
 
   public isAddingNote: boolean = false;
   public isEditingNote: boolean = false;
@@ -41,11 +41,12 @@ export class NoteComponent extends SubscribeHelperComponent {
   protected readonly AlertType = AlertType;
 
   constructor(
+    private injector: Injector,
     public spinnerService: SpinnerService,
     private authService: AuthService,
     private noteService: NoteService
   ) {
-    super();
+    super(injector);
     this._startSubscriptions();
     this._updateAlertVisibility();
   }

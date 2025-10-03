@@ -1,15 +1,35 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, Injector, OnDestroy} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
+import {OverlayConfig, OverlayService} from "../../core/services/overlay/overlay.service";
 
 @Component({
-  selector: 'app-subscribe-helper',
+  selector: 'app-shared-helper',
   standalone: true,
   imports: [],
-  templateUrl: './subscribe-helper.component.html',
-  styleUrl: './subscribe-helper.component.scss',
+  templateUrl: './shared-helper.component.html',
+  styleUrl: './shared-helper.component.scss',
 })
-export class SubscribeHelperComponent implements OnDestroy {
+export class SharedHelperComponent implements OnDestroy {
+  public overlayService: OverlayService;
+
   private subscriptions: Subscription[] = [];
+
+  constructor(injector: Injector) {
+    this.overlayService = injector.get(OverlayService);
+  }
+
+  public showOverlay(config: OverlayConfig): void {
+    if (!config) return;
+    this.overlayService.show(config);
+  }
+
+  public hideOverlay(): void {
+    this.overlayService.hide();
+  }
+
+  public acceptOverlay(): void {
+    this.overlayService.accept();
+  }
 
   public subscribe(
     observable: Observable<any>,

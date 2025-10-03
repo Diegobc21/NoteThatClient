@@ -18,7 +18,7 @@ import {UtilitiesComponent} from './utilities/utilities.component';
 import {EditButtonComponent} from "../shared/buttons/edit-button/edit-button.component";
 import {SectionListComponent} from "./passwords/section-list/section-list.component";
 import {LucideIconComponent} from "../shared/lucide-icon/lucide-icon.component";
-import {SubscribeHelperComponent} from "../utils/subscribe-helper/subscribe-helper.component";
+import {SharedHelperComponent} from "../utils/shared-helper/shared-helper.component";
 
 @NgModule({
   declarations: [
@@ -45,7 +45,7 @@ import {SubscribeHelperComponent} from "../utils/subscribe-helper/subscribe-help
     DeleteButtonComponent,
     SectionListComponent,
     LucideIconComponent,
-    SubscribeHelperComponent
+    SharedHelperComponent
   ],
   exports: [],
 })

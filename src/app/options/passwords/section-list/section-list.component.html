@@ -1,9 +1,9 @@
 @if (sectionList.length > 0) {
   <div
-    class="w-full transition-colors h-min md:max-w-[300px] md:min-w-[300px] sm:max-w-[300px] bg-white shadow-md rounded-sm p-4 dark:bg-slate-800 dark:hover:bg-slate-700 sm:mr-4"
+    class="w-full transition-colors h-min md:max-w-[300px] md:min-w-[300px] sm:max-w-[300px] bg-white shadow-md rounded-lg p-4 dark:bg-slate-800 dark:hover:bg-slate-700 sm:mr-4"
   >
     <div
-      (click)="toggleOpenSectionMenu()"
+      (click)="expandSectionMenu()"
       class="cursor-pointer w-full hover:text-gray-400 flex flex-row items-center justify-between"
     >
       <h1 class="transition-colors text-xl font-bold">
@@ -13,13 +13,17 @@
         }
       </h1>
       <div>
-        <app-lucide-icon
+        <app-lucide-icon *ngIf="!isSectionMenuExpanded"
           size="18"
-          [name]="!isOpenSectionMenu ? 'chevron-down' : 'chevron-up'"
+          [name]="'chevron-down'"
+        ></app-lucide-icon>
+        <app-lucide-icon *ngIf="isSectionMenuExpanded"
+          size="18"
+          [name]="'chevron-up'"
         ></app-lucide-icon>
       </div>
     </div>
-    @if (isOpenSectionMenu) {
+    @if (isSectionMenuExpanded) {
       <nav class="mt-4">
         <ul class="space-y-1 text-gray-700 dark:text-gray-300">
           <li
@@ -60,9 +64,9 @@
     ></app-regular-button>
   </div>
 } @else {
-  <div class="text-center my-20">
+  <div class="flex justify-between my-20">
     @if (!(loading$ | async) && sectionList.length === 0) {
-      <div class="animate-fade-in-down mx-auto text-3xl text-gray-500">
+      <div class="animate-fade-in-down text-3xl text-gray-500">
         No hay ninguna sección
         <div class="mx-auto my-5 w-fit">
           <app-regular-button
@@ -78,77 +82,40 @@
   </div>
 }
 
-<app-overlay
-  [showOverlay]="isCreatingSection"
-  [useCancelButton]="false"
-  [disableAccept]="sectionForm.title === ''"
-  (onAcceptEvent)="onCreateSection()"
-  (onCloseEvent)="isCreatingSection = false"
->
+<ng-template #createModal>
   <h2 class="text-xl mb-4">Pónle un título</h2>
   <form (submit)="onCreateSection()">
     <app-input
       placeholder="Título"
-      [model]="sectionForm.title"
-      (valueChange)="sectionForm.title = $event"
+      [model]="(sectionForm | async)?.title"
+      (valueChange)="sectionForm.next({title: $event})"
     >
     </app-input>
   </form>
-</app-overlay>
+</ng-template>
 
-<!--Editing section-->
-<app-overlay
-  [showOverlay]="isEditingSection"
-  (onCloseEvent)="isEditingSection = false"
-  [disableAccept]="
-    sectionForm.title.length === 0 ||
-    sectionForm.title === temporalSectionTitle
-  "
-  (onAcceptEvent)="onEditSection()"
->
-  <form (submit)="onEditSection()">
-    <h1 class="text-center font-bold">Editar sección</h1>
-    <app-input
-      [model]="sectionForm.title"
-      type="text"
-      (valueChange)="sectionForm.title = $event"
-      placeholder="Título de sección"
-    ></app-input>
-  </form>
-</app-overlay>
+<ng-template #editModal>
+    <form (submit)="onEditSection()">
+        <h1 class="text-center font-bold">Editar sección</h1>
+        <app-input
+                type="text"
+                [model]="(sectionForm | async)?.title"
+                (valueChange)="updateSection($event)"
+                placeholder="Título de sección"
+        ></app-input>
+    </form>
+</ng-template>
 
-<!--Deleting section-->
-<app-overlay
-  [showOverlay]="isDeletingSection"
-  (onCloseEvent)="isDeletingSection = false"
-  (onAcceptEvent)="onDeleteSection()"
->
-  <form (submit)="onDeleteSection()">
-    <h1 class="text-center font-bold">
-      ¿Seguro que deseas eliminar esta sección?
-    </h1>
-    <div class="mx-auto my-2 text-center text-xl w-fit font-bold text-red-400">
-      {{ sectionForm!.title }}
-    </div>
-    <h2 class="text-center text-gray-400">
-      Perderás todas las contraseñas asociadas.
-    </h2>
-  </form>
-</app-overlay>
-
-<!--&lt;!&ndash; Activate visibility &ndash;&gt;-->
-<!--<app-overlay-->
-<!--  [showOverlay]="isAccountPasswordOverlayVisible"-->
-<!--  (onCloseEvent)="toggleAccountPasswordOverlay()"-->
-<!--  (onAcceptEvent)="checkAccountPassword()"-->
-<!--&gt;-->
-<!--  <h1 class="mb-3 text-lg font-bold">Escribe tu contraseña:</h1>-->
-<!--  <form (ngSubmit)="checkAccountPassword()">-->
-<!--    <app-input-->
-<!--      [model]="accountPass"-->
-<!--      type="password"-->
-<!--      (valueChange)="accountPass = $event"-->
-<!--      placeholder="Contraseña de tu cuenta de NoteThat"-->
-<!--    ></app-input>-->
-<!--  </form>-->
-<!--</app-overlay>-->
+<ng-template #deleteModal>
+      <form (submit)="onDeleteSection()">
+        <h1 class="text-center font-bold">
+          ¿Seguro que deseas eliminar esta sección?
+        </h1>
+        <div class="mx-auto my-2 text-center text-xl w-fit font-bold text-red-400">
+          {{ (sectionForm | async)!.title }}
+        </div>
+        <h2 class="text-center text-gray-400">
+          Perderás todas las contraseñas asociadas.
+        </h2>
+      </form>
+</ng-template>

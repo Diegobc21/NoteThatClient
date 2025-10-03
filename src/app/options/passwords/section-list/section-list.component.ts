@@ -1,10 +1,10 @@
 import {CommonModule} from '@angular/common';
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Component, EventEmitter, Injector, Input, Output, TemplateRef, ViewChild} from '@angular/core';
+import {BehaviorSubject, map, Observable} from 'rxjs';
 import {DeleteButtonComponent} from 'src/app/shared/buttons/delete-button/delete-button.component';
 import {EditButtonComponent} from 'src/app/shared/buttons/edit-button/edit-button.component';
 import {RegularButtonComponent} from 'src/app/shared/buttons/regular-button/regular-button.component';
-import {SubscribeHelperComponent} from 'src/app/utils/subscribe-helper/subscribe-helper.component';
+import {SharedHelperComponent} from 'src/app/utils/shared-helper/shared-helper.component';
 import {LucideIconComponent} from "../../../shared/lucide-icon/lucide-icon.component";
 import {SharedModule} from "../../../shared/shared.module";
 import {Section} from "../../../interfaces/password.interface";
@@ -26,7 +26,11 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
   templateUrl: './section-list.component.html',
   styleUrl: './section-list.component.scss',
 })
-export class SectionListComponent extends SubscribeHelperComponent {
+export class SectionListComponent extends SharedHelperComponent {
+  @ViewChild('createModal') createModal!: TemplateRef<any>;
+  @ViewChild('editModal') editModal!: TemplateRef<any>;
+  @ViewChild('deleteModal') deleteModal!: TemplateRef<any>;
+
   @Input() public loading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   @Input() public sectionList: Section[] = [];
 
@@ -40,21 +44,22 @@ export class SectionListComponent extends SubscribeHelperComponent {
   @Output('deleteSection') public deleteSection: EventEmitter<Section> = new EventEmitter<Section>();
 
   public temporalSectionTitle: string | null = null;
-  public sectionForm: Section = {
-    title: '',
-  };
+  public sectionForm: BehaviorSubject<Section> = new BehaviorSubject({
+    title: ''
+  });
 
-  public isOpenSectionMenu: boolean = true;
-  public isCreatingSection: boolean = false;
-  public isEditingSection: boolean = false;
-  public isDeletingSection: boolean = false;
+  public isSectionMenuExpanded: boolean = true;
 
   public get currentSection(): Section | null {
     return this.currentSection$.getValue();
   }
 
-  public toggleOpenSectionMenu(): void {
-    this.isOpenSectionMenu = !this.isOpenSectionMenu;
+  constructor(injector: Injector) {
+    super(injector);
+  }
+
+  public expandSectionMenu(): void {
+    this.isSectionMenuExpanded = !this.isSectionMenuExpanded;
   }
 
   public changeCurrentSection(section: Section): void {
@@ -62,53 +67,77 @@ export class SectionListComponent extends SubscribeHelperComponent {
   }
 
   public openCreateSection(): void {
-    this.isCreatingSection = true;
+    this.showOverlay({
+      template: this.createModal,
+      onAccept: () => this.onCreateSection(),
+      onHideAction: () => this.resetAll(),
+      disableAcceptButton: this.sectionForm.asObservable().pipe(
+        map(value => !value?.title || value.title === '')
+      ),
+      useCancelButton: true
+    });
   }
 
   public openEditSection(section: Section): void {
-    this.sectionForm = {...section};
+    if (!section._id) return;
+    this.sectionForm.next({...section});
     this.temporalSectionTitle = section.title;
-    this.isEditingSection = true;
+
+    this.showOverlay({
+      template: this.editModal,
+      onAccept: () => this.onEditSection(),
+      onHideAction: () => this.resetAll(),
+      disableAcceptButton: this.sectionForm.asObservable().pipe(
+        map(value => !value?.title || value.title === '')
+      ),
+      useCancelButton: true
+    });
   }
 
   public openDeleteSection(section: Section): void {
-    if (section._id) {
-      this.sectionForm = {...section};
-      this.isDeletingSection = true;
-    }
+    if (!section?._id) return;
+      this.showOverlay({
+      template: this.deleteModal,
+      onAccept: () => this.onDeleteSection(),
+      onHideAction: () => this.resetAll(),
+      disableAcceptButton: this.sectionForm.asObservable().pipe(
+        map(value => !value?.title || value.title === '')
+      )
+    });
+    this.sectionForm.next({...section});
   }
 
   public onCreateSection(): void {
-    if (this.sectionForm?.title !== '') {
-      this.addSection.emit(this.sectionForm);
-      this.subscribe(this.currentSection$.asObservable(),
-        () => this.isCreatingSection = false);
+    if (this.sectionForm.getValue()?.title !== '') {
+      this.addSection.emit(this.sectionForm.getValue());
       this.resetAll();
     }
   }
 
   public onEditSection(): void {
-    if (this.sectionForm._id || this.sectionForm.title !== '') {
-      this.editSection.emit(this.sectionForm);
-      this.subscribe(this.currentSection$.asObservable(),
-        () => this.isEditingSection = false);
+    if (this.sectionForm.getValue()._id || this.sectionForm.getValue().title !== '') {
+      this.editSection.emit(this.sectionForm.getValue());
       this.resetAll();
     }
   }
 
+  public updateSection(title: string): void {
+    if (this.sectionForm.getValue()._id) {
+      this.sectionForm.next({ ...this.sectionForm.getValue(), title });
+    }
+  }
+
   public onDeleteSection(): void {
-    if (this.sectionForm._id) {
-      this.deleteSection.emit(this.sectionForm);
-      this.subscribe(this.currentSection$.asObservable(),
-        () => this.isDeletingSection = false);
+    if (this.sectionForm.getValue()._id) {
+      this.deleteSection.emit(this.sectionForm.getValue());
       this.resetAll();
     }
   }
 
   private resetAll(): void {
     this.temporalSectionTitle = null;
-    this.sectionForm = {
+    this.sectionForm.next({
       title: '',
-    }
+    });
   }
 }

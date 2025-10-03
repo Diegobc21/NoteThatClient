@@ -7,13 +7,13 @@
   >
     <!-- Close button -->
     <button
-      (click)="toggleModal()"
+      (click)="hideModal()"
       title="Cerrar"
       type="button"
       class="p-1 absolute right-2 top-2 hover:bg-slate-200 focus:ring-gray-700 inline-flex items-center dark:hover:bg-slate-700 justify-center rounded-md ring-offset-background dark:hover:bg-accent"
     >
       <lucide-icon
-        (click)="toggleModal()"
+        (click)="hideModal()"
         name="x"
         size="18"
       ></lucide-icon>
@@ -26,7 +26,7 @@
     <div class="flex justify-around sm:justify-end gap-2">
       <app-regular-button
         *ngIf="useCancelButton"
-        (onClick)="toggleModal()"
+        (onClick)="hideModal()"
         text="Cancelar"
         buttonType="normal"
         class="w-full"

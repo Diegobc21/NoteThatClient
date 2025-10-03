@@ -1,29 +1,22 @@
 import {CommonModule} from '@angular/common';
-import {Component, OnDestroy} from '@angular/core';
+import {Component, Injector, OnDestroy} from '@angular/core';
 import {PasswordService} from 'src/app/core/services/password/password.service';
-import {SubscribeHelperComponent} from 'src/app/utils/subscribe-helper/subscribe-helper.component';
+import {SharedHelperComponent} from 'src/app/utils/shared-helper/shared-helper.component';
 import {SectionListComponent} from '../section-list/section-list.component';
-import {DeleteButtonComponent} from "../../../shared/buttons/delete-button/delete-button.component";
-import {EditButtonComponent} from "../../../shared/buttons/edit-button/edit-button.component";
 import {FormsModule} from "@angular/forms";
 import {SharedModule} from "../../../shared/shared.module";
-import {ShowPasswordButtonComponent} from "../../../shared/buttons/show-password-button/show-password-button.component";
 import {BehaviorSubject, map, Observable, withLatestFrom} from "rxjs";
-import {RegularButtonComponent} from "../../../shared/buttons/regular-button/regular-button.component";
-import {PasswordItemComponent} from "../password-list/password-item/password-item.component";
-import {LucideIconComponent} from "../../../shared/lucide-icon/lucide-icon.component";
 import {Password, Section} from "../../../interfaces/password.interface";
 import {PasswordListComponent} from "../password-list/password-list.component";
 
 @Component({
   selector: 'app-password-container',
   standalone: true,
-  imports: [CommonModule, SharedModule, FormsModule, SectionListComponent, RegularButtonComponent, DeleteButtonComponent,
-    EditButtonComponent, ShowPasswordButtonComponent, PasswordItemComponent, LucideIconComponent, PasswordListComponent],
+  imports: [CommonModule, SharedModule, FormsModule, SectionListComponent, PasswordListComponent],
   templateUrl: './password-container.component.html',
   styleUrl: './password-container.component.scss',
 })
-export class PasswordContainerComponent extends SubscribeHelperComponent implements OnDestroy {
+export class PasswordContainerComponent extends SharedHelperComponent implements OnDestroy {
   public passwords$: Observable<Password[]> = new Observable<Password[]>();
   public isAnyPassword$: Observable<boolean> = new Observable<boolean>();
   public isAnySection$: Observable<boolean> = new Observable<boolean>();
@@ -32,8 +25,10 @@ export class PasswordContainerComponent extends SubscribeHelperComponent impleme
 
   public sectionList: Section[] = [];
 
-  constructor(private passwordService: PasswordService) {
-    super();
+  constructor(
+    private injector: Injector,
+    private passwordService: PasswordService) {
+    super(injector);
     this.getData();
   }
 

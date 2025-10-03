@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SubscribeHelperComponent } from './subscribe-helper.component';
+import { SharedHelperComponent } from './shared-helper.component';
 
-describe('SubscribeHelperComponent', () => {
-  let component: SubscribeHelperComponent;
-  let fixture: ComponentFixture<SubscribeHelperComponent>;
+describe('SharedHelperComponent', () => {
+  let component: SharedHelperComponent;
+  let fixture: ComponentFixture<SharedHelperComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SubscribeHelperComponent]
+      imports: [SharedHelperComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(SubscribeHelperComponent);
+    fixture = TestBed.createComponent(SharedHelperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

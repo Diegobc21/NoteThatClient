@@ -3,7 +3,6 @@ import {BodyManagerService} from '../../core/services/body-manager/body-manager.
 import {softFade} from "../../utils/animations/soft-fade";
 import {slideUpDown} from "../../utils/animations/slide-up-down";
 import {fadeInOut} from "../../utils/animations/fade-in-out";
-import {Section} from "../../interfaces/password.interface";
 
 @Component({
   selector: 'app-overlay',
@@ -16,16 +15,16 @@ import {Section} from "../../interfaces/password.interface";
   ]
 })
 export class OverlayComponent implements OnDestroy {
-  @ViewChild('overlayTemplate') public overlayTemplate!: ElementRef;
+  @ViewChild('overlayTemplate') public overlayTemplate: ElementRef | any = null;
 
   @HostListener('mousedown', ['$event'])
   public onClick(event: MouseEvent): void {
     if (!this.overlayTemplate.nativeElement.contains(event.target)) {
-      this.toggleModal();
+      this.hideModal();
     }
   }
 
-  @Output() onCloseEvent: EventEmitter<null> = new EventEmitter<null>();
+  @Output() onHideEvent: EventEmitter<null> = new EventEmitter<null>();
   @Output() onAcceptEvent: EventEmitter<null> = new EventEmitter<null>();
 
   @Input() disableAccept: boolean = false;
@@ -37,8 +36,9 @@ export class OverlayComponent implements OnDestroy {
     bodyManagerService.disableScroll();
   }
 
-  public toggleModal(): void {
-    this.onCloseEvent.emit();
+  public hideModal(): void {
+    this.onHideEvent.emit();
+    this.overlayTemplate = null;
   }
 
   public accept(): void {
