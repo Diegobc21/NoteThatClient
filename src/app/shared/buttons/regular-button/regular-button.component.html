@@ -4,14 +4,16 @@
   [class]="buttonType"
   [type]="type"
   (click)="onClickEmit($event)"
-  class="text-nowrap text-sm font-medium inline-block rounded-md"
+  class="text-nowrap text-sm font-medium inline-block"
+  [class.rounded-full]="roundedFull"
+  [class.rounded-lg]="!roundedFull"
 >
   <span class="inline-block align-middle">
-    <app-lucide-icon *ngIf="icon && !showSpinner && !(loading$ | async)" [name]="icon" [size]="iconsize"></app-lucide-icon>
+    <app-lucide-icon *ngIf="icon && !showSpinner && !(loading$ | async)" [name]="icon" [size]="iconSize"></app-lucide-icon>
     <app-lucide-icon
       *ngIf="showSpinner && (loading$ | async)"
+      [spin]="true"
       size="18"
-      class="animate-spin-clockwise animate-iteration-count-infinite"
       name="loader-2"
     ></app-lucide-icon></span
   >{{ text }}

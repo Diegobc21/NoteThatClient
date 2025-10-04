@@ -12,5 +12,5 @@ import {LucideAngularModule} from "lucide-angular";
   styleUrl: './delete-button.component.scss'
 })
 export class DeleteButtonComponent extends BaseButtonComponent {
-  @Input() iconSize: number = 18;
+  @Input() override iconSize: number = 18;
 }

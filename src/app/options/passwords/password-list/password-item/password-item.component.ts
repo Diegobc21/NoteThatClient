@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, EventEmitter, Injector, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Injector, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {SharedModule} from "../../../../shared/shared.module";
 import {DeleteButtonComponent} from "../../../../shared/buttons/delete-button/delete-button.component";
 import {EditButtonComponent} from "../../../../shared/buttons/edit-button/edit-button.component";
@@ -10,6 +10,7 @@ import {Password} from "../../../../interfaces/password.interface";
 import {SharedHelperComponent} from "../../../../utils/shared-helper/shared-helper.component";
 import {PasswordService} from "../../../../core/services/password/password.service";
 import {FormsModule} from "@angular/forms";
+import {BehaviorSubject, firstValueFrom, map} from "rxjs";
 
 @Component({
   selector: 'app-password-item',
@@ -19,15 +20,16 @@ import {FormsModule} from "@angular/forms";
   styleUrl: './password-item.component.scss',
 })
 export class PasswordItemComponent extends SharedHelperComponent implements OnInit {
+  @ViewChild('editPasswordTemplate') public editPasswordTemplate!: TemplateRef<any>;
+  @ViewChild('deletePasswordTemplate') public deletePasswordTemplate!: TemplateRef<any>;
+  @ViewChild('activateVisibilityTemplate') public activateVisibilityTemplate!: TemplateRef<any>;
+
   @Input() public password!: Password;
 
   @Output() public passwordDeleted: EventEmitter<Password> = new EventEmitter<Password>();
 
-  public passwordForm: Password = {} as Password;
-  public isEditing: boolean = false;
-  public isDeleting: boolean = false;
-  public isAccountPasswordOverlayVisible: boolean = false;
-  public accountPass: string = '';
+  public passwordForm: BehaviorSubject<Password> = new BehaviorSubject({} as Password);
+  public userPassword: string = '';
 
   constructor(
     private injector: Injector,
@@ -37,83 +39,108 @@ export class PasswordItemComponent extends SharedHelperComponent implements OnIn
   }
 
   public ngOnInit(): void {
-    this.passwordForm = this.password;
+    this.passwordForm.next({...this.password});
   }
 
   public toggleEdit(): void {
-    this.passwordForm.password = '';
-    this.isEditing = !this.isEditing;
+    this.passwordForm.next({
+      ...this.password,
+      password: ''
+    })
+    this.showOverlay({
+      template: this.editPasswordTemplate,
+      disableAcceptButton: this.passwordForm.pipe(map(
+        (form) => form.title === '' || form.password === ''
+      )),
+      useActionButton: true,
+      useCancelButton: true,
+      onAccept: () => this.onEditPassword()
+    });
   }
 
   public toggleDelete(): void {
-    this.isDeleting = !this.isDeleting;
-  }
-
-  public editPassword(): void {
     if (this.formValid()) {
-      this.subscribe(
-        this.passwordService.updatePassword(this.passwordForm._id, this.passwordForm),
-        (password) => this.password = password,
-        () => {
-          this.toggleEdit();
-          this._resetPasswordForm();
+      this.passwordForm.next({
+        ...this.password,
+        password: ''
+      })
+      this.showOverlay({
+        template: this.deletePasswordTemplate,
+        onAccept: () => this.onDeletePassword(),
+      });
+    }
+  }
+
+  public toggleVisibilityOverlay(): void {
+    if (!this.passwordService.checkIfPasswordsAreVisible()) {
+      this.passwordForm.next({
+        ...this.password,
+        password: ''
+      });
+      this.showOverlay({
+        template: this.activateVisibilityTemplate,
+        onAccept: async () => {
+          await this.checkAccountPassword();
+          this.overlayService.hide();
         }
-      );
-    }
-  }
-
-  public toggleAccountPasswordOverlay(isEditing?: boolean): void {
-    if (!this.passwordService.checkIfPasswordsAreVisible()) {
-      this.isAccountPasswordOverlayVisible = !this.isAccountPasswordOverlayVisible;
+      });
     } else {
-      this.togglePasswordVisible();
+      this.checkAccountPassword();
     }
   }
 
-  public checkAccountPassword(): void {
-    if (!this.passwordService.checkIfPasswordsAreVisible()) {
-      this.subscribe(
-        this.passwordService.checkAccountPassword(this.accountPass),
-        ((response) => {
-          if (response.valid === true) {
-            this.passwordService.setPasswordsVisible();
-            this.isAccountPasswordOverlayVisible = false;
-            this.togglePasswordVisible();
-          }
-        })
-      );
-    } else {
-      this.togglePasswordVisible();
-      this.isAccountPasswordOverlayVisible = false;
-    }
-  }
-
-  public deletePassword(): void {
+  public async onEditPassword(): Promise<void> {
     if (this.formValid()) {
-      this.subscribe(
-        this.passwordService.deleteOne(this.passwordForm._id!),
-        () => {
-          this.toggleDelete();
-          this.passwordDeleted.emit({ ...this.passwordForm });
-          this._resetPasswordForm();
-        }
-      )
+      const newPassword = this.passwordForm.getValue();
+      this.password = await firstValueFrom(
+        this.passwordService.updatePassword(newPassword._id, newPassword)
+      );
+      this.toggleEdit();
+      this._resetPasswordForm()
     }
   }
 
-  private togglePasswordVisible(): void {
-    if (!this.password.visible) {
-      if (this.password.password) {
+  public async onDeletePassword(): Promise<void> {
+    if (this.formValid()) {
+      await firstValueFrom(this.passwordService.deleteOne(this.passwordForm.getValue()._id!))
+      this.toggleDelete();
+      this.passwordDeleted.emit({...this.passwordForm.getValue()});
+      this._resetPasswordForm();
+    }
+  }
+
+  public onPasswordChanged(password: string, key: string): void {
+    if (!password) return;
+    this.passwordForm.next({...this.password, [key]: password});
+  }
+
+  public async checkAccountPassword(): Promise<void> {
+    if (!this.passwordService.checkIfPasswordsAreVisible()) {
+      const valid = await firstValueFrom(
+        this.passwordService.checkAccountPassword(this.userPassword).pipe(map(
+          res => res.valid
+        )));
+      if (valid === true) {
+        this.passwordService.setPasswordsVisible();
+        await this.togglePasswordVisible();
+      }
+    } else {
+      await this.togglePasswordVisible();
+    }
+  }
+
+  private async togglePasswordVisible(): Promise<void> {
+    if (!this.password?.visible) {
+      if (this.password?.password) {
         this.password.visible = true;
       } else if (this.formValid()) {
-        this.subscribe(this.passwordService.getUncensoredPassword(this.password._id!),
-          (res) => {
-            this.password = {
-              ...this.password,
-              visible: true,
-              password: res.password
-            };
-          })
+        const uncensured = await firstValueFrom(this.passwordService.getUncensoredPassword(this.password._id!));
+        if (!uncensured) return;
+        this.password = {
+          ...this.password,
+          password: uncensured.password,
+          visible: true
+        };
       }
     } else {
       this.password.visible = false;
@@ -121,10 +148,11 @@ export class PasswordItemComponent extends SharedHelperComponent implements OnIn
   }
 
   private formValid(): boolean {
-    return this.passwordForm.password !== '' && this.passwordForm.title !== '';
+    const password = this.passwordForm.getValue();
+    return password?.password !== '' && password?.title !== '';
   }
 
   private _resetPasswordForm(): void {
-    this.passwordForm = this.password;
+    this.passwordForm.next({...this.password});
   }
 }

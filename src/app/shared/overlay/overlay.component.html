@@ -3,14 +3,14 @@
      class="fixed top-0 left-0 right-0 w-full h-full z-[999] flex items-center justify-center backdrop-brightness-75 bg-gray-500 bg-opacity-50"
 >
   <div #overlayTemplate
-       class="relative shadow-md bg-white mb-0 mt-auto md:mb-auto w-full md:max-w-md p-6 border-cyan-400 dark:bg-gray-900 rounded-md"
+       class="relative shadow-md bg-white mb-0 mt-auto md:mb-auto w-full md:max-w-md p-6 border-cyan-400 dark:bg-gray-900 rounded-lg"
   >
     <!-- Close button -->
     <button
       (click)="hideModal()"
       title="Cerrar"
       type="button"
-      class="p-1 absolute right-2 top-2 hover:bg-slate-200 focus:ring-gray-700 inline-flex items-center dark:hover:bg-slate-700 justify-center rounded-md ring-offset-background dark:hover:bg-accent"
+      class="p-1 absolute right-2 top-2 hover:bg-slate-200 focus:ring-gray-700 inline-flex items-center dark:hover:bg-slate-700 justify-center rounded-full ring-offset-background dark:hover:bg-accent"
     >
       <lucide-icon
         (click)="hideModal()"

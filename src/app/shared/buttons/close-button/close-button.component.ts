@@ -12,5 +12,5 @@ import {LucideAngularModule} from "lucide-angular";
   styleUrl: './close-button.component.scss'
 })
 export class CloseButtonComponent extends BaseButtonComponent {
-  @Input() iconSize: number = 18;
+  @Input() override iconSize: number = 18;
 }

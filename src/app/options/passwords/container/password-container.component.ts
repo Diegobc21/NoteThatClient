@@ -5,7 +5,7 @@ import {SharedHelperComponent} from 'src/app/utils/shared-helper/shared-helper.c
 import {SectionListComponent} from '../section-list/section-list.component';
 import {FormsModule} from "@angular/forms";
 import {SharedModule} from "../../../shared/shared.module";
-import {BehaviorSubject, map, Observable, withLatestFrom} from "rxjs";
+import {BehaviorSubject, firstValueFrom, map, Observable, withLatestFrom} from "rxjs";
 import {Password, Section} from "../../../interfaces/password.interface";
 import {PasswordListComponent} from "../password-list/password-list.component";
 
@@ -45,17 +45,15 @@ export class PasswordContainerComponent extends SharedHelperComponent implements
   }
 
   public createSection(section: Section): void {
-    const title = section.title;
-    let newSection: Section;
+    const title = section?.title;
     if (title) {
-      this.subscribe(this.passwordService.addSection(title),
+      this.sectionsLoading$.next(true);
+      let newSection: Section;
+      firstValueFrom(this.passwordService.addSection(title)).then(
         (section) => {
-          this.sectionsLoading$.next(true);
           newSection = section;
           this.currentSection$.next(newSection);
           this.loadSections();
-        },
-        () => {
           this.sectionsLoading$.next(false);
         }
       );
@@ -64,8 +62,8 @@ export class PasswordContainerComponent extends SharedHelperComponent implements
 
   public deleteSection(section: Section): void {
     if (section) {
-      this.subscribe(this.passwordService.deleteOneSection(section._id!)
-          .pipe(withLatestFrom(this.isAnySection$)),
+      firstValueFrom(this.passwordService.deleteOneSection(section._id!)
+        .pipe(withLatestFrom(this.isAnySection$))).then(
         ([_, isAnySection]) => {
           this.sectionList = this.sectionList.filter((s: Section) => s._id !== section._id);
           if (this.currentSection$.getValue()?._id === section?._id && isAnySection) {
@@ -82,16 +80,17 @@ export class PasswordContainerComponent extends SharedHelperComponent implements
   }
 
   private loadSections(): void {
-    this.subscribe(this.passwordService.getUserSections(),
+    this.sectionsLoading$.next(true);
+    firstValueFrom(this.passwordService.getUserSections()).then(
       (sections) => {
-        this.sectionsLoading$.next(true);
         if (sections?.length > 0) {
           this.sectionList = sections;
           if (!this.currentSection$?.getValue()) {
             this.currentSection$.next(sections[0]);
           }
         }
-      }, () => this.sectionsLoading$.next(false)
+        this.sectionsLoading$.next(false)
+      }
     );
   }
 }

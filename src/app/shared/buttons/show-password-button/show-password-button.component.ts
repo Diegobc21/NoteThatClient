@@ -13,6 +13,6 @@ import {LucideAngularModule} from "lucide-angular";
 })
 export class ShowPasswordButtonComponent extends BaseButtonComponent {
   @Input() visible: boolean = false;
-  @Input() iconSize: number = 18;
+  @Input() override iconSize: number = 18;
 
 }

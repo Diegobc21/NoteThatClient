@@ -1,7 +1,7 @@
 <span *ngIf="(spinnerVisible | async) || (show | async)"
       class="inline-block align-sub">
-  <lucide-icon [size]="getSize()"
-               class="animate-spin-clockwise animate-iteration-count-infinite"
+  <lucide-icon class="animate-spin animate-spin-clockwise animate-iteration-count-infinite"
                name="loader-2"
+               [size]="getSize()"
   ></lucide-icon>
 </span>

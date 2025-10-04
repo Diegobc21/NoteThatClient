@@ -1,1 +1,13 @@
-<lucide-icon *ngIf="icon" [name]="icon" [size]="size"></lucide-icon>
+<lucide-icon *ngIf="!spin && icon"
+             [name]="icon"
+             [size]="size"
+>
+</lucide-icon>
+<lucide-icon *ngIf="spin"
+             class="animate-spin"
+             [name]="'loader-2'"
+             [size]="size"
+             [class.animate-spin]="spin"
+             [class.animate-iteration-count-infinite]="spin"
+>
+</lucide-icon>

@@ -24,7 +24,8 @@ export class BaseButtonComponent {
   @Input() public disabled: boolean = false;
   @Input() public showSpinner: boolean = false;
   @Input() public icon: string | LucideIconData | undefined;
-  @Input() public iconsize: string | number = 20;
+  @Input() public iconSize: string | number = 20;
+  @Input() public roundedFull: boolean = true;
 
   protected loading$: Observable<boolean> = new Observable<boolean>();
 

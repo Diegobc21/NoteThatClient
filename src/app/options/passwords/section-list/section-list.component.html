@@ -1,6 +1,6 @@
 @if (sectionList.length > 0) {
   <div
-    class="w-full transition-colors h-min md:max-w-[300px] md:min-w-[300px] sm:max-w-[300px] bg-white shadow-md rounded-lg p-4 dark:bg-slate-800 dark:hover:bg-slate-700 sm:mr-4"
+    class="w-full transition-colors h-min md:max-w-[300px] md:min-w-[300px] sm:max-w-[300px] bg-white shadow-md rounded-xl p-4 dark:bg-slate-800 dark:hover:bg-slate-700 sm:mr-4"
   >
     <div
       (click)="expandSectionMenu()"
@@ -33,7 +33,7 @@
               ? 'dark:bg-slate-600 bg-slate-100'
               : ''
           "
-            class="group h-8 flex items-center justify-between rounded transition-colors duration-100 dark:hover:bg-slate-600 hover:bg-slate-100"
+            class="group h-8 flex items-center justify-between rounded-lg transition-colors duration-100 dark:hover:bg-slate-600 hover:bg-slate-100"
           >
             <a
               (click)="changeCurrentSection(section)"
@@ -60,12 +60,13 @@
     <div class="w-full h-1 border-b-2 border-slate-300 my-2"></div>
     <app-regular-button
       (onClick)="openCreateSection()"
+      [roundedFull]="false"
       text="+ Añadir sección"
     ></app-regular-button>
   </div>
 } @else {
   <div class="flex justify-between my-20">
-    @if (!(loading$ | async) && sectionList.length === 0) {
+    @if ((loading$ | async) === false) {
       <div class="animate-fade-in-down text-3xl text-gray-500">
         No hay ninguna sección
         <div class="mx-auto my-5 w-fit">

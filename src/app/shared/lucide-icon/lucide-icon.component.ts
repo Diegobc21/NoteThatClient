@@ -70,6 +70,7 @@ const allIconList: { [key: string]: LucideIconData } = {
 export class LucideIconComponent implements OnInit {
   @Input() public name: string | LucideIconData | undefined;
   @Input() public size: string | number | undefined;
+  @Input() public spin: boolean = false;
 
   private _icon: LucideIconData | undefined;
 

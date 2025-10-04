@@ -12,5 +12,5 @@ import {LucideAngularModule} from "lucide-angular";
   styleUrl: './edit-button.component.scss'
 })
 export class EditButtonComponent extends BaseButtonComponent {
-  @Input() iconSize: number = 18;
+  @Input() override iconSize: number = 18;
 }
