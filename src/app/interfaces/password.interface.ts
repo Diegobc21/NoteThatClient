@@ -2,7 +2,6 @@ export interface Password {
   _id?: string;
   password: string;
   title: string;
-  user?: string;
   section?: string;
   username?: string;
   email?: string;

@@ -3,11 +3,13 @@ import {environment} from "../../../../environments/environment";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../auth/auth.service";
+import {UtilsService} from "../utils/utils.service";
 
 export abstract class BaseApi<T> {
   protected endpoint: string;
   protected http: HttpClient;
   protected authService: AuthService;
+  protected utilsService: UtilsService;
 
   constructor(
     protected injector: Injector,
@@ -15,6 +17,7 @@ export abstract class BaseApi<T> {
   ) {
     this.authService = this.injector.get(AuthService);
     this.http = injector.get(HttpClient);
+    this.utilsService = injector.get(UtilsService);
     this.endpoint = `${environment.apiUrl}/${this.source}`;
   }
 

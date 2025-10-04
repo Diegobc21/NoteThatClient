@@ -30,9 +30,9 @@ export class PasswordListComponent extends SharedHelperComponent implements OnIn
 
   @Input() public currentSection$: BehaviorSubject<Section | null> = new BehaviorSubject<Section | null>(null);
 
-  public passwords$: BehaviorSubject<Password[]> = new BehaviorSubject<Password[]>([]);
+  public passwords$: BehaviorSubject<Password[] | undefined> = new BehaviorSubject<Password[] | undefined>([]);
 
-  public passwords: Password[] = [];
+  public passwords: Password[] | undefined = [];
   public newPasswordVisible: boolean = false;
   public passwordForm: BehaviorSubject<Password> = new BehaviorSubject({
     password: '',
@@ -73,7 +73,7 @@ export class PasswordListComponent extends SharedHelperComponent implements OnIn
   private async loadPasswords(): Promise<void> {
     if (this.currentSection$?.getValue()) {
       const passwords = await firstValueFrom(
-        this.passwordService.getPasswordsBySection(this.currentSection$.getValue()!.title)
+        this.passwordService.getPasswordsBySection(this.currentSection$.getValue()!)
       );
       this.passwords$.next(passwords);
     }
@@ -83,17 +83,17 @@ export class PasswordListComponent extends SharedHelperComponent implements OnIn
     if (this.passwordValid()) {
       const currentPassword = this.passwordForm.getValue();
       const newPassword = {
+        ...currentPassword,
         section: this.currentSection$.getValue()!.title,
-        password: currentPassword?.password,
-        title: currentPassword?.title,
-        email: currentPassword?.email,
-        username: currentPassword?.username
+        email: this.currentSection$.getValue()?.user
       }
-      this.subscribe(
-        this.passwordService.addPassword(newPassword),
-        () => this.passwords.push(newPassword),
-        () =>this._resetPasswordForm()
-      );
+      firstValueFrom(
+        this.passwordService.addOne(newPassword)).then(
+        () => {
+          this.passwords ? this.passwords.push(newPassword) : this.passwords = [];
+          this._resetPasswordForm();
+        }
+      ).catch(err => this._resetPasswordForm());
     }
   }
 
@@ -106,8 +106,10 @@ export class PasswordListComponent extends SharedHelperComponent implements OnIn
 
   public passwordDeleted(password: Password): void {
     if (!password) return;
-    const passwords = this.passwords$.getValue()?.filter(p => p._id !== password._id);
+    this.passwords$.next(undefined);
+    const passwords = this.passwords$.getValue()?.filter(p => p._id !== password._id) ?? [];
     this.passwords$.next([...passwords]);
+    this.loadPasswords();
   }
 
   private passwordValid(password?: Password): boolean {
@@ -120,7 +122,6 @@ export class PasswordListComponent extends SharedHelperComponent implements OnIn
       _id: '',
       password: '',
       section: '',
-      user: '',
       username: '',
       title: '',
     });

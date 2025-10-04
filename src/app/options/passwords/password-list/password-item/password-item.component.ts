@@ -59,16 +59,14 @@ export class PasswordItemComponent extends SharedHelperComponent implements OnIn
   }
 
   public toggleDelete(): void {
-    if (this.formValid()) {
-      this.passwordForm.next({
-        ...this.password,
-        password: ''
-      })
-      this.showOverlay({
-        template: this.deletePasswordTemplate,
-        onAccept: () => this.onDeletePassword(),
-      });
-    }
+    this.passwordForm.next({
+      ...this.password,
+      password: ''
+    })
+    this.showOverlay({
+      template: this.deletePasswordTemplate,
+      onAccept: () => this.onDeletePassword(),
+    });
   }
 
   public toggleVisibilityOverlay(): void {
@@ -91,9 +89,10 @@ export class PasswordItemComponent extends SharedHelperComponent implements OnIn
 
   public async onEditPassword(): Promise<void> {
     if (this.formValid()) {
-      const newPassword = this.passwordForm.getValue();
+      const updatedPassword = this.passwordForm.getValue();
+      if (!updatedPassword?._id) return;
       this.password = await firstValueFrom(
-        this.passwordService.updatePassword(newPassword._id, newPassword)
+        this.passwordService.updateOne(updatedPassword._id, updatedPassword)
       );
       this.toggleEdit();
       this._resetPasswordForm()
@@ -103,7 +102,7 @@ export class PasswordItemComponent extends SharedHelperComponent implements OnIn
   public async onDeletePassword(): Promise<void> {
     if (this.formValid()) {
       await firstValueFrom(this.passwordService.deleteOne(this.passwordForm.getValue()._id!))
-      this.toggleDelete();
+      this.overlayService.hide();
       this.passwordDeleted.emit({...this.passwordForm.getValue()});
       this._resetPasswordForm();
     }

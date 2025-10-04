@@ -8,6 +8,7 @@ import {SharedModule} from "../../../shared/shared.module";
 import {BehaviorSubject, firstValueFrom, map, Observable, withLatestFrom} from "rxjs";
 import {Password, Section} from "../../../interfaces/password.interface";
 import {PasswordListComponent} from "../password-list/password-list.component";
+import {SectionService} from "../../../core/services/section/section.service";
 
 @Component({
   selector: 'app-password-container',
@@ -27,7 +28,9 @@ export class PasswordContainerComponent extends SharedHelperComponent implements
 
   constructor(
     private injector: Injector,
-    private passwordService: PasswordService) {
+    private passwordService: PasswordService,
+    private sectionService: SectionService,
+  ) {
     super(injector);
     this.getData();
   }
@@ -45,11 +48,10 @@ export class PasswordContainerComponent extends SharedHelperComponent implements
   }
 
   public createSection(section: Section): void {
-    const title = section?.title;
-    if (title) {
+    if (!!section?.title) {
       this.sectionsLoading$.next(true);
       let newSection: Section;
-      firstValueFrom(this.passwordService.addSection(title)).then(
+      firstValueFrom(this.sectionService.addOne(section)).then(
         (section) => {
           newSection = section;
           this.currentSection$.next(newSection);
@@ -62,8 +64,8 @@ export class PasswordContainerComponent extends SharedHelperComponent implements
 
   public deleteSection(section: Section): void {
     if (section) {
-      firstValueFrom(this.passwordService.deleteOneSection(section._id!)
-        .pipe(withLatestFrom(this.isAnySection$))).then(
+      firstValueFrom(this.sectionService.deleteOne(section._id!)
+      .pipe(withLatestFrom(this.isAnySection$))).then(
         ([_, isAnySection]) => {
           this.sectionList = this.sectionList.filter((s: Section) => s._id !== section._id);
           if (this.currentSection$.getValue()?._id === section?._id && isAnySection) {
@@ -81,7 +83,7 @@ export class PasswordContainerComponent extends SharedHelperComponent implements
 
   private loadSections(): void {
     this.sectionsLoading$.next(true);
-    firstValueFrom(this.passwordService.getUserSections()).then(
+    firstValueFrom(this.sectionService.getUserSections()).then(
       (sections) => {
         if (sections?.length > 0) {
           this.sectionList = sections;
