@@ -3,9 +3,10 @@ import {DailyQuoteService, Quote} from "../../core/services/daily-quote/daily-qu
 import {Observable, Subscription} from "rxjs";
 
 @Component({
-  selector: 'app-quote',
-  templateUrl: './quote.component.html',
-  styleUrl: './quote.component.scss'
+    selector: 'app-quote',
+    templateUrl: './quote.component.html',
+    styleUrl: './quote.component.scss',
+    standalone: false
 })
 export class QuoteComponent implements OnDestroy {
 

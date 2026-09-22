@@ -3,10 +3,11 @@ import {BehaviorSubject, Observable} from "rxjs";
 import { fadeInOut } from 'src/app/utils/animations/fade-in-out';
 
 @Component({
-  selector: 'app-popup',
-  templateUrl: './popup.component.html',
-  styleUrls: ['./popup.component.scss'],
-  animations: [fadeInOut],
+    selector: 'app-popup',
+    templateUrl: './popup.component.html',
+    styleUrls: ['./popup.component.scss'],
+    animations: [fadeInOut],
+    standalone: false
 })
 export class PopupComponent {
   @Input() public message: string = 'Texto copiado al portapapeles';

@@ -5,36 +5,35 @@ import {PasswordItemComponent} from "./password-item/password-item.component";
 import {RegularButtonComponent} from "../../../shared/buttons/regular-button/regular-button.component";
 import {SharedModule} from "../../../shared/shared.module";
 import {BehaviorSubject, firstValueFrom, map} from "rxjs";
-import {Password, Section} from "../../../interfaces/password.interface";
+import {Password, PasswordCreate, Section} from "../../../interfaces/password.interface";
 import {SharedHelperComponent} from "../../../utils/shared-helper/shared-helper.component";
 import {PasswordService} from "../../../core/services/password/password.service";
 import {ShowPasswordButtonComponent} from "../../../shared/buttons/show-password-button/show-password-button.component";
 
 @Component({
-  selector: 'app-password-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    LucideIconComponent,
-    PasswordItemComponent,
-    RegularButtonComponent,
-    SharedModule,
-    ShowPasswordButtonComponent
-  ],
-  templateUrl: './password-list.component.html',
-  styleUrl: './password-list.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-password-list',
+    imports: [
+        CommonModule,
+        LucideIconComponent,
+        PasswordItemComponent,
+        RegularButtonComponent,
+        SharedModule,
+        ShowPasswordButtonComponent
+    ],
+    templateUrl: './password-list.component.html',
+    styleUrl: './password-list.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PasswordListComponent extends SharedHelperComponent implements OnInit {
   @ViewChild('createModal') createModal!: TemplateRef<any>;
 
   @Input() public currentSection$: BehaviorSubject<Section | null> = new BehaviorSubject<Section | null>(null);
 
-  public passwords$: BehaviorSubject<Password[] | undefined> = new BehaviorSubject<Password[] | undefined>([]);
+  public passwords$: BehaviorSubject<Password[]> = new BehaviorSubject<Password[]>([]);
 
-  public passwords: Password[] | undefined = [];
+  public passwords: Password[] = [];
   public newPasswordVisible: boolean = false;
-  public passwordForm: BehaviorSubject<Password> = new BehaviorSubject({
+  public passwordForm: BehaviorSubject<Password> = new BehaviorSubject<Password>({
     password: '',
     title: ''
   });
@@ -71,29 +70,41 @@ export class PasswordListComponent extends SharedHelperComponent implements OnIn
   }
 
   private async loadPasswords(): Promise<void> {
-    if (this.currentSection$?.getValue()) {
-      const passwords = await firstValueFrom(
-        this.passwordService.getPasswordsBySection(this.currentSection$.getValue()!)
-      );
-      this.passwords$.next(passwords);
+    const sectionId = this.currentSection$.getValue()?._id;
+    if (!sectionId) {
+      this.passwords$.next([]);
+      return;
     }
+
+    const passwords = await firstValueFrom(
+      this.passwordService.getPasswordsBySection(sectionId)
+    );
+    this.passwords$.next(passwords);
   }
 
-  public onCreatePassword(): void {
-    if (this.passwordValid()) {
-      const currentPassword = this.passwordForm.getValue();
-      const newPassword = {
-        ...currentPassword,
-        section: this.currentSection$.getValue()!.title,
-        email: this.currentSection$.getValue()?.user
-      }
-      firstValueFrom(
-        this.passwordService.addOne(newPassword)).then(
-        () => {
-          this.passwords ? this.passwords.push(newPassword) : this.passwords = [];
-          this._resetPasswordForm();
-        }
-      ).catch(err => this._resetPasswordForm());
+  public async onCreatePassword(): Promise<void> {
+    const form = this.passwordForm.getValue();
+    const sectionId = this.currentSection$.getValue()?._id;
+
+    if (!this.passwordValid(form) || !sectionId || typeof form.password !== 'string') return;
+
+    const newPassword: PasswordCreate = {
+      title: form.title,
+      password: form.password,
+      section: sectionId,
+      username: form.username,
+      email: form.email
+    };
+
+    try {
+      const savedPassword = await firstValueFrom(
+        this.passwordService.addOne(newPassword)
+      );
+      this.passwords$.next([...this.passwords$.getValue(), savedPassword]);
+      this._resetPasswordForm();
+      this.overlayService.hide();
+    } catch (error) {
+      console.error('Unable to create password:', error);
     }
   }
 
@@ -106,15 +117,16 @@ export class PasswordListComponent extends SharedHelperComponent implements OnIn
 
   public passwordDeleted(password: Password): void {
     if (!password) return;
-    this.passwords$.next(undefined);
-    const passwords = this.passwords$.getValue()?.filter(p => p._id !== password._id) ?? [];
-    this.passwords$.next([...passwords]);
-    this.loadPasswords();
+    this.passwords$.next(
+      this.passwords$.getValue().filter(p => p._id !== password._id)
+    );
   }
 
   private passwordValid(password?: Password): boolean {
     const currentPassword = password ?? this.passwordForm.getValue();
-    return !!currentPassword && currentPassword.password?.length > 0 && currentPassword.title?.length > 0;
+    return typeof currentPassword.password === 'string' &&
+      currentPassword.password.length > 0 &&
+      currentPassword.title.trim().length > 0;
   }
 
   private _resetPasswordForm(): void {

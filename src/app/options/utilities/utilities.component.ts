@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-utilities',
-  templateUrl: './utilities.component.html',
-  styleUrl: './utilities.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-utilities',
+    templateUrl: './utilities.component.html',
+    styleUrl: './utilities.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class UtilitiesComponent {
   convertedImage: string | null = null;

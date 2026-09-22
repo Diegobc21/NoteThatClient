@@ -1,19 +1,19 @@
 import {Component, Injector,} from '@angular/core';
-import {Observable, Subject, takeUntil} from 'rxjs';
+import {Observable} from 'rxjs';
 import {months_ES} from 'src/app/utils/months_ES';
-import {Note} from '../../../interfaces/note.interface';
+import {Note, NoteDraft} from '../../../interfaces/note.interface';
 import {AlertType} from '../../../shared/alert/alert-type';
 import {SpinnerService} from '../../../core/services/spinner/spinner.service';
-import {AuthService} from '../../../core/services/auth/auth.service';
 import {NoteService} from '../../../core/services/note/note.service';
 import {slideUpDown} from "../../../utils/animations/slide-up-down";
 import {SharedHelperComponent} from "../../../utils/shared-helper/shared-helper.component";
 
 @Component({
-  selector: 'app-note',
-  templateUrl: './note.component.html',
-  styleUrls: ['./note.component.scss'],
-  animations: [slideUpDown]
+    selector: 'app-note',
+    templateUrl: './note.component.html',
+    styleUrls: ['./note.component.scss'],
+    animations: [slideUpDown],
+    standalone: false
 })
 export class NoteComponent extends SharedHelperComponent {
 
@@ -22,18 +22,15 @@ export class NoteComponent extends SharedHelperComponent {
 
   public isDeleteOverlayVisible: boolean = false;
   public selectedNote: Note | undefined;
+  public errorMessage: string = '';
 
-  public newNote: Note = {
+  public newNote: NoteDraft = {
     title: '',
     content: '',
   };
 
-  public editingNote: Note = {
-    title: '',
-    content: '',
-  };
+  public editingNote: Note | undefined;
 
-  private _unsubscribe$: Subject<void> = new Subject<void>();
   private _noteList: Note[] = [];
   private _isEmptyNoteList: boolean = true;
   private _months: string[] = months_ES;
@@ -43,7 +40,6 @@ export class NoteComponent extends SharedHelperComponent {
   constructor(
     private injector: Injector,
     public spinnerService: SpinnerService,
-    private authService: AuthService,
     private noteService: NoteService
   ) {
     super(injector);
@@ -64,17 +60,14 @@ export class NoteComponent extends SharedHelperComponent {
   }
 
   get createNoteFormIsEmpty(): boolean {
-    if (this.newNote.content === '') {
-      return this.newNote.title === '';
-    }
-    return this.newNote.title === '';
+    return this.newNote.title.trim().length === 0;
   }
 
   get editingFormIsEmpty(): boolean {
-    return this.editingNote.title?.length === 0;
+    return !this.editingNote || this.editingNote.title.trim().length === 0;
   }
 
-  public getTimeLineDate(date: Date): string {
+  public getTimeLineDate(date: Date | string): string {
     const newDate = new Date(date);
     return `${this._months[newDate.getUTCMonth()]} ${newDate.getFullYear()}`;
   }
@@ -91,38 +84,31 @@ export class NoteComponent extends SharedHelperComponent {
 
   public submitNote(): void {
     if (!this.createNoteFormIsEmpty) {
-      const newNote = {
-        title: this.newNote.title,
-        content: this.newNote.content,
-        creationDate: new Date(),
-        user: this.authService.email,
-      };
       this.subscribe(
         this.noteService
-          .addOne(newNote)
-          .pipe(takeUntil(this._unsubscribe$)),
-          (): void => {
-            this.toggleCreate();
-            this.noteList.push(newNote);
+          .addOne(this.newNote),
+          (createdNote: Note): void => {
+            this._noteList = [...this._noteList, createdNote];
             this._sortNotesByDate();
             this.resetNote();
+            this._updateAlertVisibility();
           },
-        () => null,
-        () => this.resetNote()
+        undefined,
+        () => this._showRequestError('No se ha podido crear la nota.')
       );
     }
   }
 
   public submitEditing(): void {
-    if (!!this.editingNote?._id && this.editingNote?.title !== '') {
+    if (this.editingNote && !this.editingFormIsEmpty) {
+      const { _id, title, content } = this.editingNote;
       this.subscribe(this.noteService
-        .updateOne(this.editingNote._id, this.editingNote)
-        .pipe(takeUntil(this._unsubscribe$)),
-        (): void => {
-          this.toggleCreate();
+        .updateOne(_id, {title, content}),
+        (updatedNote: Note): void => {
+          this.isEditingNote = false;
           this._noteList = this._noteList.map(note => {
-            if (note._id === this.editingNote._id) {
-              return {...this.editingNote};
+            if (note._id === updatedNote._id) {
+              return updatedNote;
             }
             return note;
           });
@@ -130,8 +116,8 @@ export class NoteComponent extends SharedHelperComponent {
           this._updateAlertVisibility();
           this._resetForm();
         },
-        () => null,
-        () => this.resetNote()
+        undefined,
+        () => this._showRequestError('No se ha podido actualizar la nota.')
       );
     }
   }
@@ -139,8 +125,11 @@ export class NoteComponent extends SharedHelperComponent {
   public toggleDeleteOverlay(note?: Note): void {
     if (note) {
       this.selectedNote = note;
+      this.isDeleteOverlayVisible = true;
+      return;
     }
-    this.isDeleteOverlayVisible = !this.isDeleteOverlayVisible;
+    this.selectedNote = undefined;
+    this.isDeleteOverlayVisible = false;
   }
 
   public editNote(note: Note): void {
@@ -149,28 +138,30 @@ export class NoteComponent extends SharedHelperComponent {
       _id: note._id,
       title: note.title,
       content: note.content,
-      creationDate: note.creationDate!,
+      creationDate: note.creationDate,
       user: note.user,
     };
     this.toggleEdit();
   }
 
   public onDeleteNote(note: Note): void {
-    if (!note._id) return;
     this.subscribe(this.noteService
-      .deleteOne(note._id)
-      .pipe(takeUntil(this._unsubscribe$)),
-      (deletedNoteId: string) => {
+      .deleteOne(note._id),
+      (): void => {
           this._noteList = this._noteList.filter(
-            (n: Note) => n._id !== deletedNoteId
+            (n: Note) => n._id !== note._id
           );
           this._updateAlertVisibility();
           this.toggleDeleteOverlay();
-        })
+        },
+        undefined,
+        () => this._showRequestError('No se ha podido eliminar la nota.')
+      )
   }
 
   public modalClosed(): void {
     this.isEmptyNoteList = false;
+    this.errorMessage = '';
   }
 
   public get showSpinner(): Observable<boolean> {
@@ -196,10 +187,7 @@ export class NoteComponent extends SharedHelperComponent {
       title: '',
       content: '',
     };
-    this.editingNote = {
-      title: '',
-      content: '',
-    };
+    this.editingNote = undefined;
   }
 
   private _updateAlertVisibility(): void {
@@ -207,19 +195,25 @@ export class NoteComponent extends SharedHelperComponent {
   }
 
   private _sortNotesByDate(list?: Note[]): void {
-    this._noteList = (list ?? this._noteList ?? [])?.sort((a: Note, b: Note) => {
-      const dateA: Date = new Date(a.creationDate!);
-      const dateB: Date = new Date(b.creationDate!);
+    this._noteList = [...(list ?? this._noteList)].sort((a: Note, b: Note) => {
+      const dateA: Date = new Date(a.creationDate);
+      const dateB: Date = new Date(b.creationDate);
       return dateB.getTime() - dateA.getTime();
     });
   }
 
   private _startSubscriptions(): void {
-    this.subscribe(this.noteService.getAll().pipe(takeUntil(this._unsubscribe$)),
+    this.subscribe(this.noteService.getAll(),
       (notes: Note[]): void => {
         this._sortNotesByDate(notes);
         this._updateAlertVisibility();
-      }
+      },
+      undefined,
+      () => this._showRequestError('No se han podido cargar las notas.')
     );
+  }
+
+  private _showRequestError(message: string): void {
+    this.errorMessage = message;
   }
 }

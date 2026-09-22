@@ -10,8 +10,9 @@ export enum ButtonType {
 }
 
 @Component({
-  selector: 'app-base-button',
-  template: ``,
+    selector: 'app-base-button',
+    template: ``,
+    standalone: false
 })
 export class BaseButtonComponent {
   @Output() public onClick: EventEmitter<any> = new EventEmitter<any>();

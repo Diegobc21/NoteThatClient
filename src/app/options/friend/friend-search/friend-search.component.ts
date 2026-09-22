@@ -8,9 +8,10 @@ import {UserService} from "../../../core/services/user/user.service";
 import {NavigationService} from "../../../core/services/navigation/navigation.service";
 
 @Component({
-  selector: 'app-friend-search',
-  templateUrl: './friend-search.component.html',
-  styleUrls: ['./friend-search.component.scss']
+    selector: 'app-friend-search',
+    templateUrl: './friend-search.component.html',
+    styleUrls: ['./friend-search.component.scss'],
+    standalone: false
 })
 export class FriendSearchComponent implements OnDestroy {
 

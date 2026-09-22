@@ -1,10 +1,15 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, EMPTY, map, Observable, tap} from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {catchError, Observable, tap, throwError} from 'rxjs';
 import {User} from '../../../interfaces/user.interface';
 import {NavigationService} from '../navigation/navigation.service';
 import {UtilsService} from "../utils/utils.service";
+
+interface LoginResponse {
+  email: string;
+  token: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -47,16 +52,20 @@ export class AuthService {
   }
 
   public register(user: User): Observable<User> {
-    user.password = this.utilsService.encryptMd5(user.password);
-    return this.http.post<User>(this.endpoint + '/register', user);
+    return this.http.post<User>(this.endpoint + '/register', {
+      ...user,
+      password: this.utilsService.encryptMd5(user.password),
+    });
   }
 
-  public login(user: User): Observable<any> {
-    user.password = this.utilsService.encryptMd5(user.password);
-    return this.http.post<User>(this.endpoint + '/login', user).pipe(
+  public login(user: User): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(this.endpoint + '/login', {
+      ...user,
+      password: this.utilsService.encryptMd5(user.password),
+    }).pipe(
       tap({
-          next: (res: any) => this.saveLocalStorage(res.token, res.email),
-          error: (err: any) => console.error(err)
+          next: (res: LoginResponse) => this.saveLocalStorage(res.token, res.email),
+          error: (err: HttpErrorResponse) => console.error(err)
         }
       )
     );
@@ -70,7 +79,7 @@ export class AuthService {
   }
 
   public getHeaders(): HttpHeaders {
-    return new HttpHeaders().set('Authorization', `${this.token}`);
+    return new HttpHeaders().set('Authorization', `Bearer ${this.token}`);
   }
 
   private saveLocalStorage(token: string, email: string): void {
@@ -87,21 +96,15 @@ export class AuthService {
     sessionStorage.clear();
   }
 
-  public checkConnection(data: Observable<any>): Observable<any> {
+  public checkConnection<T>(data: Observable<T>): Observable<T> {
     return data.pipe(
-      map((result: Object): any => {
-        if (result) {
-          return result;
-        } else {
-          console.log('Error retrieving user data.');
+      catchError((err: HttpErrorResponse) => {
+        // Validation, conflict and server errors should reach the feature UI;
+        // only an authentication failure ends the current session.
+        if (err.status === 401 || err.status === 403) {
           this.logout();
-          return EMPTY;
         }
-      }),
-      catchError((err: any) => {
-        console.error('ServerError: ', err)
-        this.logout();
-        return EMPTY;
+        return throwError(() => err);
       })
     );
   }

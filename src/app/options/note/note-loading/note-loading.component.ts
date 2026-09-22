@@ -3,8 +3,9 @@ import {Note} from "../../../interfaces/note.interface";
 import {NoteService} from "../../../core/services/note/note.service";
 
 @Component({
-  selector: 'app-note-loading',
-  templateUrl: './note-loading.component.html',
+    selector: 'app-note-loading',
+    templateUrl: './note-loading.component.html',
+    standalone: false
 })
 export class NoteLoadingComponent {
   @Input() public note: Note | undefined;

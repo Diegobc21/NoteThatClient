@@ -3,11 +3,10 @@ import {Observable, Subscription} from 'rxjs';
 import {OverlayConfig, OverlayService} from "../../core/services/overlay/overlay.service";
 
 @Component({
-  selector: 'app-shared-helper',
-  standalone: true,
-  imports: [],
-  templateUrl: './shared-helper.component.html',
-  styleUrl: './shared-helper.component.scss',
+    selector: 'app-shared-helper',
+    imports: [],
+    templateUrl: './shared-helper.component.html',
+    styleUrl: './shared-helper.component.scss'
 })
 export class SharedHelperComponent implements OnDestroy {
   public overlayService: OverlayService;

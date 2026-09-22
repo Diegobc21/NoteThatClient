@@ -1,15 +1,21 @@
 import {Injector} from '@angular/core';
 import {environment} from "../../../../environments/environment";
 import {Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {AuthService} from "../auth/auth.service";
 import {UtilsService} from "../utils/utils.service";
 
-export abstract class BaseApi<T> {
-  protected endpoint: string;
-  protected http: HttpClient;
-  protected authService: AuthService;
-  protected utilsService: UtilsService;
+export type ResourceId = string | number;
+
+/**
+ * Shared REST client for resources that expose the conventional collection
+ * routes: GET/POST /resource and GET/PUT/DELETE /resource/:id.
+ */
+export abstract class BaseApi<T, TCreate = Partial<T>, TUpdate = Partial<T>> {
+  protected readonly endpoint: string;
+  protected readonly http: HttpClient;
+  protected readonly authService: AuthService;
+  protected readonly utilsService: UtilsService;
 
   constructor(
     protected injector: Injector,
@@ -21,32 +27,32 @@ export abstract class BaseApi<T> {
     this.endpoint = `${environment.apiUrl}/${this.source}`;
   }
 
-  public getAll<T>(): Observable<T> {
-    return this.authService.checkConnection(this.http.post<T>(`${this.endpoint}/all`, {email: this.authService.email}, {
+  public getAll(): Observable<T[]> {
+    return this.authService.checkConnection(this.http.get<T[]>(this.endpoint, {
       headers: this.authService.getHeaders()
     }));
   }
 
-  public getOne<T>(id: string | number): Observable<T> {
+  public getOne(id: ResourceId): Observable<T> {
     return this.authService.checkConnection(this.http.get<T>(`${this.endpoint}/${id}`, {
       headers: this.authService.getHeaders()
     }));
   }
 
-  public addOne<T>(body: any): Observable<T> {
+  public addOne(body: TCreate): Observable<T> {
     return this.authService.checkConnection(this.http.post<T>(this.endpoint, body, {
       headers: this.authService.getHeaders()
     }));
   }
 
-  public updateOne<T>(id: string | number, body: any): Observable<T> {
+  public updateOne(id: ResourceId, body: TUpdate): Observable<T> {
     return this.authService.checkConnection(this.http.put<T>(`${this.endpoint}/${id}`, body, {
       headers: this.authService.getHeaders()
     }));
   }
 
-  public deleteOne<T>(id: string | number): Observable<T> {
-    return this.authService.checkConnection(this.http.delete<T>(`${this.endpoint}/${id}`, {
+  public deleteOne(id: ResourceId): Observable<void> {
+    return this.authService.checkConnection(this.http.delete<void>(`${this.endpoint}/${id}`, {
       headers: this.authService.getHeaders()
     }));
   }

@@ -3,13 +3,12 @@ import {BaseButtonComponent} from "../base-button/base-button.component";
 import {LucideAngularModule} from "lucide-angular";
 
 @Component({
-  selector: 'app-close-button',
-  standalone: true,
-  imports: [
-    LucideAngularModule
-  ],
-  templateUrl: './close-button.component.html',
-  styleUrl: './close-button.component.scss'
+    selector: 'app-close-button',
+    imports: [
+        LucideAngularModule
+    ],
+    templateUrl: './close-button.component.html',
+    styleUrl: './close-button.component.scss'
 })
 export class CloseButtonComponent extends BaseButtonComponent {
   @Input() override iconSize: number = 18;

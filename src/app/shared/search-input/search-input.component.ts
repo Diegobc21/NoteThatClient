@@ -3,9 +3,10 @@ import {MediaCheckService} from "../../core/services/media-check/media-check.ser
 import {Subscription} from "rxjs";
 
 @Component({
-  selector: 'app-search-input',
-  templateUrl: './search-input.component.html',
-  styleUrls: ['./search-input.component.scss']
+    selector: 'app-search-input',
+    templateUrl: './search-input.component.html',
+    styleUrls: ['./search-input.component.scss'],
+    standalone: false
 })
 export class SearchInputComponent implements OnDestroy {
 

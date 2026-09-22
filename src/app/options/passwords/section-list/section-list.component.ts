@@ -11,20 +11,19 @@ import {Section} from "../../../interfaces/password.interface";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
-  selector: 'app-section-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    DeleteButtonComponent,
-    EditButtonComponent,
-    RegularButtonComponent,
-    LucideIconComponent,
-    SharedModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
-  templateUrl: './section-list.component.html',
-  styleUrl: './section-list.component.scss',
+    selector: 'app-section-list',
+    imports: [
+        CommonModule,
+        DeleteButtonComponent,
+        EditButtonComponent,
+        RegularButtonComponent,
+        LucideIconComponent,
+        SharedModule,
+        FormsModule,
+        ReactiveFormsModule
+    ],
+    templateUrl: './section-list.component.html',
+    styleUrl: './section-list.component.scss'
 })
 export class SectionListComponent extends SharedHelperComponent {
   @ViewChild('createModal') createModal!: TemplateRef<any>;
@@ -35,7 +34,7 @@ export class SectionListComponent extends SharedHelperComponent {
   @Input() public sectionList: Section[] = [];
 
   public isAnySection$: Observable<boolean> = new Observable<boolean>();
-  public currentSection$: BehaviorSubject<Section | null> = new BehaviorSubject<Section | null>(null);
+  @Input() public currentSection$: BehaviorSubject<Section | null> = new BehaviorSubject<Section | null>(null);
   public loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   @Output('selectSection') public selectSection: EventEmitter<Section> = new EventEmitter<Section>();
@@ -115,16 +114,14 @@ export class SectionListComponent extends SharedHelperComponent {
   }
 
   public onEditSection(): void {
-    if (this.sectionForm.getValue()._id || this.sectionForm.getValue().title !== '') {
+    if (this.sectionForm.getValue()._id && this.sectionForm.getValue().title !== '') {
       this.editSection.emit(this.sectionForm.getValue());
       this.resetAll();
     }
   }
 
   public updateSection(title: string): void {
-    if (this.sectionForm.getValue()._id) {
-      this.sectionForm.next({ ...this.sectionForm.getValue(), title });
-    }
+    this.sectionForm.next({ ...this.sectionForm.getValue(), title });
   }
 
   public onDeleteSection(): void {

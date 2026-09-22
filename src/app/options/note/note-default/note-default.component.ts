@@ -8,8 +8,9 @@ export interface PopupOption {
 }
 
 @Component({
-  selector: 'app-note-default',
-  templateUrl: './note-default.component.html'
+    selector: 'app-note-default',
+    templateUrl: './note-default.component.html',
+    standalone: false
 })
 export class NoteDefaultComponent {
   @ViewChild('popupButton') private popupButton: ElementRef | undefined;
@@ -49,7 +50,7 @@ export class NoteDefaultComponent {
     return this._showPopup;
   }
 
-  public getNoteDate(date: Date): string {
+  public getNoteDate(date: Date | string): string {
     return this.noteService.getNoteDate(date);
   }
 

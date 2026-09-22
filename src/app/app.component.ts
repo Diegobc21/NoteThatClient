@@ -6,9 +6,10 @@ import {MediaCheckService} from './core/services/media-check/media-check.service
 import {SharedHelperComponent} from "./utils/shared-helper/shared-helper.component";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent extends SharedHelperComponent {
   @HostListener('click', ['${event}'])

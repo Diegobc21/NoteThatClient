@@ -10,10 +10,11 @@ import {softFade} from '../../utils/animations/soft-fade';
 import {NavbarConfig, UserAction, UserOption} from './navbar-config';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
-  animations: [softFade],
+    selector: 'app-navbar',
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.scss'],
+    animations: [softFade],
+    standalone: false
 })
 export class NavbarComponent implements OnDestroy {
   @ViewChild('menuButton') private menuButton: ElementRef | undefined;

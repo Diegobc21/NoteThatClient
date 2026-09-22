@@ -2,9 +2,10 @@ import {Component, Input} from '@angular/core';
 import {DarkModeService} from "../../../core/services/dark-mode/dark-mode.service";
 
 @Component({
-  selector: 'app-dark-mode-button',
-  templateUrl: './dark-mode-button.component.html',
-  styleUrls: ['./dark-mode-button.component.scss']
+    selector: 'app-dark-mode-button',
+    templateUrl: './dark-mode-button.component.html',
+    styleUrls: ['./dark-mode-button.component.scss'],
+    standalone: false
 })
 export class DarkModeButtonComponent {
   @Input() preventAction: boolean = false;

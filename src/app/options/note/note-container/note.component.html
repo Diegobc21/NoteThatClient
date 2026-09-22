@@ -16,6 +16,13 @@
 </div>
 @if ((showSpinner | async) === false) {
   <div class="relative animate-fade-in-down">
+    <app-alert
+      *ngIf="errorMessage"
+      class="mx-auto mb-4 block max-w-xl"
+      [type]="AlertType.ERROR"
+      [message]="errorMessage"
+      (onClose)="modalClosed()"
+    ></app-alert>
     <div *ngIf="isAddingNote" [@slideUpDown] class="mx-auto max-w-md">
       <div
         class="shadow-md shadow-slate-400 mt-2 mb-4 rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 transition"
@@ -55,7 +62,7 @@
     </div>
     <div class="max-w-xl pl-2 mx-auto">
       <ol class="relative border-s border-gray-200 dark:border-gray-700">
-        @for (note of noteList; let i = $index; track note) {
+        @for (note of noteList; let i = $index; track note._id) {
           <li class="ms-2 mb-2">
             @if (isDifferentMonth(i)) {
               <div
@@ -81,7 +88,7 @@
         } @empty {
           <div class="mt-4">
             <app-alert
-              *ngIf="isEmptyNoteList"
+              *ngIf="isEmptyNoteList && !errorMessage"
               [type]="AlertType.WARNING"
               (onClose)="modalClosed()"
               [message]="'Aún no tienes ninguna nota'"

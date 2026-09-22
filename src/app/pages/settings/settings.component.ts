@@ -3,9 +3,10 @@ import { DarkModeService } from 'src/app/core/services/dark-mode/dark-mode.servi
 import {DarkModeButtonComponent} from "../../shared/buttons/dark-mode-button/dark-mode-button.component";
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.scss',
+    selector: 'app-settings',
+    templateUrl: './settings.component.html',
+    styleUrl: './settings.component.scss',
+    standalone: false
 })
 export class SettingsComponent {
   @ViewChild('darkModeButtonComponent') darkModeButtonComponent!: DarkModeButtonComponent;

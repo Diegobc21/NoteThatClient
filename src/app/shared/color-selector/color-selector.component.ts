@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 
 @Component({
-  selector: 'app-color-selector',
-  templateUrl: './color-selector.component.html',
-  styleUrls: ['./color-selector.component.scss']
+    selector: 'app-color-selector',
+    templateUrl: './color-selector.component.html',
+    styleUrls: ['./color-selector.component.scss'],
+    standalone: false
 })
 export class ColorSelectorComponent {
 

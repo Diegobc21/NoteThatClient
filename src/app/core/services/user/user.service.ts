@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {environment} from "../../../../environments/environment";
 import {Observable} from "rxjs";
 import {AuthService} from "../auth/auth.service";
@@ -20,14 +20,14 @@ export class UserService {
 
   public getUser(): Observable<User> {
     return this.authService.checkConnection(
-      this.http.get(`${this.endpoint}?email=${this.authService.email}`, {
+      this.http.get<User>(`${this.endpoint}?email=${this.authService.email}`, {
         headers: this.authService.getHeaders()
       }))
   }
 
   public getAllUsers(): Observable<User[]> {
     return this.authService.checkConnection(
-      this.http.get(this.endpoint, {
+      this.http.get<User[]>(this.endpoint, {
         headers: this.authService.getHeaders()
       }))
   }

@@ -5,14 +5,15 @@ import {slideUpDown} from "../../utils/animations/slide-up-down";
 import {fadeInOut} from "../../utils/animations/fade-in-out";
 
 @Component({
-  selector: 'app-overlay',
-  templateUrl: './overlay.component.html',
-  styleUrls: ['./overlay.component.scss'],
-  animations: [
-    softFade,
-    slideUpDown,
-    fadeInOut
-  ]
+    selector: 'app-overlay',
+    templateUrl: './overlay.component.html',
+    styleUrls: ['./overlay.component.scss'],
+    animations: [
+        softFade,
+        slideUpDown,
+        fadeInOut
+    ],
+    standalone: false
 })
 export class OverlayComponent implements OnDestroy {
   @ViewChild('overlayTemplate') public overlayTemplate: ElementRef | any = null;

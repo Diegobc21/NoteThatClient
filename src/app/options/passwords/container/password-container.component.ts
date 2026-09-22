@@ -1,26 +1,21 @@
 import {CommonModule} from '@angular/common';
-import {Component, Injector, OnDestroy} from '@angular/core';
-import {PasswordService} from 'src/app/core/services/password/password.service';
+import {Component, Injector} from '@angular/core';
 import {SharedHelperComponent} from 'src/app/utils/shared-helper/shared-helper.component';
 import {SectionListComponent} from '../section-list/section-list.component';
 import {FormsModule} from "@angular/forms";
 import {SharedModule} from "../../../shared/shared.module";
-import {BehaviorSubject, firstValueFrom, map, Observable, withLatestFrom} from "rxjs";
-import {Password, Section} from "../../../interfaces/password.interface";
+import {BehaviorSubject, firstValueFrom} from "rxjs";
+import {Section} from "../../../interfaces/password.interface";
 import {PasswordListComponent} from "../password-list/password-list.component";
 import {SectionService} from "../../../core/services/section/section.service";
 
 @Component({
-  selector: 'app-password-container',
-  standalone: true,
-  imports: [CommonModule, SharedModule, FormsModule, SectionListComponent, PasswordListComponent],
-  templateUrl: './password-container.component.html',
-  styleUrl: './password-container.component.scss',
+    selector: 'app-password-container',
+    imports: [CommonModule, SharedModule, FormsModule, SectionListComponent, PasswordListComponent],
+    templateUrl: './password-container.component.html',
+    styleUrl: './password-container.component.scss'
 })
-export class PasswordContainerComponent extends SharedHelperComponent implements OnDestroy {
-  public passwords$: Observable<Password[]> = new Observable<Password[]>();
-  public isAnyPassword$: Observable<boolean> = new Observable<boolean>();
-  public isAnySection$: Observable<boolean> = new Observable<boolean>();
+export class PasswordContainerComponent extends SharedHelperComponent {
   public currentSection$: BehaviorSubject<Section | null> = new BehaviorSubject<Section | null>(null);
   public sectionsLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -28,7 +23,6 @@ export class PasswordContainerComponent extends SharedHelperComponent implements
 
   constructor(
     private injector: Injector,
-    private passwordService: PasswordService,
     private sectionService: SectionService,
   ) {
     super(injector);
@@ -36,63 +30,67 @@ export class PasswordContainerComponent extends SharedHelperComponent implements
   }
 
   private getData(): void {
-    this.isAnySection$ = this.currentSection$.asObservable().pipe(map(s => !!s));
-    this.isAnyPassword$ = this.passwords$.pipe(map(pList => pList.length > 0))
-    this.loadSections();
+    void this.loadSections();
   }
 
   public changeSection(section: Section): void {
-    if (this.currentSection$.getValue() !== section) {
+    if (this.currentSection$.getValue()?._id !== section._id) {
       this.currentSection$.next(section);
     }
   }
 
-  public createSection(section: Section): void {
-    if (!!section?.title) {
-      this.sectionsLoading$.next(true);
-      let newSection: Section;
-      firstValueFrom(this.sectionService.addOne(section)).then(
-        (section) => {
-          newSection = section;
-          this.currentSection$.next(newSection);
-          this.loadSections();
-          this.sectionsLoading$.next(false);
-        }
-      );
-    }
-  }
+  public async createSection(section: Section): Promise<void> {
+    if (!section.title.trim()) return;
 
-  public deleteSection(section: Section): void {
-    if (section) {
-      firstValueFrom(this.sectionService.deleteOne(section._id!)
-      .pipe(withLatestFrom(this.isAnySection$))).then(
-        ([_, isAnySection]) => {
-          this.sectionList = this.sectionList.filter((s: Section) => s._id !== section._id);
-          if (this.currentSection$.getValue()?._id === section?._id && isAnySection) {
-            this.currentSection$.next(this.sectionList[0] ?? null);
-          }
-        }
-      );
-    }
-  }
-
-  public override ngOnDestroy() {
-    super.ngOnDestroy();
-    this.passwordService.setPasswordsNotVisible();
-  }
-
-  private loadSections(): void {
     this.sectionsLoading$.next(true);
-    firstValueFrom(this.sectionService.getUserSections()).then(
-      (sections) => {
-        if (sections?.length > 0) {
-          this.sectionList = sections;
-          if (!this.currentSection$?.getValue()) {
-            this.currentSection$.next(sections[0]);
-          }
-        }
-        this.sectionsLoading$.next(false)
-      }
+    try {
+      const savedSection = await firstValueFrom(
+        this.sectionService.addOne({title: section.title})
+      );
+      this.sectionList = [...this.sectionList, savedSection];
+      this.currentSection$.next(savedSection);
+    } finally {
+      this.sectionsLoading$.next(false);
+    }
+  }
+
+  public async editSection(section: Section): Promise<void> {
+    if (!section._id || !section.title.trim()) return;
+
+    const updatedSection = await firstValueFrom(
+      this.sectionService.updateOne(section._id, {title: section.title})
     );
+    this.sectionList = this.sectionList.map(current =>
+      current._id === updatedSection._id ? updatedSection : current
+    );
+
+    if (this.currentSection$.getValue()?._id === updatedSection._id) {
+      this.currentSection$.next(updatedSection);
+    }
+  }
+
+  public async deleteSection(section: Section): Promise<void> {
+    if (!section._id) return;
+
+    await firstValueFrom(this.sectionService.deleteOne(section._id));
+    this.sectionList = this.sectionList.filter(current => current._id !== section._id);
+
+    if (this.currentSection$.getValue()?._id === section._id) {
+      this.currentSection$.next(this.sectionList[0] ?? null);
+    }
+  }
+
+  private async loadSections(): Promise<void> {
+    this.sectionsLoading$.next(true);
+    try {
+      const sections = await firstValueFrom(this.sectionService.getUserSections());
+      const selectedId = this.currentSection$.getValue()?._id;
+      this.sectionList = sections;
+      this.currentSection$.next(
+        sections.find(section => section._id === selectedId) ?? sections[0] ?? null
+      );
+    } finally {
+      this.sectionsLoading$.next(false);
+    }
   }
 }

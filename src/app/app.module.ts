@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
@@ -12,27 +12,21 @@ import { PagesModule } from './pages/pages.module';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    BrowserModule,
-    RouterModule,
-    AppRoutingModule,
-    SharedModule,
-    PagesModule,
-    UserModule,
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: SpinnerInterceptor,
-      multi: true,
-    },
-  ],
-  exports: [AppComponent],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [AppComponent],
+    exports: [AppComponent],
+    bootstrap: [AppComponent], imports: [FormsModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        RouterModule,
+        AppRoutingModule,
+        SharedModule,
+        PagesModule,
+        UserModule], providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: SpinnerInterceptor,
+            multi: true,
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}

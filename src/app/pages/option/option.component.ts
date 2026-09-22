@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-option',
-  templateUrl: './option.component.html',
-  styleUrl: './option.component.scss'
+    selector: 'app-option',
+    templateUrl: './option.component.html',
+    styleUrl: './option.component.scss',
+    standalone: false
 })
 export class OptionComponent {
 

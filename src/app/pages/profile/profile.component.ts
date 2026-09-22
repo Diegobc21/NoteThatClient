@@ -5,9 +5,10 @@ import {UserService} from "../../core/services/user/user.service";
 import {SpinnerService} from "../../core/services/spinner/spinner.service";
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss'],
+    standalone: false
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   public fullName: string = '';

@@ -3,8 +3,9 @@ import {Note} from "../../../interfaces/note.interface";
 import {NoteService} from "../../../core/services/note/note.service";
 
 @Component({
-  selector: 'app-note-edit',
-  templateUrl: './note-edit.component.html',
+    selector: 'app-note-edit',
+    templateUrl: './note-edit.component.html',
+    standalone: false
 })
 export class NoteEditComponent {
   @Input() public note: Note | undefined;
@@ -24,7 +25,7 @@ export class NoteEditComponent {
     }
   }
 
-  public getNoteDate(date: Date): string {
+  public getNoteDate(date: Date | string): string {
     return this.noteService.getNoteDate(date);
   }
 

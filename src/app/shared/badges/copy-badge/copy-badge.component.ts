@@ -6,10 +6,11 @@ import {BaseBadgeComponent} from "../base-badge/base-badge.component";
 import {softFade} from "../../../utils/animations/soft-fade";
 
 @Component({
-  selector: 'app-copy-badge',
-  templateUrl: './copy-badge.component.html',
-  styleUrl: './copy-badge.component.scss',
-  animations: [softFade]
+    selector: 'app-copy-badge',
+    templateUrl: './copy-badge.component.html',
+    styleUrl: './copy-badge.component.scss',
+    animations: [softFade],
+    standalone: false
 })
 export class CopyBadgeComponent extends BaseBadgeComponent implements OnDestroy {
   @ViewChild('appPopup') public appPopup: PopupComponent | undefined;

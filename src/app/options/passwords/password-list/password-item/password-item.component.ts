@@ -6,18 +6,17 @@ import {EditButtonComponent} from "../../../../shared/buttons/edit-button/edit-b
 import {
   ShowPasswordButtonComponent
 } from "../../../../shared/buttons/show-password-button/show-password-button.component";
-import {Password} from "../../../../interfaces/password.interface";
+import {Password, PasswordUpdate} from "../../../../interfaces/password.interface";
 import {SharedHelperComponent} from "../../../../utils/shared-helper/shared-helper.component";
 import {PasswordService} from "../../../../core/services/password/password.service";
 import {FormsModule} from "@angular/forms";
 import {BehaviorSubject, firstValueFrom, map} from "rxjs";
 
 @Component({
-  selector: 'app-password-item',
-  standalone: true,
-  imports: [CommonModule, SharedModule, DeleteButtonComponent, EditButtonComponent, ShowPasswordButtonComponent, FormsModule],
-  templateUrl: './password-item.component.html',
-  styleUrl: './password-item.component.scss',
+    selector: 'app-password-item',
+    imports: [CommonModule, SharedModule, DeleteButtonComponent, EditButtonComponent, ShowPasswordButtonComponent, FormsModule],
+    templateUrl: './password-item.component.html',
+    styleUrl: './password-item.component.scss'
 })
 export class PasswordItemComponent extends SharedHelperComponent implements OnInit {
   @ViewChild('editPasswordTemplate') public editPasswordTemplate!: TemplateRef<any>;
@@ -70,85 +69,107 @@ export class PasswordItemComponent extends SharedHelperComponent implements OnIn
   }
 
   public toggleVisibilityOverlay(): void {
-    if (!this.passwordService.checkIfPasswordsAreVisible()) {
-      this.passwordForm.next({
-        ...this.password,
-        password: ''
-      });
-      this.showOverlay({
-        template: this.activateVisibilityTemplate,
-        onAccept: async () => {
-          await this.checkAccountPassword();
-          this.overlayService.hide();
-        }
-      });
-    } else {
-      this.checkAccountPassword();
+    if (this.passwordService.checkIfPasswordsAreVisible()) {
+      void this.togglePasswordVisible();
+      return;
     }
+
+    this.userPassword = '';
+    this.showOverlay({
+      template: this.activateVisibilityTemplate,
+      onAccept: () => {
+        void this.checkAccountPassword();
+      }
+    });
   }
 
   public async onEditPassword(): Promise<void> {
     if (this.formValid()) {
       const updatedPassword = this.passwordForm.getValue();
-      if (!updatedPassword?._id) return;
+      if (!updatedPassword?._id || typeof updatedPassword.password !== 'string') return;
+      const changes: PasswordUpdate = {
+        title: updatedPassword.title,
+        password: updatedPassword.password,
+        username: updatedPassword.username,
+        email: updatedPassword.email
+      };
       this.password = await firstValueFrom(
-        this.passwordService.updateOne(updatedPassword._id, updatedPassword)
+        this.passwordService.updateOne(updatedPassword._id, changes)
       );
-      this.toggleEdit();
+      this.overlayService.hide();
       this._resetPasswordForm()
     }
   }
 
   public async onDeletePassword(): Promise<void> {
-    if (this.formValid()) {
-      await firstValueFrom(this.passwordService.deleteOne(this.passwordForm.getValue()._id!))
+    const password = this.passwordForm.getValue();
+    if (!password._id) return;
+
+    await firstValueFrom(this.passwordService.deleteOne(password._id));
+    this.overlayService.hide();
+    this.passwordDeleted.emit({...password});
+    this._resetPasswordForm();
+  }
+
+  public onPasswordChanged(value: string, key: string): void {
+    this.passwordForm.next({...this.passwordForm.getValue(), [key]: value});
+  }
+
+  public async submitAccountPassword(): Promise<void> {
+    const wasVerified = await this.checkAccountPassword();
+    if (wasVerified) {
       this.overlayService.hide();
-      this.passwordDeleted.emit({...this.passwordForm.getValue()});
-      this._resetPasswordForm();
     }
   }
 
-  public onPasswordChanged(password: string, key: string): void {
-    if (!password) return;
-    this.passwordForm.next({...this.password, [key]: password});
-  }
-
-  public async checkAccountPassword(): Promise<void> {
-    if (!this.passwordService.checkIfPasswordsAreVisible()) {
-      const valid = await firstValueFrom(
-        this.passwordService.checkAccountPassword(this.userPassword).pipe(map(
-          res => res.valid
-        )));
-      if (valid === true) {
-        this.passwordService.setPasswordsVisible();
-        await this.togglePasswordVisible();
-      }
-    } else {
+  private async checkAccountPassword(): Promise<boolean> {
+    if (this.passwordService.checkIfPasswordsAreVisible()) {
       await this.togglePasswordVisible();
+      return true;
     }
+
+    const {valid} = await firstValueFrom(
+      this.passwordService.checkAccountPassword(this.userPassword)
+    );
+
+    if (!valid) {
+      return false;
+    }
+
+    this.passwordService.setPasswordsVisible();
+    await this.togglePasswordVisible();
+    return true;
   }
 
   private async togglePasswordVisible(): Promise<void> {
-    if (!this.password?.visible) {
-      if (this.password?.password) {
-        this.password.visible = true;
-      } else if (this.formValid()) {
-        const uncensured = await firstValueFrom(this.passwordService.getUncensoredPassword(this.password._id!));
-        if (!uncensured) return;
-        this.password = {
-          ...this.password,
-          password: uncensured.password,
-          visible: true
-        };
-      }
-    } else {
-      this.password.visible = false;
+    if (this.password.visible) {
+      this.password = {...this.password, visible: false};
+      return;
     }
+
+    if (this.password.password) {
+      this.password = {...this.password, visible: true};
+      return;
+    }
+
+    if (!this.password._id) return;
+
+    const uncensored = await firstValueFrom(
+      this.passwordService.getUncensoredPassword(this.password._id)
+    );
+
+    this.password = {
+      ...this.password,
+      password: uncensored.password,
+      visible: true
+    };
   }
 
   private formValid(): boolean {
     const password = this.passwordForm.getValue();
-    return password?.password !== '' && password?.title !== '';
+    return typeof password.password === 'string' &&
+      password.password.length > 0 &&
+      password.title.trim().length > 0;
   }
 
   private _resetPasswordForm(): void {

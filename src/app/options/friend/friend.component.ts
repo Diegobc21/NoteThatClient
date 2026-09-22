@@ -9,16 +9,17 @@ import {UserService} from "../../core/services/user/user.service";
 import {NavigationService} from "../../core/services/navigation/navigation.service";
 
 @Component({
-  selector: 'app-friend',
-  templateUrl: './friend.component.html',
-  styleUrls: ['./friend.component.scss'],
-  animations: [
-    trigger('slideDown', [
-      state('hidden', style({height: '0', opacity: '0', overflow: 'hidden'})),
-      state('visible', style({height: '*', opacity: '1', overflow: 'hidden'})),
-      transition('hidden <=> visible', animate('200ms ease-in-out')),
-    ]),
-  ],
+    selector: 'app-friend',
+    templateUrl: './friend.component.html',
+    styleUrls: ['./friend.component.scss'],
+    animations: [
+        trigger('slideDown', [
+            state('hidden', style({ height: '0', opacity: '0', overflow: 'hidden' })),
+            state('visible', style({ height: '*', opacity: '1', overflow: 'hidden' })),
+            transition('hidden <=> visible', animate('200ms ease-in-out')),
+        ]),
+    ],
+    standalone: false
 })
 export class FriendComponent implements OnDestroy {
 

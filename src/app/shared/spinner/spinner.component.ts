@@ -4,9 +4,10 @@ import {SpinnerService} from "../../core/services/spinner/spinner.service";
 import {AuthService} from "../../core/services/auth/auth.service";
 
 @Component({
-  selector: 'app-spinner',
-  templateUrl: './spinner.component.html',
-  styleUrls: ['./spinner.component.scss'],
+    selector: 'app-spinner',
+    templateUrl: './spinner.component.html',
+    styleUrls: ['./spinner.component.scss'],
+    standalone: false
 })
 export class SpinnerComponent {
   @Input() size: number = 20;

@@ -61,11 +61,10 @@ const allIconList: { [key: string]: LucideIconData } = {
 }
 
 @Component({
-  selector: 'app-lucide-icon',
-  standalone: true,
-  imports: [CommonModule, LucideAngularModule],
-  templateUrl: './lucide-icon.component.html',
-  styleUrl: './lucide-icon.component.scss'
+    selector: 'app-lucide-icon',
+    imports: [CommonModule, LucideAngularModule],
+    templateUrl: './lucide-icon.component.html',
+    styleUrl: './lucide-icon.component.scss'
 })
 export class LucideIconComponent implements OnInit {
   @Input() public name: string | LucideIconData | undefined;

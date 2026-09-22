@@ -4,13 +4,14 @@ import {fadeInOut} from "../../utils/animations/fade-in-out";
 import {PopupOption} from "../../options/note/note-default/note-default.component";
 
 @Component({
-  selector: 'app-popup-menu',
-  templateUrl: './popup-menu.component.html',
-  styleUrls: ['./popup-menu.component.scss'],
-  animations: [
-    softFade,
-    fadeInOut
-  ],
+    selector: 'app-popup-menu',
+    templateUrl: './popup-menu.component.html',
+    styleUrls: ['./popup-menu.component.scss'],
+    animations: [
+        softFade,
+        fadeInOut
+    ],
+    standalone: false
 })
 export class PopupMenuComponent {
   @Input() options: PopupOption[] = [];

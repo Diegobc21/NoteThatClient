@@ -85,7 +85,7 @@
 
 <ng-template #createModal>
   <h2 class="text-xl mb-4">Pónle un título</h2>
-  <form (submit)="onCreateSection()">
+  <form (ngSubmit)="onCreateSection()">
     <app-input
       placeholder="Título"
       [model]="(sectionForm | async)?.title"
@@ -96,7 +96,7 @@
 </ng-template>
 
 <ng-template #editModal>
-    <form (submit)="onEditSection()">
+    <form (ngSubmit)="onEditSection()">
         <h1 class="text-center font-bold">Editar sección</h1>
         <app-input
                 type="text"
@@ -108,7 +108,7 @@
 </ng-template>
 
 <ng-template #deleteModal>
-      <form (submit)="onDeleteSection()">
+      <form (ngSubmit)="onDeleteSection()">
         <h1 class="text-center font-bold">
           ¿Seguro que deseas eliminar esta sección?
         </h1>
